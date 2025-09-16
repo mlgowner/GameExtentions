@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff;
+            background: linear-gradient(135deg, #a8edea, #fed6e3); /* Спокойный пастельный градиент */
+            color: #333;
             text-align: center;
             padding: 20px;
             margin: 0;
@@ -15,14 +15,14 @@
         }
         h1 {
             font-size: 2.5em;
-            color: #ffcc00;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #5f9ea0; /* Мягкий синий */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
         p {
             font-size: 1.2em;
             margin-bottom: 30px;
-            color: #e0e0e0;
+            color: #666;
         }
         .mod-buttons {
             display: flex;
@@ -33,18 +33,18 @@
             margin: 0 auto;
         }
         button {
-            background: #ff4444;
-            color: #fff;
+            background: #b2f2bb; /* Мягкий зелёный */
+            color: #333;
             border: none;
             padding: 15px 30px;
             border-radius: 10px;
             font-size: 1.1em;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
         }
         button:hover {
-            background: #ff6666;
+            background: #98e4a3; /* Чуть ярче, но спокойно */
             transform: scale(1.05);
         }
         button:active {
@@ -53,27 +53,27 @@
         .footer {
             margin-top: 30px;
             font-size: 0.9em;
-            color: #ccc;
+            color: #888;
         }
     </style>
 </head>
 <body>
     <h1>Моды для Minecraft</h1>
-    <p>Выбери крутой мод и качай прямо сейчас!</p>
+    <p>Выбери мод и скачай .exe в 1 клик. Спокойно и просто.</p>
     <div class="mod-buttons">
-        <button onclick="selectMod('minecraft_mod.zip')">🌟 NightmareCraft Mod</button>
-        <button onclick="selectMod('extension1.zip')">⚡ Ext Mod 1</button>
-        <button onclick="selectMod('extension2.zip')">🔧 Ext Mod 2</button>
+        <button onclick="selectMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
+        <button onclick="selectMod('extension1.exe')">🍃 Ext Mod 1</button>
+        <button onclick="selectMod('extension2.exe')">🌱 Ext Mod 2</button>
     </div>
     <div class="footer">
-        Разработано с ❤️ для геймеров!
+        Разработано с душой для спокойного гейминга.
     </div>
     <script>
         function selectMod(modName) {
             Telegram.WebApp.sendData(JSON.stringify({mod: modName}));
         }
         Telegram.WebApp.ready();
-        Telegram.WebApp.expand(); // Полноэкранный режим
+        Telegram.WebApp.expand();
     </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #a8edea, #fed6e3); /* Спокойный пастельный градиент */
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
             color: #333;
             text-align: center;
             padding: 20px;
@@ -15,65 +15,133 @@
         }
         h1 {
             font-size: 2.5em;
-            color: #5f9ea0; /* Мягкий синий */
+            color: #5f9ea0;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            color: #666;
-        }
-        .mod-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            max-width: 800px;
+        .login-form, .profile, .mod-buttons {
+            max-width: 400px;
             margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
         }
         button {
-            background: #b2f2bb; /* Мягкий зелёный */
+            background: #b2f2bb;
             color: #333;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 10px;
             font-size: 1.1em;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
         }
         button:hover {
-            background: #98e4a3; /* Чуть ярче, но спокойно */
+            background: #98e4a3;
             transform: scale(1.05);
         }
         button:active {
             transform: scale(0.95);
         }
-        .footer {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #888;
+        .mod-buttons {
+            margin-top: 20px;
+            display: none;
+        }
+        .profile {
+            display: none;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>Моды для Minecraft</h1>
-    <p>Выбери мод и скачай .exe в 1 клик. Спокойно и просто.</p>
-    <div class="mod-buttons">
-        <button onclick="selectMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
-        <button onclick="selectMod('extension1.exe')">🍃 Ext Mod 1</button>
-        <button onclick="selectMod('extension2.exe')">🌱 Ext Mod 2</button>
+    <div class="login-form">
+        <input type="text" id="login" placeholder="Логин" />
+        <input type="password" id="password" placeholder="Пароль" />
+        <button onclick="login()">Войти</button>
     </div>
-    <div class="footer">
-        Разработано с душой для спокойного гейминга.
+    <div class="profile" id="profile">
+        <h2>Личный кабинет</h2>
+        <div id="stats"></div>
+        <button onclick="logout()">Выйти</button>
+    </div>
+    <div class="mod-buttons" id="modButtons">
+        <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
+        <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
+        <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
     </div>
     <script>
-        function selectMod(modName) {
-            Telegram.WebApp.sendData(JSON.stringify({mod: modName}));
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        let isAuthenticated = !!sessionStorage.getItem('authToken');
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.login-form, .profile, .mod-buttons').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
         }
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
+
+        function login() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            tg.sendData(JSON.stringify({ action: "login", login, password }));
+            tg.onEvent('web_app_data', (data) => {
+                if (data.data.includes("Логин успешен")) {
+                    sessionStorage.setItem('authToken', 'true');
+                    isAuthenticated = true;
+                    showSection('modButtons');
+                    showSection('profile');
+                    fetchStats();
+                } else {
+                    alert("Ошибка входа!");
+                }
+            });
+        }
+
+        function logout() {
+            sessionStorage.removeItem('authToken');
+            isAuthenticated = false;
+            showSection('login-form');
+        }
+
+        function fetchStats() {
+            tg.sendData(JSON.stringify({ action: "stats" }));
+            tg.onEvent('web_app_data', (data) => {
+                if (data.data.includes("Твоя статистика")) {
+                    document.getElementById('stats').innerHTML = data.data;
+                }
+            });
+        }
+
+        function downloadMod(modName) {
+            if (isAuthenticated) {
+                tg.sendData(JSON.stringify({ action: "download", mod: modName }));
+                // Замени на реальный URL твоих .exe файлов (напр. GitHub Releases)
+                window.location.href = `https://твойсервер.com/exe/${modName}`; // Настрой свой сервер
+            } else {
+                alert("Сначала войдите!");
+            }
+        }
+
+        if (isAuthenticated) {
+            showSection('modButtons');
+            showSection('profile');
+            fetchStats();
+        } else {
+            showSection('login-form');
+        }
     </script>
 </body>
 </html>

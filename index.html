@@ -1,1 +1,25 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Выбор ZIP</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 20px; }
+        button { background: #0088cc; color: white; border: none; padding: 10px 20px; margin: 10px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #006699; }
+    </style>
+</head>
+<body>
+    <h1>Выберите ZIP-архив</h1>
+    <button onclick="selectZip('nightmarecraft.zip')">NightmareCraft</button>
+    <button onclick="selectZip('extension1.zip')">Extension 1</button>
+    <button onclick="selectZip('extension2.zip')">Extension 2</button>
+    <script>
+        function selectZip(zipName) {
+            Telegram.WebApp.sendData(JSON.stringify({zip: zipName}));
+        }
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+    </script>
+</body>
+</html>

@@ -3,55 +3,53 @@
 <head>
     <title>Моды и Расширения</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.cdnfonts.com/css/press-start-2p');
-
         body {
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'Open Sans', sans-serif;
             background: #000;
             color: #fff;
             text-align: center;
             padding: 20px;
             margin: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         h1 {
             font-size: 2em;
             color: #ddd;
-            text-shadow: 2px 2px #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .container {
             max-width: 400px;
             margin: 0 auto;
             background: #1a1a1a;
             padding: 20px;
-            border: 2px solid #555;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         input {
             width: 100%;
-            padding: 8px;
-            margin: 8px 0;
+            padding: 10px;
+            margin: 10px 0;
             background: #333;
-            border: 1px solid #666;
-            border-radius: 3px;
+            border: 1px solid #555;
+            border-radius: 4px;
             color: #fff;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.8em;
+            font-size: 1em;
         }
         button {
             background: #444;
             color: #fff;
-            border: 1px solid #888;
+            border: none;
             padding: 10px 20px;
-            border-radius: 3px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: background 0.2s;
             margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
         }
         button:hover {
             background: #666;
@@ -59,23 +57,18 @@
         button:active {
             background: #222;
         }
+        #profileContent, .mod-buttons {
+            display: none;
+        }
         #stats {
-            margin: 10px 0;
+            margin: 15px 0;
             text-align: left;
             color: #ccc;
+            font-size: 0.9em;
         }
-        .mod-buttons {
-            max-width: 400px;
-            margin: 20px auto;
-        }
-        .mod-buttons h3 {
-            color: #bbb;
-            margin-bottom: 10px;
-        }
-        .mod-buttons button {
-            display: block;
-            width: 100%;
-            margin: 5px 0;
+        .message {
+            margin: 10px 0;
+            font-size: 0.9em;
         }
         .hidden {
             display: none;
@@ -83,35 +76,35 @@
     </style>
 </head>
 <body>
-    <h1>Моды и Расширения 🎮</h1>
+    <h1>Моды и Расширения</h1>
     <div class="container">
         <div id="authForm">
             <h2>Регистрация / Вход</h2>
-            <input type="text" id="login" placeholder="Логин" />
+            <input type="email" id="email" placeholder="Email" />
             <input type="password" id="password" placeholder="Пароль" />
-            <button onclick="register()">Регистрация 👤</button>
-            <button onclick="login()">Войти 🌐</button>
+            <button onclick="register()">Регистрация</button>
+            <button onclick="login()">Войти</button>
         </div>
         <div id="profileContent" class="hidden">
             <h2>Личный кабинет</h2>
             <div id="stats"></div>
-            <button onclick="refreshStats()">Обновить 📊</button>
-            <button onclick="logout()">Выйти 🚪</button>
+            <button onclick="refreshStats()">Обновить</button>
+            <button onclick="logout()">Выйти</button>
         </div>
         <div id="message" class="message hidden"></div>
     </div>
-    <div class="mod-buttons">
-        <h3>Моды и Расширения</h3>
-        <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
-        <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
-        <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
+    <div class="mod-buttons" id="modButtons">
+        <h3>Доступные моды</h3>
+        <button onclick="downloadMod('minecraft_mod.exe')">NightmareCraft Mod</button>
+        <button onclick="downloadMod('extension1.exe')">Ext Mod 1</button>
+        <button onclick="downloadMod('extension2.exe')">Ext Mod 2</button>
     </div>
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;  // Получаем ID пользователя из TG
+        const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 
         let isAuthenticated = !!sessionStorage.getItem('authToken');
 
@@ -121,63 +114,82 @@
             msgEl.classList.remove('hidden');
             msgEl.style.color = isError ? '#ff4444' : '#44ff44';
             setTimeout(() => msgEl.classList.add('hidden'), 3000);
+            console.log(`Сообщение: ${text} (Ошибка: ${isError})`);
         }
 
         function showProfile() {
             document.getElementById('authForm').classList.add('hidden');
             document.getElementById('profileContent').classList.remove('hidden');
+            document.getElementById('modButtons').style.display = 'block';
         }
 
         function showAuth() {
             document.getElementById('authForm').classList.remove('hidden');
             document.getElementById('profileContent').classList.add('hidden');
+            document.getElementById('modButtons').style.display = 'none';
             document.getElementById('stats').innerHTML = '';
         }
 
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email.toLowerCase());
+        }
+
         function login() {
-            const login = document.getElementById('login').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (login && password && userId) {
-                console.log("Отправка на вход: user_id", userId, "login", login);
-                tg.sendData(JSON.stringify({ action: "login", user_id: userId, login, password }));
-                tg.onEvent('web_app_data', (data) => {
-                    console.log("Ответ от бота:", data.data);
-                    const response = data.data;
-                    if (response.includes("Твоя статистика")) {
-                        sessionStorage.setItem('authToken', 'true');
-                        isAuthenticated = true;
-                        showProfile();
-                        document.getElementById('stats').innerHTML = response;
-                        showMessage("Успешный вход!");
-                    } else {
-                        showMessage("Ошибка: неверный логин или пароль!", true);
-                    }
-                });
-            } else {
-                console.error("Ошибка: не все поля заполнены или нет userId");
-                showMessage("Введите логин, пароль и убедитесь, что вы в Telegram!", true);
+            if (!userId) {
+                showMessage("Ошибка: не удалось получить Telegram ID!", true);
+                return;
             }
+            if (!email || !password) {
+                showMessage("Введите email и пароль!", true);
+                return;
+            }
+            console.log(`Попытка входа: userId=${userId}, email=${email}`);
+            tg.sendData(JSON.stringify({ action: "login", user_id: userId, email, password }));
+            tg.onEvent('web_app_data', (data) => {
+                console.log("Ответ от бота:", data.data);
+                const response = data.data;
+                if (response.includes("Твоя статистика")) {
+                    sessionStorage.setItem('authToken', 'true');
+                    isAuthenticated = true;
+                    showProfile();
+                    document.getElementById('stats').innerHTML = response;
+                    showMessage("Успешный вход!");
+                } else {
+                    showMessage("Ошибка: неверный email или пароль!", true);
+                }
+            });
         }
 
         function register() {
-            const login = document.getElementById('login').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (login && password && userId) {
-                console.log("Отправка на регистрацию: user_id", userId, "login", login);
-                tg.sendData(JSON.stringify({ action: "register", user_id: userId, login, password }));
-                tg.onEvent('web_app_data', (data) => {
-                    console.log("Ответ от бота:", data.data);
-                    const response = data.data;
-                    if (response.includes("Регистрация завершена")) {
-                        showMessage("Регистрация успешна! Теперь войдите.");
-                    } else {
-                        showMessage("Ошибка регистрации!", true);
-                    }
-                });
-            } else {
-                console.error("Ошибка: не все поля заполнены или нет userId");
-                showMessage("Введите логин, пароль и убедитесь, что вы в Telegram!", true);
+            if (!userId) {
+                showMessage("Ошибка: не удалось получить Telegram ID!", true);
+                return;
             }
+            if (!email || !password) {
+                showMessage("Введите email и пароль!", true);
+                return;
+            }
+            if (!validateEmail(email)) {
+                showMessage("Некорректный email! Используйте формат example@domain.com", true);
+                return;
+            }
+            const passwordHash = sha256(password); // SHA-256 хэш
+            console.log(`Попытка регистрации: userId=${userId}, email=${email}`);
+            tg.sendData(JSON.stringify({ action: "register", user_id: userId, email, password_hash: passwordHash }));
+            tg.onEvent('web_app_data', (data) => {
+                console.log("Ответ от бота:", data.data);
+                const response = data.data;
+                if (response.includes("Регистрация успешна")) {
+                    showMessage("Регистрация прошла! Теперь войдите.");
+                } else {
+                    showMessage(`Ошибка регистрации: ${response || 'неизвестная ошибка'}`, true);
+                }
+            });
         }
 
         function logout() {
@@ -189,7 +201,7 @@
 
         function refreshStats() {
             if (userId) {
-                console.log("Обновление статистики для user_id", userId);
+                console.log(`Обновление статистики для userId=${userId}`);
                 tg.sendData(JSON.stringify({ action: "stats", user_id: userId }));
                 tg.onEvent('web_app_data', (data) => {
                     console.log("Ответ от бота:", data.data);
@@ -197,25 +209,26 @@
                     showMessage("Статистика обновлена!");
                 });
             } else {
-                showMessage("Ошибка: нет userId!", true);
+                showMessage("Ошибка: нет Telegram ID!", true);
             }
         }
 
         function downloadMod(modName) {
             if (isAuthenticated) {
-                console.log("Скачивание мода", modName, "для user_id", userId);
+                console.log(`Скачивание мода ${modName} для userId=${userId}`);
                 tg.sendData(JSON.stringify({ action: "download", user_id: userId, mod: modName }));
                 window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
                 showMessage("Мод скачан!");
             } else {
-                showMessage("Войдите в личный кабинет для скачивания!", true);
+                showMessage("Сначала войдите в аккаунт!", true);
             }
         }
 
         if (userId) {
-            console.log("Проверка авторизации для user_id", userId);
+            console.log(`Проверка авторизации для userId=${userId}`);
             tg.sendData(JSON.stringify({ action: "check_auth", user_id: userId }));
             tg.onEvent('web_app_data', (data) => {
+                console.log("Ответ от бота:", data.data);
                 const response = data.data;
                 if (response.includes("Твоя статистика")) {
                     sessionStorage.setItem('authToken', 'true');
@@ -229,8 +242,9 @@
             });
         } else {
             showAuth();
-            showMessage("Ошибка: не удалось получить userId из Telegram!", true);
+            showMessage("Ошибка: не удалось получить Telegram ID!", true);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.js"></script>
 </body>
 </html>

@@ -17,52 +17,15 @@
             flex-direction: column;
             justify-content: center;
         }
-        h1 {
-            font-size: 2em;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        button {
-            background: #444;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px 0;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #666;
-        }
-        button:active {
-            background: #222;
-        }
-        #profileContent, .mod-buttons {
-            display: none;
-        }
-        #stats {
-            margin: 15px 0;
-            text-align: left;
-            color: #ccc;
-            font-size: 0.9em;
-        }
-        .message {
-            margin: 10px 0;
-            font-size: 0.9em;
-        }
-        .hidden {
-            display: none;
-        }
+        h1 { font-size: 2em; color: #ddd; margin-bottom: 20px; }
+        .container { max-width: 400px; margin: 0 auto; background: #1a1a1a; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+        button { background: #444; color: #fff; border: none; padding: 10px 20px; margin: 5px 0; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background 0.3s; }
+        button:hover { background: #666; }
+        button:active { background: #222; }
+        #profileContent, .mod-buttons { display: none; }
+        #stats { margin: 15px 0; text-align: left; color: #ccc; font-size: 0.9em; }
+        .message { margin: 10px 0; font-size: 0.9em; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -86,11 +49,16 @@
     </div>
     <script>
         const tg = window.Telegram.WebApp;
+        if (!tg) {
+            console.error("Telegram WebApp SDK не загружен!");
+            alert("Ошибка: Telegram WebApp не работает. Проверьте подключение.");
+            return;
+        }
         tg.ready();
         tg.expand();
-        const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+        const userId = tg.initDataUnsafe?.user?.id;
         let isAuthenticated = !!sessionStorage.getItem('authToken');
-        const initData = tg.initData;  // Получаем initData
+        const initData = tg.initData;
 
         function showMessage(text, isError = false) {
             const msgEl = document.getElementById('message');
@@ -136,9 +104,10 @@
         function autoRegister() {
             if (!userId || !initData) {
                 showMessage("Ошибка: не удалось получить данные Telegram!", true);
+                console.error("userId или initData отсутствуют:", { userId, initData });
                 return;
             }
-            console.log(`Автоматическая регистрация: userId=${userId}`);
+            console.log(`Автоматическая регистрация: userId=${userId}, initData=${initData}`);
             tg.sendData(JSON.stringify({ action: "auto_register", user_id: userId, init_data: initData }));
             showMessage("Привязка аккаунта...", false);
         }
@@ -162,8 +131,14 @@
             window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
         }
 
-        // Автоматическая регистрация при запуске
-        autoRegister();
+        // Автоматическая регистрация при загрузке
+        console.log("Инициализация Web App, userId:", userId);
+        if (userId && initData) {
+            autoRegister();
+        } else {
+            showAuth();
+            showMessage("Ошибка: не удалось получить данные Telegram!", true);
+        }
     </script>
 </body>
 </html>

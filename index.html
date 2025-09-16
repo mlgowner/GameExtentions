@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Моды для Minecraft</title>
+    <title>Моды для Roblox</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -44,6 +44,7 @@
             font-size: 1.1em;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
+            margin: 5px 0;
         }
         button:hover {
             background: #98e4a3;
@@ -61,11 +62,11 @@
     </style>
 </head>
 <body>
-    <h1>Моды для Minecraft</h1>
-    <div class="login-form">
+    <h1>Моды для Roblox</h1>
+    <div class="login-form" id="loginForm">
         <input type="text" id="login" placeholder="Логин" />
         <input type="password" id="password" placeholder="Пароль" />
-        <button onclick="login()">Войти</button>
+        <button onclick="login()">Вход</button>
     </div>
     <div class="profile" id="profile">
         <h2>Личный кабинет</h2>
@@ -93,25 +94,29 @@
         function login() {
             const login = document.getElementById('login').value;
             const password = document.getElementById('password').value;
-            tg.sendData(JSON.stringify({ action: "login", login, password }));
-            tg.onEvent('web_app_data', (data) => {
-                const response = data.data;
-                if (response.includes("Твоя статистика")) {
-                    sessionStorage.setItem('authToken', 'true');
-                    isAuthenticated = true;
-                    showSection('profile');
-                    showSection('modButtons');
-                    document.getElementById('stats').innerHTML = response;
-                } else {
-                    alert("Ошибка входа!");
-                }
-            });
+            if (login && password) {
+                tg.sendData(JSON.stringify({ action: "login", login, password }));
+                tg.onEvent('web_app_data', (data) => {
+                    const response = data.data;
+                    if (response.includes("Твоя статистика")) {
+                        sessionStorage.setItem('authToken', 'true');
+                        isAuthenticated = true;
+                        showSection('profile');
+                        showSection('modButtons');
+                        document.getElementById('stats').innerHTML = response;
+                    } else {
+                        alert("Ошибка входа: неверный логин или пароль!");
+                    }
+                });
+            } else {
+                alert("Введите логин и пароль!");
+            }
         }
 
         function logout() {
             sessionStorage.removeItem('authToken');
             isAuthenticated = false;
-            showSection('login-form');
+            showSection('loginForm');
         }
 
         function refreshStats() {
@@ -136,7 +141,7 @@
             showSection('modButtons');
             refreshStats();
         } else {
-            showSection('login-form');
+            showSection('loginForm');
         }
     </script>
 </body>

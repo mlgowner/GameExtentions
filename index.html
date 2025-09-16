@@ -47,16 +47,6 @@
             transform: scale(1.05);
             box-shadow: 0 0 15px #ff8800;
         }
-        #profileContent, #searchPage, #stats {
-            display: none;
-            text-align: left;
-            color: #d3d3d3;
-            font-size: 1em;
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-        }
         input {
             width: 100%;
             padding: 15px;
@@ -65,6 +55,16 @@
             border: none;
             background: #333;
             color: #e0e0e0;
+        }
+        #searchPage, #stats {
+            display: none;
+            text-align: left;
+            color: #d3d3d3;
+            font-size: 1em;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
         }
         .message {
             margin: 10px 0;
@@ -94,9 +94,6 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
     </div>
     <div class="container">
-        <div id="authForm">
-            <h2>Авторизация...</h2>
-        </div>
         <div id="searchPage">
             <h2>Поиск модов</h2>
             <input type="text" id="searchInput" placeholder="Поиск модов..." onkeyup="searchMods()">
@@ -124,7 +121,6 @@
         }
 
         function showSearchPage() {
-            document.getElementById('authForm').style.display = 'none';
             document.getElementById('searchPage').style.display = 'block';
         }
 
@@ -134,7 +130,7 @@
                 return;
             }
             tg.sendData(JSON.stringify({ action: "register", user_id: userId }));
-            showMessage("Авторизация...", false);
+            showMessage("Проверка авторизации...", false);
         }
 
         function refreshStats() {
@@ -172,7 +168,7 @@
             if (response.status === "success") {
                 document.getElementById('stats').innerHTML = response.message;
                 showSearchPage();
-                showMessage("Добро пожаловать!");
+                showMessage("Добро пожаловать в Roblox Mods!");
             } else {
                 showMessage(response.message, true);
             }

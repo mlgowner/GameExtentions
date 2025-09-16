@@ -10,103 +10,48 @@
             font-family: 'Press Start 2P', cursive;
             background: #000;
             color: #fff;
+            text-align: center;
+            padding: 20px;
             margin: 0;
-            padding: 0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
         h1 {
-            font-size: 1.5em;
+            font-size: 2em;
             color: #ddd;
-            text-align: center;
-            padding: 10px 0;
-            background: #1a1a1a;
-            margin: 0;
-            text-shadow: 1px 1px #333;
+            text-shadow: 2px 2px #333;
+            margin-bottom: 15px;
         }
         .container {
-            flex: 1;
             max-width: 400px;
             margin: 0 auto;
-            padding: 20px 0;
-        }
-        .profile {
             background: #1a1a1a;
-            padding: 15px;
-            border: 1px solid #555;
+            padding: 20px;
+            border: 2px solid #555;
             border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .avatar img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid #666;
-            margin-bottom: 10px;
-        }
-        h2 {
-            font-size: 1em;
-            margin: 10px 0 5px;
-            color: #ccc;
-        }
-        .stats, .bonus, .season, .giveaways, .invite {
-            text-align: left;
-            margin: 10px 0;
-            padding: 10px;
-            background: #222;
-            border: 1px solid #444;
-            border-radius: 3px;
-        }
-        .stat-item, .bonus span, .season span, .giveaways span, .invite span {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7em;
-            margin: 5px 0;
-        }
-        progress {
-            width: 100%;
-            height: 10px;
-            background: #333;
-            border: none;
-            border-radius: 5px;
-            margin: 5px 0;
-        }
-        progress::-webkit-progress-bar {
-            background: #333;
-            border-radius: 5px;
-        }
-        progress::-webkit-progress-value {
-            background: #666;
-            border-radius: 5px;
-        }
-        .auth-section {
-            margin: 10px 0;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         input {
             width: 100%;
             padding: 8px;
-            margin: 5px 0;
+            margin: 8px 0;
             background: #333;
             border: 1px solid #666;
             border-radius: 3px;
             color: #fff;
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.7em;
+            font-size: 0.8em;
         }
         button {
             background: #444;
             color: #fff;
             border: 1px solid #888;
-            padding: 10px;
+            padding: 10px 20px;
             border-radius: 3px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.8em;
+            font-size: 0.9em;
             cursor: pointer;
             transition: background 0.2s;
             margin: 5px 0;
-            width: 48%;
         }
         button:hover {
             background: #666;
@@ -118,150 +63,57 @@
             margin: 10px 0;
             text-align: left;
             color: #ccc;
-            font-size: 0.7em;
-            white-space: pre-wrap;
         }
-        .message {
-            margin: 10px 0;
-            color: #ccc;
-            font-size: 0.7em;
-        }
-        .hidden {
-            display: none;
-        }
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            background: #1a1a1a;
-            padding: 10px 0;
-            border-top: 1px solid #555;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        .mod-buttons {
             max-width: 400px;
-            margin: 0 auto;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .tab-button {
-            flex: 1;
-            border: none;
-            background: none;
-            color: #bbb;
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-        .tab-button.active {
-            color: #fff;
-            border-bottom: 2px solid #fff;
-        }
-        .tab-content {
-            display: none;
-            padding: 10px;
-        }
-        .tab-content.active {
-            display: block;
+            margin: 20px auto;
         }
         .mod-buttons h3 {
             color: #bbb;
             margin-bottom: 10px;
-            font-size: 0.9em;
         }
         .mod-buttons button {
+            display: block;
             width: 100%;
-            padding: 10px;
             margin: 5px 0;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>Моды и Расширения 🎮</h1>
     <div class="container">
-        <div id="profileTab" class="tab-content active">
-            <div class="profile">
-                <div class="avatar">
-                    <img src="https://placehold.co/100x100/png?text=Avatar" alt="Аватар">
-                </div>
-                <h2 id="username">Гость</h2>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span>Всего модов</span>
-                        <span id="totalMods">0 🌿</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Скачано ></span>
-                        <span id="downloaded">0 🌿</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Осталось ></span>
-                        <span id="remaining">0 🌿</span>
-                    </div>
-                </div>
-                <div class="bonus">
-                    <span>БОНУС МОДОВ</span>
-                    <span id="bonusLevel">0% / Уровень 0</span>
-                    <progress value="0" max="100" id="bonusProgress"></progress>
-                    <span>Доступно к получению</span>
-                    <span id="bonusAvailable">0 🌿</span>
-                </div>
-                <div class="season">
-                    <span>СЕЗОН #1</span>
-                    <span id="seasonPoints">0 ★</span>
-                </div>
-                <div class="giveaways">
-                    <span>Раздачи 🎁</span>
-                    <p>Участвуй в раздачах и выигрывай моды!</p>
-                </div>
-                <div class="invite">
-                    <span>ПРИГЛАШАЙ ДРУЗЕЙ И ПОЛУЧАЙ МОДЫ 🌿</span>
-                </div>
-                <div class="auth-section" id="authForm">
-                    <input type="text" id="login" placeholder="Логин" />
-                    <input type="password" id="password" placeholder="Пароль" />
-                    <div>
-                        <button onclick="login()">Войти 🌐</button>
-                        <button onclick="register()">Регистрация 👤</button>
-                    </div>
-                </div>
-                <div id="profileContent" class="hidden">
-                    <div id="stats"></div>
-                    <button onclick="refreshStats()">Обновить 📊</button>
-                    <button onclick="logout()">Выйти 🚪</button>
-                </div>
-                <div id="message" class="message hidden"></div>
-            </div>
+        <div id="authForm">
+            <h2>Регистрация / Вход</h2>
+            <input type="text" id="login" placeholder="Логин" />
+            <input type="password" id="password" placeholder="Пароль" />
+            <button onclick="register()">Регистрация 👤</button>
+            <button onclick="login()">Войти 🌐</button>
         </div>
-        <div id="marketTab" class="tab-content">
-            <div class="mod-buttons">
-                <h3>Магазин модов</h3>
-                <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
-                <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
-                <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
-            </div>
+        <div id="profileContent" class="hidden">
+            <h2>Личный кабинет</h2>
+            <div id="stats"></div>
+            <button onclick="refreshStats()">Обновить 📊</button>
+            <button onclick="logout()">Выйти 🚪</button>
         </div>
-        <div id="seasonTab" class="tab-content">
-            <h3>Сезон #1</h3>
-            <p>Участвуй в сезоне и получай награды!</p>
-        </div>
+        <div id="message" class="message hidden"></div>
     </div>
-    <div class="tabs">
-        <button class="tab-button" onclick="openTab('marketTab')">Маркет</button>
-        <button class="tab-button" onclick="openTab('seasonTab')">Сезон</button>
-        <button class="tab-button active" onclick="openTab('profileTab')">Профиль</button>
+    <div class="mod-buttons">
+        <h3>Моды и Расширения</h3>
+        <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
+        <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
+        <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
     </div>
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        let isAuthenticated = !!sessionStorage.getItem('authToken');
+        const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;  // Получаем ID пользователя из TG
 
-        function openTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+        let isAuthenticated = !!sessionStorage.getItem('authToken');
 
         function showMessage(text, isError = false) {
             const msgEl = document.getElementById('message');
@@ -271,24 +123,25 @@
             setTimeout(() => msgEl.classList.add('hidden'), 3000);
         }
 
-        function showLogin() {
-            document.getElementById('authForm').classList.remove('hidden');
-            document.getElementById('profileContent').classList.add('hidden');
-            document.getElementById('username').textContent = 'Гость';
-        }
-
         function showProfile() {
             document.getElementById('authForm').classList.add('hidden');
             document.getElementById('profileContent').classList.remove('hidden');
-            document.getElementById('username').textContent = 'creatoresng'; // Замени на реальное имя из БД
+        }
+
+        function showAuth() {
+            document.getElementById('authForm').classList.remove('hidden');
+            document.getElementById('profileContent').classList.add('hidden');
+            document.getElementById('stats').innerHTML = '';
         }
 
         function login() {
             const login = document.getElementById('login').value;
             const password = document.getElementById('password').value;
-            if (login && password) {
-                tg.sendData(JSON.stringify({ action: "login", login, password }));
+            if (login && password && userId) {
+                console.log("Отправка на вход: user_id", userId, "login", login);
+                tg.sendData(JSON.stringify({ action: "login", user_id: userId, login, password }));
                 tg.onEvent('web_app_data', (data) => {
+                    console.log("Ответ от бота:", data.data);
                     const response = data.data;
                     if (response.includes("Твоя статистика")) {
                         sessionStorage.setItem('authToken', 'true');
@@ -301,17 +154,19 @@
                     }
                 });
             } else {
-                showMessage("Введите логин и пароль!", true);
+                console.error("Ошибка: не все поля заполнены или нет userId");
+                showMessage("Введите логин, пароль и убедитесь, что вы в Telegram!", true);
             }
         }
 
         function register() {
             const login = document.getElementById('login').value;
             const password = document.getElementById('password').value;
-            if (login && password) {
-                const passwordHash = hex_sha256(password); // Используем SHA-256 (подключаем sha256.js ниже)
-                tg.sendData(JSON.stringify({ action: "register", login, password_hash: passwordHash }));
+            if (login && password && userId) {
+                console.log("Отправка на регистрацию: user_id", userId, "login", login);
+                tg.sendData(JSON.stringify({ action: "register", user_id: userId, login, password }));
                 tg.onEvent('web_app_data', (data) => {
+                    console.log("Ответ от бота:", data.data);
                     const response = data.data;
                     if (response.includes("Регистрация завершена")) {
                         showMessage("Регистрация успешна! Теперь войдите.");
@@ -320,28 +175,36 @@
                     }
                 });
             } else {
-                showMessage("Введите логин и пароль!", true);
+                console.error("Ошибка: не все поля заполнены или нет userId");
+                showMessage("Введите логин, пароль и убедитесь, что вы в Telegram!", true);
             }
         }
 
         function logout() {
             sessionStorage.removeItem('authToken');
             isAuthenticated = false;
-            showLogin();
+            showAuth();
             showMessage("Выход выполнен!");
         }
 
         function refreshStats() {
-            tg.sendData(JSON.stringify({ action: "stats" }));
-            tg.onEvent('web_app_data', (data) => {
-                document.getElementById('stats').innerHTML = data.data;
-                showMessage("Статистика обновлена!");
-            });
+            if (userId) {
+                console.log("Обновление статистики для user_id", userId);
+                tg.sendData(JSON.stringify({ action: "stats", user_id: userId }));
+                tg.onEvent('web_app_data', (data) => {
+                    console.log("Ответ от бота:", data.data);
+                    document.getElementById('stats').innerHTML = data.data;
+                    showMessage("Статистика обновлена!");
+                });
+            } else {
+                showMessage("Ошибка: нет userId!", true);
+            }
         }
 
         function downloadMod(modName) {
             if (isAuthenticated) {
-                tg.sendData(JSON.stringify({ action: "download", mod: modName }));
+                console.log("Скачивание мода", modName, "для user_id", userId);
+                tg.sendData(JSON.stringify({ action: "download", user_id: userId, mod: modName }));
                 window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
                 showMessage("Мод скачан!");
             } else {
@@ -349,18 +212,24 @@
             }
         }
 
-        if (isAuthenticated) {
-            showProfile();
-            refreshStats();
+        if (userId) {
+            console.log("Проверка авторизации для user_id", userId);
+            tg.sendData(JSON.stringify({ action: "check_auth", user_id: userId }));
+            tg.onEvent('web_app_data', (data) => {
+                const response = data.data;
+                if (response.includes("Твоя статистика")) {
+                    sessionStorage.setItem('authToken', 'true');
+                    isAuthenticated = true;
+                    showProfile();
+                    document.getElementById('stats').innerHTML = response;
+                    showMessage("Автоматический вход выполнен!");
+                } else {
+                    showAuth();
+                }
+            });
         } else {
-            showLogin();
-        }
-    </script>
-    <!-- Подключаем библиотеку для SHA-256 -->
-    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.js"></script>
-    <script>
-        function hex_sha256(str) {
-            return sha256(str);
+            showAuth();
+            showMessage("Ошибка: не удалось получить userId из Telegram!", true);
         }
     </script>
 </body>

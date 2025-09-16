@@ -1,60 +1,83 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Моды для Roblox</title>
+    <title>Моды и Расширения</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        @import url('https://fonts.cdnfonts.com/css/press-start-2p');
+
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
-            color: #333;
+            font-family: 'Press Start 2P', cursive;
+            background: #000;
+            color: #fff;
             text-align: center;
             padding: 20px;
             margin: 0;
             min-height: 100vh;
         }
         h1 {
-            font-size: 2.5em;
-            color: #5f9ea0;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            font-size: 2em;
+            color: #ddd;
+            text-shadow: 2px 2px #333;
+            margin-bottom: 15px;
         }
-        .login-form, .profile, .mod-buttons {
+        .container {
             max-width: 400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: #1a1a1a;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #555;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .login-section, .profile-section {
+            margin-bottom: 20px;
         }
         input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
+            padding: 8px;
+            margin: 8px 0;
+            background: #333;
+            border: 1px solid #666;
+            border-radius: 3px;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
         }
         button {
-            background: #b2f2bb;
-            color: #333;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-size: 1.1em;
+            background: #444;
+            color: #fff;
+            border: 1px solid #888;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em;
             cursor: pointer;
-            transition: transform 0.2s, background 0.3s;
-            margin: 5px 0;
+            transition: background 0.2s;
         }
         button:hover {
-            background: #98e4a3;
-            transform: scale(1.05);
+            background: #666;
         }
         button:active {
-            transform: scale(0.95);
+            background: #222;
         }
-        .mod-buttons, .profile {
-            display: none;
+        #stats {
+            margin: 10px 0;
+            text-align: left;
+            color: #ccc;
+        }
+        .mod-buttons {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .mod-buttons h3 {
+            color: #bbb;
+            margin-bottom: 10px;
+        }
+        .mod-buttons button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
         }
         .hidden {
             display: none;
@@ -62,19 +85,23 @@
     </style>
 </head>
 <body>
-    <h1>Моды для Roblox</h1>
-    <div class="login-form" id="loginForm">
-        <input type="text" id="login" placeholder="Логин" />
-        <input type="password" id="password" placeholder="Пароль" />
-        <button onclick="login()">Вход</button>
+    <h1>Моды и Расширения 🎮</h1>
+    <div class="container">
+        <div class="login-section" id="loginSection">
+            <h2>Вход в ЛК</h2>
+            <input type="text" id="login" placeholder="Логин" />
+            <input type="password" id="password" placeholder="Пароль" />
+            <button onclick="login()">Войти 🌐</button>
+        </div>
+        <div class="profile-section" id="profileSection" class="hidden">
+            <h2>Личный кабинет</h2>
+            <div id="stats"></div>
+            <button onclick="refreshStats()">Обновить 📊</button>
+            <button onclick="logout()">Выйти 🚪</button>
+        </div>
     </div>
-    <div class="profile" id="profile">
-        <h2>Личный кабинет</h2>
-        <div id="stats"></div>
-        <button onclick="refreshStats()">Обновить статистику</button>
-        <button onclick="logout()">Выйти</button>
-    </div>
-    <div class="mod-buttons" id="modButtons">
+    <div class="mod-buttons">
+        <h3>Моды и Расширения</h3>
         <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
         <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
         <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
@@ -87,7 +114,8 @@
         let isAuthenticated = !!sessionStorage.getItem('authToken');
 
         function showSection(sectionId) {
-            document.querySelectorAll('.login-form, .profile, .mod-buttons').forEach(el => el.classList.add('hidden'));
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('profileSection').classList.add('hidden');
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
@@ -101,11 +129,10 @@
                     if (response.includes("Твоя статистика")) {
                         sessionStorage.setItem('authToken', 'true');
                         isAuthenticated = true;
-                        showSection('profile');
-                        showSection('modButtons');
+                        showSection('profileSection');
                         document.getElementById('stats').innerHTML = response;
                     } else {
-                        alert("Ошибка входа: неверный логин или пароль!");
+                        alert("Ошибка: неверный логин или пароль!");
                     }
                 });
             } else {
@@ -116,7 +143,8 @@
         function logout() {
             sessionStorage.removeItem('authToken');
             isAuthenticated = false;
-            showSection('loginForm');
+            showSection('loginSection');
+            document.getElementById('stats').innerHTML = '';
         }
 
         function refreshStats() {
@@ -129,19 +157,17 @@
         function downloadMod(modName) {
             if (isAuthenticated) {
                 tg.sendData(JSON.stringify({ action: "download", mod: modName }));
-                // Замени на реальный URL твоих .exe файлов (напр. GitHub Releases)
-                window.location.href = `https://твойсервер.com/exe/${modName}`; // Настрой свой сервер
+                window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
             } else {
-                alert("Сначала войдите!");
+                alert("Войдите в личный кабинет для скачивания!");
             }
         }
 
         if (isAuthenticated) {
-            showSection('profile');
-            showSection('modButtons');
+            showSection('profileSection');
             refreshStats();
         } else {
-            showSection('loginForm');
+            showSection('loginSection');
         }
     </script>
 </body>

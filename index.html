@@ -52,11 +52,7 @@
         button:active {
             transform: scale(0.95);
         }
-        .mod-buttons {
-            margin-top: 20px;
-            display: none;
-        }
-        .profile {
+        .mod-buttons, .profile {
             display: none;
         }
         .hidden {
@@ -74,6 +70,7 @@
     <div class="profile" id="profile">
         <h2>Личный кабинет</h2>
         <div id="stats"></div>
+        <button onclick="refreshStats()">Обновить статистику</button>
         <button onclick="logout()">Выйти</button>
     </div>
     <div class="mod-buttons" id="modButtons">
@@ -98,12 +95,13 @@
             const password = document.getElementById('password').value;
             tg.sendData(JSON.stringify({ action: "login", login, password }));
             tg.onEvent('web_app_data', (data) => {
-                if (data.data.includes("Логин успешен")) {
+                const response = data.data;
+                if (response.includes("Твоя статистика")) {
                     sessionStorage.setItem('authToken', 'true');
                     isAuthenticated = true;
-                    showSection('modButtons');
                     showSection('profile');
-                    fetchStats();
+                    showSection('modButtons');
+                    document.getElementById('stats').innerHTML = response;
                 } else {
                     alert("Ошибка входа!");
                 }
@@ -116,12 +114,10 @@
             showSection('login-form');
         }
 
-        function fetchStats() {
+        function refreshStats() {
             tg.sendData(JSON.stringify({ action: "stats" }));
             tg.onEvent('web_app_data', (data) => {
-                if (data.data.includes("Твоя статистика")) {
-                    document.getElementById('stats').innerHTML = data.data;
-                }
+                document.getElementById('stats').innerHTML = data.data;
             });
         }
 
@@ -136,9 +132,9 @@
         }
 
         if (isAuthenticated) {
-            showSection('modButtons');
             showSection('profile');
-            fetchStats();
+            showSection('modButtons');
+            refreshStats();
         } else {
             showSection('login-form');
         }

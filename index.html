@@ -14,6 +14,9 @@
             padding: 20px;
             margin: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         h1 {
             font-size: 2em;
@@ -29,9 +32,14 @@
             border: 2px solid #555;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            flex-grow: 1;
         }
-        .login-section, .profile-section {
-            margin-bottom: 20px;
+        .tab-content {
+            display: none;
+            padding: 10px 0;
+        }
+        .tab-content.active {
+            display: block;
         }
         input {
             width: 100%;
@@ -54,6 +62,7 @@
             font-size: 0.9em;
             cursor: pointer;
             transition: background 0.2s;
+            margin: 5px 0;
         }
         button:hover {
             background: #666;
@@ -66,10 +75,6 @@
             text-align: left;
             color: #ccc;
         }
-        .mod-buttons {
-            max-width: 400px;
-            margin: 20px auto;
-        }
         .mod-buttons h3 {
             color: #bbb;
             margin-bottom: 10px;
@@ -79,32 +84,61 @@
             width: 100%;
             margin: 5px 0;
         }
-        .hidden {
-            display: none;
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background: #333;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .tab-button {
+            flex: 1;
+            border: none;
+            background: none;
+            color: #bbb;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
         }
     </style>
 </head>
 <body>
     <h1>Моды и Расширения 🎮</h1>
     <div class="container">
-        <div class="login-section" id="loginSection">
-            <h2>Вход в ЛК</h2>
-            <input type="text" id="login" placeholder="Логин" />
-            <input type="password" id="password" placeholder="Пароль" />
-            <button onclick="login()">Войти 🌐</button>
-        </div>
-        <div class="profile-section" id="profileSection" class="hidden">
+        <div id="profileTab" class="tab-content active">
             <h2>Личный кабинет</h2>
-            <div id="stats"></div>
-            <button onclick="refreshStats()">Обновить 📊</button>
-            <button onclick="logout()">Выйти 🚪</button>
+            <div id="loginForm">
+                <input type="text" id="login" placeholder="Логин" />
+                <input type="password" id="password" placeholder="Пароль" />
+                <button onclick="login()">Войти 🌐</button>
+            </div>
+            <div id="profileContent" class="hidden">
+                <div id="stats"></div>
+                <button onclick="refreshStats()">Обновить 📊</button>
+                <button onclick="logout()">Выйти 🚪</button>
+            </div>
+        </div>
+        <div id="marketTab" class="tab-content">
+            <div class="mod-buttons">
+                <h3>Моды и Расширения</h3>
+                <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
+                <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
+                <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
+            </div>
         </div>
     </div>
-    <div class="mod-buttons">
-        <h3>Моды и Расширения</h3>
-        <button onclick="downloadMod('minecraft_mod.exe')">🌿 NightmareCraft Mod</button>
-        <button onclick="downloadMod('extension1.exe')">🍃 Ext Mod 1</button>
-        <button onclick="downloadMod('extension2.exe')">🌱 Ext Mod 2</button>
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab('profileTab')">Профиль</button>
+        <button class="tab-button" onclick="openTab('marketTab')">Маркет</button>
     </div>
     <script>
         const tg = window.Telegram.WebApp;
@@ -113,10 +147,21 @@
 
         let isAuthenticated = !!sessionStorage.getItem('authToken');
 
-        function showSection(sectionId) {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('profileSection').classList.add('hidden');
-            document.getElementById(sectionId).classList.remove('hidden');
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function showProfile() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('profileContent').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('profileContent').classList.add('hidden');
         }
 
         function login() {
@@ -129,7 +174,7 @@
                     if (response.includes("Твоя статистика")) {
                         sessionStorage.setItem('authToken', 'true');
                         isAuthenticated = true;
-                        showSection('profileSection');
+                        showProfile();
                         document.getElementById('stats').innerHTML = response;
                     } else {
                         alert("Ошибка: неверный логин или пароль!");
@@ -143,7 +188,7 @@
         function logout() {
             sessionStorage.removeItem('authToken');
             isAuthenticated = false;
-            showSection('loginSection');
+            showLogin();
             document.getElementById('stats').innerHTML = '';
         }
 
@@ -164,10 +209,9 @@
         }
 
         if (isAuthenticated) {
-            showSection('profileSection');
-            refreshStats();
+            showProfile();
         } else {
-            showSection('loginSection');
+            showLogin();
         }
     </script>
 </body>

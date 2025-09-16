@@ -70,7 +70,7 @@
     <div class="container">
         <div id="authForm">
             <h2>Регистрация</h2>
-            <button onclick="register()">Зарегистрироваться</button>
+            <button onclick="register()">Привязать Telegram аккаунт</button>
         </div>
         <div id="profileContent" class="hidden">
             <h2>Личный кабинет</h2>
@@ -124,7 +124,7 @@
                         isAuthenticated = true;
                         showProfile();
                         document.getElementById('stats').innerHTML = response.message;
-                        showMessage(response.action === "register" ? "Регистрация успешна!" : "Автоматический вход выполнен!");
+                        showMessage(response.action === "register" ? "Telegram аккаунт привязан!" : "Автоматический вход выполнен!");
                     } else if (response.action === "stats") {
                         document.getElementById('stats').innerHTML = response.message;
                         showMessage("Статистика обновлена!");
@@ -145,8 +145,9 @@
                 showMessage("Ошибка: не удалось получить Telegram ID!", true);
                 return;
             }
-            console.log(`Попытка регистрации: userId=${userId}`);
+            console.log(`Попытка привязки Telegram аккаунта: userId=${userId}`);
             tg.sendData(JSON.stringify({ action: "register", user_id: userId }));
+            showMessage("Отправка запроса на привязку...", false);
         }
 
         function refreshStats() {
@@ -160,7 +161,7 @@
 
         function downloadMod(modName) {
             if (!isAuthenticated) {
-                showMessage("Сначала зарегистрируйтесь!", true);
+                showMessage("Сначала привяжите Telegram аккаунт!", true);
                 return;
             }
             console.log(`Скачивание мода ${modName} для userId=${userId}`);

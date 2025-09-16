@@ -15,6 +15,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
         h1 {
             font-size: 1.5em;
@@ -43,6 +44,7 @@
             height: 80px;
             border-radius: 50%;
             border: 2px solid #666;
+            margin-bottom: 10px;
         }
         h2 {
             font-size: 1em;
@@ -61,6 +63,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.7em;
+            margin: 5px 0;
         }
         progress {
             width: 100%;
@@ -68,6 +71,7 @@
             background: #333;
             border: none;
             border-radius: 5px;
+            margin: 5px 0;
         }
         progress::-webkit-progress-bar {
             background: #333;
@@ -77,34 +81,8 @@
             background: #666;
             border-radius: 5px;
         }
-        .tab-content {
-            display: none;
-            padding: 10px;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .mod-buttons h3 {
-            color: #bbb;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-        .mod-buttons button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            background: #444;
-            border: 1px solid #888;
-            border-radius: 3px;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .mod-buttons button:hover {
-            background: #666;
-        }
-        .mod-buttons button:active {
-            background: #222;
+        .auth-section {
+            margin: 10px 0;
         }
         input {
             width: 100%;
@@ -117,20 +95,23 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 0.7em;
         }
-        button.login-btn {
+        button {
             background: #444;
             color: #fff;
             border: 1px solid #888;
             padding: 10px;
             border-radius: 3px;
+            font-family: 'Press Start 2P', cursive;
             font-size: 0.8em;
             cursor: pointer;
             transition: background 0.2s;
+            margin: 5px 0;
+            width: 48%;
         }
-        button.login-btn:hover {
+        button:hover {
             background: #666;
         }
-        button.login-btn:active {
+        button:active {
             background: #222;
         }
         #stats {
@@ -138,6 +119,15 @@
             text-align: left;
             color: #ccc;
             font-size: 0.7em;
+            white-space: pre-wrap;
+        }
+        .message {
+            margin: 10px 0;
+            color: #ccc;
+            font-size: 0.7em;
+        }
+        .hidden {
+            display: none;
         }
         .tabs {
             display: flex;
@@ -165,8 +155,22 @@
             color: #fff;
             border-bottom: 2px solid #fff;
         }
-        .hidden {
+        .tab-content {
             display: none;
+            padding: 10px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .mod-buttons h3 {
+            color: #bbb;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .mod-buttons button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -211,16 +215,20 @@
                 <div class="invite">
                     <span>ПРИГЛАШАЙ ДРУЗЕЙ И ПОЛУЧАЙ МОДЫ 🌿</span>
                 </div>
-                <div id="loginForm" class="hidden">
+                <div class="auth-section" id="authForm">
                     <input type="text" id="login" placeholder="Логин" />
                     <input type="password" id="password" placeholder="Пароль" />
-                    <button class="login-btn" onclick="login()">Войти 🌐</button>
+                    <div>
+                        <button onclick="login()">Войти 🌐</button>
+                        <button onclick="register()">Регистрация 👤</button>
+                    </div>
                 </div>
                 <div id="profileContent" class="hidden">
                     <div id="stats"></div>
-                    <button class="login-btn" onclick="refreshStats()">Обновить 📊</button>
-                    <button class="login-btn" onclick="logout()">Выйти 🚪</button>
+                    <button onclick="refreshStats()">Обновить 📊</button>
+                    <button onclick="logout()">Выйти 🚪</button>
                 </div>
+                <div id="message" class="message hidden"></div>
             </div>
         </div>
         <div id="marketTab" class="tab-content">
@@ -255,24 +263,24 @@
             event.target.classList.add('active');
         }
 
+        function showMessage(text, isError = false) {
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = text;
+            msgEl.classList.remove('hidden');
+            msgEl.style.color = isError ? '#ff4444' : '#44ff44';
+            setTimeout(() => msgEl.classList.add('hidden'), 3000);
+        }
+
         function showLogin() {
-            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('authForm').classList.remove('hidden');
             document.getElementById('profileContent').classList.add('hidden');
             document.getElementById('username').textContent = 'Гость';
         }
 
         function showProfile() {
-            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('authForm').classList.add('hidden');
             document.getElementById('profileContent').classList.remove('hidden');
-            // Пример данных (замени на реальные из БД)
-            document.getElementById('username').textContent = 'creatoresng';
-            document.getElementById('totalMods').textContent = '10 🌿';
-            document.getElementById('downloaded').textContent = '5 🌿';
-            document.getElementById('remaining').textContent = '5 🌿';
-            document.getElementById('bonusLevel').textContent = '25% / Уровень 1';
-            document.getElementById('bonusProgress').value = 25;
-            document.getElementById('bonusAvailable').textContent = '2 🌿';
-            document.getElementById('seasonPoints').textContent = '100 ★';
+            document.getElementById('username').textContent = 'creatoresng'; // Замени на реальное имя из БД
         }
 
         function login() {
@@ -287,12 +295,32 @@
                         isAuthenticated = true;
                         showProfile();
                         document.getElementById('stats').innerHTML = response;
+                        showMessage("Успешный вход!");
                     } else {
-                        alert("Ошибка: неверный логин или пароль!");
+                        showMessage("Ошибка: неверный логин или пароль!", true);
                     }
                 });
             } else {
-                alert("Введите логин и пароль!");
+                showMessage("Введите логин и пароль!", true);
+            }
+        }
+
+        function register() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            if (login && password) {
+                const passwordHash = hex_sha256(password); // Используем SHA-256 (подключаем sha256.js ниже)
+                tg.sendData(JSON.stringify({ action: "register", login, password_hash: passwordHash }));
+                tg.onEvent('web_app_data', (data) => {
+                    const response = data.data;
+                    if (response.includes("Регистрация завершена")) {
+                        showMessage("Регистрация успешна! Теперь войдите.");
+                    } else {
+                        showMessage("Ошибка регистрации!", true);
+                    }
+                });
+            } else {
+                showMessage("Введите логин и пароль!", true);
             }
         }
 
@@ -300,13 +328,14 @@
             sessionStorage.removeItem('authToken');
             isAuthenticated = false;
             showLogin();
-            document.getElementById('stats').innerHTML = '';
+            showMessage("Выход выполнен!");
         }
 
         function refreshStats() {
             tg.sendData(JSON.stringify({ action: "stats" }));
             tg.onEvent('web_app_data', (data) => {
                 document.getElementById('stats').innerHTML = data.data;
+                showMessage("Статистика обновлена!");
             });
         }
 
@@ -314,15 +343,24 @@
             if (isAuthenticated) {
                 tg.sendData(JSON.stringify({ action: "download", mod: modName }));
                 window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
+                showMessage("Мод скачан!");
             } else {
-                alert("Войдите в личный кабинет для скачивания!");
+                showMessage("Войдите в личный кабинет для скачивания!", true);
             }
         }
 
         if (isAuthenticated) {
             showProfile();
+            refreshStats();
         } else {
             showLogin();
+        }
+    </script>
+    <!-- Подключаем библиотеку для SHA-256 -->
+    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.js"></script>
+    <script>
+        function hex_sha256(str) {
+            return sha256(str);
         }
     </script>
 </body>

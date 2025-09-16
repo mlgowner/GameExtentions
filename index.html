@@ -68,9 +68,8 @@
 <body>
     <h1>Моды и Расширения</h1>
     <div class="container">
-        <div id="authForm">
-            <h2>Регистрация</h2>
-            <button onclick="register()">Привязать Telegram аккаунт</button>
+        <div id="authForm" class="hidden">
+            <h2>Регистрация...</h2>
         </div>
         <div id="profileContent" class="hidden">
             <h2>Личный кабинет</h2>
@@ -79,7 +78,7 @@
         </div>
         <div id="message" class="message hidden"></div>
     </div>
-    <div class="mod-buttons" id="modButtons">
+    <div class="mod-buttons" id="modButtons" style="display: none;">
         <h3>Доступные моды</h3>
         <button onclick="downloadMod('minecraft_mod.exe')">NightmareCraft Mod</button>
         <button onclick="downloadMod('extension1.exe')">Ext Mod 1</button>
@@ -91,6 +90,7 @@
         tg.expand();
         const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
         let isAuthenticated = !!sessionStorage.getItem('authToken');
+        const initData = tg.initData;  // Получаем initData
 
         function showMessage(text, isError = false) {
             const msgEl = document.getElementById('message');
@@ -119,18 +119,11 @@
             try {
                 const response = JSON.parse(data.data);
                 if (response.status === "success") {
-                    if (response.action === "register" || response.action === "check_auth") {
-                        sessionStorage.setItem('authToken', 'true');
-                        isAuthenticated = true;
-                        showProfile();
-                        document.getElementById('stats').innerHTML = response.message;
-                        showMessage(response.action === "register" ? "Telegram аккаунт привязан!" : "Автоматический вход выполнен!");
-                    } else if (response.action === "stats") {
-                        document.getElementById('stats').innerHTML = response.message;
-                        showMessage("Статистика обновлена!");
-                    } else if (response.action === "download") {
-                        showMessage("Мод скачан!");
-                    }
+                    sessionStorage.setItem('authToken', 'true');
+                    isAuthenticated = true;
+                    showProfile();
+                    document.getElementById('stats').innerHTML = response.message;
+                    showMessage("Аккаунт привязан!");
                 } else {
                     showMessage(`Ошибка: ${response.message}`, true);
                 }
@@ -140,19 +133,19 @@
             }
         });
 
-        function register() {
-            if (!userId) {
-                showMessage("Ошибка: не удалось получить Telegram ID!", true);
+        function autoRegister() {
+            if (!userId || !initData) {
+                showMessage("Ошибка: не удалось получить данные Telegram!", true);
                 return;
             }
-            console.log(`Попытка привязки Telegram аккаунта: userId=${userId}`);
-            tg.sendData(JSON.stringify({ action: "register", user_id: userId }));
-            showMessage("Отправка запроса на привязку...", false);
+            console.log(`Автоматическая регистрация: userId=${userId}`);
+            tg.sendData(JSON.stringify({ action: "auto_register", user_id: userId, init_data: initData }));
+            showMessage("Привязка аккаунта...", false);
         }
 
         function refreshStats() {
-            if (!userId) {
-                showMessage("Ошибка: нет Telegram ID!", true);
+            if (!isAuthenticated) {
+                showMessage("Сначала привяжите аккаунт!", true);
                 return;
             }
             console.log(`Обновление статистики для userId=${userId}`);
@@ -161,7 +154,7 @@
 
         function downloadMod(modName) {
             if (!isAuthenticated) {
-                showMessage("Сначала привяжите Telegram аккаунт!", true);
+                showMessage("Сначала привяжите аккаунт!", true);
                 return;
             }
             console.log(`Скачивание мода ${modName} для userId=${userId}`);
@@ -169,13 +162,8 @@
             window.location.href = `https://твойсервер.com/exe/${modName}`; // Замени на реальный URL
         }
 
-        if (userId) {
-            console.log(`Проверка авторизации для userId=${userId}`);
-            tg.sendData(JSON.stringify({ action: "check_auth", user_id: userId }));
-        } else {
-            showAuth();
-            showMessage("Ошибка: не удалось получить Telegram ID!", true);
-        }
+        // Автоматическая регистрация при запуске
+        autoRegister();
     </script>
 </body>
 </html>

@@ -89,6 +89,7 @@
         .download-container {
             display: flex;
             justify-content: center;
+            gap: 10px;
             margin-top: 10px;
         }
         #results {
@@ -98,6 +99,9 @@
             max-width: 400px;
         }
         .mod-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 15px;
         }
         .mod-item h3 {
@@ -105,12 +109,14 @@
             font-size: 1.2em;
             color: #F7FAFC;
             text-align: center;
+            width: 100%;
         }
         .mod-item p {
             margin: 0 0 5px;
             font-size: 0.9em;
             color: #CBD5E0;
             text-align: center;
+            width: 100%;
         }
         @media (max-width: 480px) {
             #cabinet, #search, .mod-item {
@@ -122,6 +128,10 @@
             }
             input, select, button, .download-link {
                 padding: 10px;
+            }
+            .download-container {
+                flex-direction: column;
+                gap: 5px;
             }
         }
     </style>
@@ -147,7 +157,7 @@
     <script>
         const tg = window.Telegram.WebApp;
         if (!tg) {
-            alert('Ошибка: Telegram Web App API не инициализирован.');
+            console.log('Ошибка: Telegram Web App API не инициализирован.');
         }
         tg.ready();
 
@@ -212,7 +222,8 @@
                     <p>Отзывы: ${getRandomRating()} (${getRandomReviews()} отзывов)</p>
                     <p>${getRandomFact('minecraft')}</p>
                     <div class="download-container">
-                        <button onclick="downloadNightmareCraft()">Скачать</button>
+                        <button onclick="downloadNightmareCraft()">Скачать через Telegram</button>
+                        <a href="https://www.mediafire.com/file/example/NightmareCraft.zip/file" class="download-link" target="_blank">Скачать через MediaFire</a>
                     </div>
                 `;
                 resultsList.appendChild(nightmareLi);
@@ -272,14 +283,15 @@
             }
         }
 
-        // Функция для скачивания NightmareCraft через бот
+        // Функция для скачивания NightmareCraft
         function downloadNightmareCraft() {
-            if (!tg) {
-                alert('Ошибка: Telegram Web App API не доступен.');
-                return;
+            if (tg) {
+                tg.sendData('download_nightmarecraft');
+                alert('Запрос отправлен в Telegram. Проверьте чат!');
+            } else {
+                alert('Telegram API не доступен. Используйте ссылку MediaFire.');
+                window.location.href = 'https://www.mediafire.com/file/example/NightmareCraft.zip/file';
             }
-            alert('Отправка запроса на скачивание NightmareCraft...');
-            tg.sendData('download_nightmarecraft');
         }
     </script>
 </body>

@@ -285,8 +285,9 @@
         // Функция для скачивания NightmareCraft
         function downloadNightmareCraft() {
             if (tg) {
-                tg.sendData('download_nightmarecraft');
-                alert('Запрос отправлен. Проверьте чат с ботом!');
+                const chatInstance = tg.initDataUnsafe.chat_instance || tg.initDataUnsafe.chat.id;
+                tg.sendData(`/download_nightmarecraft`);
+                alert('Команда отправлена. Проверьте чат с ботом!');
             } else {
                 alert('Telegram API не доступен. Обратитесь к разработчику.');
             }

@@ -88,9 +88,10 @@
         }
         .download-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
             margin-top: 10px;
+            width: 100%;
         }
         #results {
             list-style-type: none;
@@ -130,7 +131,6 @@
                 padding: 10px;
             }
             .download-container {
-                flex-direction: column;
                 gap: 5px;
             }
         }
@@ -222,8 +222,7 @@
                     <p>Отзывы: ${getRandomRating()} (${getRandomReviews()} отзывов)</p>
                     <p>${getRandomFact('minecraft')}</p>
                     <div class="download-container">
-                        <button onclick="downloadNightmareCraft()">Скачать через Telegram</button>
-                        <a href="https://www.mediafire.com/file/example/NightmareCraft.zip/file" class="download-link" target="_blank">Скачать через MediaFire</a>
+                        <button onclick="downloadNightmareCraft()">Скачать</button>
                     </div>
                 `;
                 resultsList.appendChild(nightmareLi);
@@ -287,10 +286,9 @@
         function downloadNightmareCraft() {
             if (tg) {
                 tg.sendData('download_nightmarecraft');
-                alert('Запрос отправлен в Telegram. Проверьте чат!');
+                alert('Запрос отправлен. Проверьте чат с ботом!');
             } else {
-                alert('Telegram API не доступен. Используйте ссылку MediaFire.');
-                window.location.href = 'https://www.mediafire.com/file/824tccr8ckuz8l4/nightmarecraft.zip/file#';
+                alert('Telegram API не доступен. Обратитесь к разработчику.');
             }
         }
     </script>

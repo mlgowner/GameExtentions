@@ -5,74 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mods Search App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F5F5F5;
-            color: #1C2526;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1E3A8A, #4A5568);
+            color: #E5E7EB;
             padding: 20px;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         h2 {
             font-size: 1.5em;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 15px;
-            color: #1C2526;
+            color: #F7FAFC;
+            text-align: center;
         }
-        #cabinet {
-            background-color: #FFFFFF;
+        #cabinet, #search, .mod-item {
+            background-color: #2D3748;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 400px;
             margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+        #cabinet:hover, #search:hover, .mod-item:hover {
+            transform: translateY(-2px);
         }
         #cabinet p {
             margin: 5px 0;
             font-size: 1em;
-            color: #6B7280;
+            color: #CBD5E0;
         }
         #search {
-            width: 100%;
-            max-width: 400px;
             margin-bottom: 20px;
         }
         input, select {
             width: 100%;
             padding: 12px;
             margin-bottom: 10px;
-            border: 1px solid #D1D5DB;
+            border: 1px solid #4A5568;
             border-radius: 8px;
             font-size: 1em;
-            background-color: #FFFFFF;
-            color: #1C2526;
-            transition: border-color 0.3s ease;
+            background-color: #4A5568;
+            color: #E5E7EB;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         input:focus, select:focus {
             outline: none;
-            border-color: #1C2526;
-            box-shadow: 0 0 5px rgba(28, 37, 38, 0.2);
+            border-color: #48BB78;
+            box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
         }
         button {
             width: 100%;
             padding: 12px;
-            background-color: #1C2526;
+            background-color: #48BB78;
             color: #FFFFFF;
             border: none;
             border-radius: 8px;
             font-size: 1em;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background-color: #374151;
+            background-color: #38A169;
+            transform: scale(1.02);
         }
         #results {
             list-style-type: none;
@@ -81,36 +87,64 @@
             max-width: 400px;
         }
         .mod-item {
-            background-color: #FFFFFF;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
         }
         .mod-item h3 {
             margin: 0 0 10px;
             font-size: 1.2em;
-            color: #1C2526;
+            color: #F7FAFC;
             text-align: center;
         }
         .mod-item p {
             margin: 0 0 5px;
             font-size: 0.9em;
-            color: #6B7280;
+            color: #CBD5E0;
             text-align: center;
         }
-        .mod-item a, .mod-item button.download-btn {
-            color: #1C2526;
+        .download-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .mod-item button.download-btn {
+            padding: 10px 20px;
+            background-color: #48BB78;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .mod-item button.download-btn:hover {
+            background-color: #38A169;
+            transform: scale(1.05);
+        }
+        .mod-item a {
+            color: #48BB78;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9em;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
         }
-        .mod-item a:hover, .mod-item button.download-btn:hover {
-            color: #374151;
+        .mod-item a:hover {
+            color: #38A169;
+        }
+        @media (max-width: 480px) {
+            #cabinet, #search, .mod-item {
+                max-width: 100%;
+                padding: 15px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .mod-item button.download-btn {
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -186,7 +220,9 @@
                     <p>Онлайн: ${getRandomOnline()} игроков</p>
                     <p>Отзывы: ${getRandomRating()} (${getRandomReviews()} отзывов)</p>
                     <p>${getRandomFact()}</p>
-                    <button class="download-btn" onclick="downloadNightmareCraft()">Скачать</button>
+                    <div class="download-container">
+                        <button class="download-btn" onclick="downloadNightmareCraft()">Скачать</button>
+                    </div>
                 `;
                 resultsList.appendChild(nightmareLi);
 

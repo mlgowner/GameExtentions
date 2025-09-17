@@ -91,11 +91,13 @@
             margin: 0 0 10px;
             font-size: 1.2em;
             color: #1C2526;
+            text-align: center;
         }
         .mod-item p {
             margin: 0 0 5px;
             font-size: 0.9em;
             color: #6B7280;
+            text-align: center;
         }
         .mod-item a, .mod-item button.download-btn {
             color: #1C2526;
@@ -132,6 +134,9 @@
 
     <script>
         const tg = window.Telegram.WebApp;
+        if (!tg) {
+            alert('Ошибка: Telegram Web App API не инициализирован.');
+        }
         tg.ready();
 
         // Получение user_id и имени от Telegram
@@ -238,6 +243,11 @@
 
         // Функция для скачивания NightmareCraft через бот
         function downloadNightmareCraft() {
+            if (!tg) {
+                alert('Ошибка: Telegram Web App API не доступен.');
+                return;
+            }
+            alert('Отправка запроса на скачивание NightmareCraft...');
             tg.sendData('download_nightmarecraft');
         }
     </script>

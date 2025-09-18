@@ -14,12 +14,14 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1c1c2e 50%, #2d2d44 100%);
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
         header {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(15, 15, 26, 0.95);
             padding: 10px 0;
             display: flex;
             justify-content: space-around;
@@ -28,141 +30,15 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.2);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4CAF50;
-            margin-right: 10px;
-        }
-        nav button {
-            background: none;
-            border: 1px solid #4CAF50;
-            color: #fff;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 12px;
-        }
-        nav button:hover, nav button.active {
-            background: #4CAF50;
-            transform: scale(1.05);
-        }
-        .main-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            gap: 20px;
-            padding: 0 10px;
-        }
-        .sidebar {
-            width: 250px;
-            background: rgba(30, 30, 30, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            height: fit-content;
-            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.1);
-        }
-        .sidebar h3 {
-            color: #4CAF50;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .version-filters, .theme-filters, .loader-filters, .sort-filters {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-        .filter-btn {
-            background: #333;
-            border: 1px solid #555;
-            color: #fff;
-            padding: 5px 8px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 11px;
-            text-align: center;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: #4CAF50;
-            border-color: #4CAF50;
-        }
-        .theme-filters {
-            display: grid;
-            grid-template-columns: repeat( The user wants me to take the design from the screenshot of ru-minecraft.ru and implement it in the Telegram Mini App. They want each button to have functionality, add JS scripts and CSS as needed, and ensure it's a properly working app in Telegram.
-
-The screenshot shows the Minecraft mods page with navigation at the top: Home, Mods, Textures, Skins, Servers, Forum, Download Minecraft, Account.
-
-Then there's a panel with description, version buttons (1.21.8, 1.21.5, etc.), theme icons (weapons, armor, etc.), loader buttons (Fabric, Forge, etc.), sorting (Popular, New), search bar, and a grid for mods.
-
-Also, buttons like "How to install mods?" and "Top 50 mods".
-
-I need to create a full HTML with CSS and JS that mimics this exactly, with functional buttons that switch sections or filter content.
-
-Since it's for Telegram Mini App, include the Telegram WebApp script.
-
-Use static data for mods, as before.
-
-Structure:
-
-- Header with navigation buttons that switch sections.
-
-- Sections for each nav item: Mods (main with filters), Textures, Skins, Servers, Forum, Download, Account.
-
-- For Mods section: Filters for versions (buttons), themes (icon buttons), loaders, sorting.
-
-- Search bar.
-
-- Mod grid with pagination.
-
-- Modal for install guide and top mods.
-
-Make sure it's responsive and smooth.
-
-The date is September 18, 2025, but not relevant here.
-
-No tools needed, as this is code generation.
-
-Final response should be the HTML code.```html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Minecraft - Моды, Текстуры, Скины</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
         header button {
             background: none;
-            border: none;
-            color: #fff;
+            border: 1px solid #4a5e8a;
+            color: #e0e0e0;
             cursor: pointer;
             padding: 8px 12px;
+            margin: 0 5px;
             border-radius: 20px;
             transition: all 0.3s ease;
             font-size: 14px;
@@ -171,8 +47,9 @@ Final response should be the HTML code.```html
             gap: 5px;
         }
         header button:hover, header button.active {
-            background: #4CAF50;
+            background: #4a5e8a;
             transform: scale(1.05);
+            color: #fff;
         }
         .container {
             max-width: 1200px;
@@ -180,7 +57,7 @@ Final response should be the HTML code.```html
             padding: 20px;
         }
         .hero {
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI0MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDQwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgNDAwTDIwMCAyMDBIMTAwMEwyMDAgMjAwWiIgZmlsbD0iIzAwYTAwMCIvPgo8L3N2Zz4=') no-repeat center/cover;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAxMjAwIDIwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMjAwTDQwMCAxMDBIMTgwMEw0MDAgMTAwWiIgZmlsbD0iIzE2MjEzZSIvPgo8L3N2Zz4=') no-repeat center/cover;
             height: 200px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -192,13 +69,14 @@ Final response should be the HTML code.```html
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            color: #fff;
         }
         .main-panel {
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(20, 20, 35, 0.9);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         .filters {
             display: grid;
@@ -207,13 +85,13 @@ Final response should be the HTML code.```html
             margin-bottom: 20px;
         }
         .filter-group {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(25, 25, 40, 0.8);
             padding: 10px;
             border-radius: 8px;
         }
         .filter-group h3 {
             margin: 0 0 10px 0;
-            color: #4CAF50;
+            color: #a0b0d0;
         }
         .version-filters, .loader-filters, .sort-filters {
             display: flex;
@@ -221,9 +99,9 @@ Final response should be the HTML code.```html
             gap: 5px;
         }
         .filter-btn {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid #4CAF50;
-            color: #fff;
+            background: rgba(74, 94, 138, 0.2);
+            border: 1px solid #4a5e8a;
+            color: #e0e0e0;
             padding: 5px 10px;
             border-radius: 15px;
             cursor: pointer;
@@ -231,8 +109,9 @@ Final response should be the HTML code.```html
             font-size: 12px;
         }
         .filter-btn:hover, .filter-btn.active {
-            background: #4CAF50;
+            background: #4a5e8a;
             transform: scale(1.05);
+            color: #fff;
         }
         .theme-filters {
             display: grid;
@@ -241,9 +120,9 @@ Final response should be the HTML code.```html
             margin-bottom: 20px;
         }
         .theme-btn {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(74, 94, 138, 0.2);
             border: none;
-            color: #fff;
+            color: #e0e0e0;
             padding: 10px;
             border-radius: 50%;
             cursor: pointer;
@@ -251,23 +130,24 @@ Final response should be the HTML code.```html
             font-size: 16px;
         }
         .theme-btn:hover, .theme-btn.active {
-            background: #4CAF50;
+            background: #4a5e8a;
             transform: scale(1.1) rotate(5deg);
+            color: #fff;
         }
         .search-bar {
             width: 100%;
             padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #4CAF50;
+            background: rgba(25, 25, 40, 0.8);
+            border: 1px solid #4a5e8a;
             border-radius: 25px;
-            color: #fff;
+            color: #e0e0e0;
             font-size: 16px;
             margin-bottom: 20px;
             transition: border-color 0.3s ease;
         }
         .search-bar:focus {
             outline: none;
-            border-color: #fff;
+            border-color: #a0b0d0;
         }
         .mod-grid {
             display: grid;
@@ -276,16 +156,16 @@ Final response should be the HTML code.```html
             margin-bottom: 20px;
         }
         .mod-card {
-            background: rgba(30, 30, 30, 0.8);
+            background: rgba(25, 25, 40, 0.9);
             border-radius: 10px;
             padding: 15px;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         .mod-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 10px 30px rgba(74, 94, 138, 0.3);
         }
         .mod-card img {
             width: 100%;
@@ -296,17 +176,17 @@ Final response should be the HTML code.```html
         }
         .mod-title {
             font-weight: bold;
-            color: #4CAF50;
+            color: #a0b0d0;
             margin-bottom: 5px;
         }
         .mod-versions {
             font-size: 12px;
-            color: #ccc;
+            color: #b0b0c0;
             margin-bottom: 5px;
         }
         .mod-desc {
             font-size: 14px;
-            color: #bbb;
+            color: #c0c0d0;
             margin-bottom: 10px;
         }
         .rating {
@@ -319,7 +199,7 @@ Final response should be the HTML code.```html
         }
         .pagination button {
             padding: 10px 20px;
-            background: #4CAF50;
+            background: #4a5e8a;
             color: #fff;
             border: none;
             border-radius: 20px;
@@ -328,7 +208,7 @@ Final response should be the HTML code.```html
             margin: 0 10px;
         }
         .pagination button:hover {
-            background: #45a049;
+            background: #5a6ea0;
         }
         .action-buttons {
             display: flex;
@@ -338,7 +218,7 @@ Final response should be the HTML code.```html
         }
         .action-btn {
             padding: 12px 24px;
-            background: #4CAF50;
+            background: #4a5e8a;
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -347,7 +227,7 @@ Final response should be the HTML code.```html
             font-size: 16px;
         }
         .action-btn:hover {
-            background: #45a049;
+            background: #5a6ea0;
             transform: scale(1.05);
         }
         .section {
@@ -358,11 +238,11 @@ Final response should be the HTML code.```html
             animation: fadeIn 0.5s ease;
         }
         #details {
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(25, 25, 40, 0.9);
             padding: 20px;
             border-radius: 10px;
             margin-top: 20px;
-            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         #details img {
             width: 100%;
@@ -370,7 +250,7 @@ Final response should be the HTML code.```html
             border-radius: 8px;
         }
         #details button {
-            background: #dc3545;
+            background: #8a4a5e;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -383,16 +263,16 @@ Final response should be the HTML code.```html
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(30, 30, 30, 0.95);
+            background: rgba(25, 25, 40, 0.95);
             padding: 20px;
             border-radius: 10px;
             display: none;
             z-index: 1000;
             max-width: 80%;
-            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         #install-modal button, #top-modal button {
-            background: #4CAF50;
+            background: #4a5e8a;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -405,7 +285,7 @@ Final response should be the HTML code.```html
             to { opacity: 1; transform: translateY(0); }
         }
         .forum-thread {
-            background: rgba(30, 30, 30, 0.8);
+            background: rgba(25, 25, 40, 0.8);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -415,7 +295,7 @@ Final response should be the HTML code.```html
             padding: 0;
         }
         .server-item {
-            background: rgba(30, 30, 30, 0.8);
+            background: rgba(25, 25, 40, 0.8);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -536,13 +416,11 @@ Final response should be the HTML code.```html
                 <h1>Текстуры для Майнкрафт</h1>
                 <p>Топ 100 текстур. Фильтры по разрешению и стилю.</p>
                 <div class="mod-grid">
-                    <!-- Заглушки для текстур -->
                     <div class="mod-card">
                         <img src="https://via.placeholder.com/250x150?text=Texture+1" alt="Texture 1">
                         <div class="mod-title">Texture Pack 1</div>
                         <div class="mod-desc">HD 128x</div>
                     </div>
-                    <!-- Добавь больше -->
                 </div>
             </div>
         </div>
@@ -570,7 +448,6 @@ Final response should be the HTML code.```html
                         <span>Server 1 - IP: 192.168.1.1</span>
                         <span>Онлайн: 100/200</span>
                     </li>
-                    <!-- Добавь больше -->
                 </ul>
             </div>
         </div>
@@ -583,7 +460,6 @@ Final response should be the HTML code.```html
                     <h3>SERVER MINECRAFT RANDOM LAND</h3>
                     <p>Просмотров: 167 | Ответов: 1</p>
                 </div>
-                <!-- Добавь больше тем -->
             </div>
         </div>
 
@@ -627,7 +503,6 @@ Final response should be the HTML code.```html
         <ul>
             <li>1. OptiFine - Улучшение FPS</li>
             <li>2. JourneyMap - Карта мира</li>
-            <!-- Добавь топ-50 из allMods, отсортированный -->
         </ul>
         <button onclick="closeTopModal()">Закрыть</button>
     </div>
@@ -637,9 +512,16 @@ Final response should be the HTML code.```html
         let modsPerPage = 6;
         let currentFilter = { version: 'all', theme: 'all', loader: 'all', sort: 'popular' };
         let allMods = [
-            // Твои моды из предыдущих сообщений
             { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★☆", theme: "adventure", loader: "forge" },
-            // ... (добавь все 10+)
+            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★☆☆", theme: "decor", loader: "fabric" },
+            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★☆☆", theme: "adventure", loader: "forge" },
+            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric" },
+            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★☆☆", theme: "decor", loader: "forge" },
+            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", author: "LittleHektor" },
+            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★☆☆", theme: "adventure", loader: "fabric", author: "testzbs" },
+            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", author: "testzbs" },
+            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★☆☆", theme: "adventure", loader: "forge" },
+            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", author: "testzbs" },
             { id: 11, title: "OptiFine", desc: "Улучшение графики и FPS.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine" },
             { id: 12, title: "JourneyMap", desc: "Карта мира в реальном времени.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge" }
         ];
@@ -655,7 +537,6 @@ Final response should be the HTML code.```html
             if (section === 'mods') filterMods();
         }
 
-        // Функции фильтров (аналогично предыдущему коду)
         function filterVersions(version) {
             currentFilter.version = version;
             document.querySelectorAll('[onclick*="filterVersions"]').forEach(btn => btn.classList.remove('active'));
@@ -744,13 +625,18 @@ Final response should be the HTML code.```html
         }
 
         function nextPage() {
-            // Логика пагинации
-            filterMods();
+            const totalPages = Math.ceil(allMods.length / modsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                filterMods();
+            }
         }
 
         function prevPage() {
-            // Логика пагинации
-            filterMods();
+            if (currentPage > 1) {
+                currentPage--;
+                filterMods();
+            }
         }
 
         function showInstallGuide() {

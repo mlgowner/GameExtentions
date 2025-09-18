@@ -6,17 +6,87 @@
     <title>Minecraft Mods Catalog</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; padding: 10px; }
-        #search { width: 100%; padding: 10px; margin-bottom: 10px; }
-        #filters { margin-bottom: 10px; }
-        .mod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-        .mod-card { background: white; border: 1px solid #ddd; padding: 10px; text-align: center; border-radius: 5px; }
-        .mod-card img { width: 100%; height: 100px; object-fit: cover; }
-        .mod-name { font-weight: bold; }
-        .mod-desc { font-size: 12px; }
-        .rating { color: gold; }
-        #details { display: none; background: white; padding: 20px; margin-top: 20px; }
-        button { background: #0088cc; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+        }
+        h1 {
+            text-align: center;
+            color: #00ffcc;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        #search {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        #filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        select, button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        select:hover, button:hover {
+            background: #444;
+        }
+        .mod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .mod-card {
+            background: #252525;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        .mod-card:hover {
+            transform: translateY(-5px);
+        }
+        .mod-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .mod-name { font-weight: bold; color: #00ffcc; margin: 5px 0; }
+        .mod-desc { font-size: 14px; color: #bbb; }
+        .rating { color: #ffd700; font-size: 16px; }
+        #details {
+            background: #252525;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            text-align: left;
+        }
+        #mod-img { width: 200px; border-radius: 5px; }
+        #mod-download { text-decoration: none; }
+        #pagination { text-align: center; margin-top: 20px; }
+        #pagination button { margin: 0 5px; }
     </style>
 </head>
 <body>
@@ -28,14 +98,12 @@
             <option value="">Все версии</option>
             <option value="1.21">1.21</option>
             <option value="1.20">1.20</option>
-            <!-- Добавь больше версий из API -->
         </select>
         <select id="category" onchange="loadMods()">
             <option value="">Все категории</option>
             <option value="adventure">Приключения</option>
             <option value="magic">Магия</option>
             <option value="tech">Техника</option>
-            <!-- Больше из API: classId=6 для модов, категории по gameCategoryId -->
         </select>
         <select id="sort" onchange="loadMods()">
             <option value="popularity">Популярные</option>
@@ -67,29 +135,31 @@
         let totalPages = 1;
         let allMods = [];
 
-        Telegram.WebApp.ready(); // Инициализация Telegram Mini App
-        Telegram.WebApp.expand(); // Расширить на весь экран
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
 
         async function loadMods(page = 1, search = '', version = '', category = '', sort = 'popularity') {
             currentPage = page;
-            let url = `https://api.curseforge.com/v1/mods/search?gameId=${GAME_ID}&pageSize=20&pageNumber=${page-1}`;
-            if (search) url += `&searchFilter=${search}`;
-            if (version) url += `&version=${version}`; // Фильтр по версии (адаптируй)
-            if (category) url += `&classId=${getClassId(category)}`; // classId для категорий
-            if (sort === 'popularity') url += '&sortBy=1'; // Популярность
-            else if (sort === 'date') url += '&sortBy=2'; // Дата
+            let url = `https://api.curseforge.com/v1/mods/search?gameId=${GAME_ID}&pageSize=20&page=${page-1}`;
+            if (search) url += `&searchFilter=${encodeURIComponent(search)}`;
+            if (version) url += `&gameVersion=${version}`;
+            if (category) url += `&classId=${getClassId(category)}`;
+            if (sort === 'popularity') url += '&sortField=2'; // Популярность
+            else if (sort === 'date') url += '&sortField=4'; // Дата
 
             try {
                 const response = await fetch(url, {
                     headers: { 'x-api-key': API_KEY }
                 });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 allMods = data.data;
                 totalPages = Math.ceil(data.pagination.totalCount / 20);
                 displayMods(allMods);
                 document.getElementById('page-info').textContent = `Страница ${page} из ${totalPages}`;
             } catch (error) {
-                alert('Ошибка загрузки: ' + error);
+                alert('Ошибка загрузки: ' + error.message + '. Проверь API-ключ или интернет.');
+                console.error(error);
             }
         }
 
@@ -100,7 +170,7 @@
                 const card = document.createElement('div');
                 card.className = 'mod-card';
                 card.innerHTML = `
-                    <img src="${mod.logo?.url || ''}" alt="${mod.name}" onclick="showDetails(${mod.id})">
+                    <img src="${mod.logo?.thumbnailUrl || 'https://via.placeholder.com/150'}" alt="${mod.name}" onclick="showDetails(${mod.id})">
                     <div class="mod-name">${mod.name}</div>
                     <div class="mod-desc">${mod.summary?.substring(0, 100)}...</div>
                     <div>Скачиваний: ${mod.downloadCount || 0}</div>
@@ -115,11 +185,11 @@
             const response = await fetch(url, { headers: { 'x-api-key': API_KEY } });
             const mod = await response.json();
             document.getElementById('mod-title').textContent = mod.data.name;
-            document.getElementById('mod-img').src = mod.data.logo?.url || '';
+            document.getElementById('mod-img').src = mod.data.logo?.thumbnailUrl || 'https://via.placeholder.com/200';
             document.getElementById('mod-desc').textContent = mod.data.summary;
-            document.getElementById('mod-downloads').textContent = `Скачиваний: ${mod.data.downloadCount}`;
+            document.getElementById('mod-downloads').textContent = `Скачиваний: ${mod.data.downloadCount || 0}`;
             document.getElementById('mod-rating').textContent = `Рейтинг: ★${'★'.repeat(Math.floor(mod.data.rating || 4))}`;
-            document.getElementById('mod-download').href = mod.data.links?.websiteUrl || mod.data.downloadUrl;
+            document.getElementById('mod-download').href = mod.data.links?.websiteUrl || '#';
             document.getElementById('mods-grid').style.display = 'none';
             document.getElementById('pagination').style.display = 'none';
             document.getElementById('details').style.display = 'block';
@@ -140,12 +210,10 @@
         function prevPage() { if (currentPage > 1) loadMods(currentPage - 1); }
 
         function getClassId(cat) {
-            // Маппинг категорий (из CurseForge docs: https://docs.curseforge.com/rest-api/#get-/v1/categories)
-            const map = { adventure: 4450, magic: 4349, tech: 4231 }; // Примеры classId для MC
+            const map = { adventure: 4450, magic: 4349, tech: 4231 };
             return map[cat] || '';
         }
 
-        // Загрузка по умолчанию
         loadMods();
     </script>
 </body>

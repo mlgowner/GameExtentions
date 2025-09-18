@@ -5,157 +5,302 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моды для Майнкрафт - ru-minecraft.ru</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f0f0f0;
+            background: #0a0a0a;
+            color: #fff;
             margin: 0;
             padding: 0;
-            color: #333;
             transition: all 0.3s ease;
         }
         header {
-            background: #333;
-            color: #fff;
+            background: #1e1e1e;
             padding: 10px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 5px rgba(0,255,0,0.2);
         }
-        header a {
+        header button {
+            background: none;
+            border: none;
             color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s ease;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
         }
-        header a:hover { color: #00ffcc; }
+        header button:hover, header button.active {
+            background: #4CAF50;
+            color: #fff;
+        }
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 0 15px;
         }
-        .search-filter {
+        .main-panel {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,255,0,0.1);
+        }
+        .filters {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 20px;
+        }
+        .filter-group {
+            display: flex;
             flex-wrap: wrap;
-            animation: fadeIn 0.5s ease;
+            gap: 5px;
         }
-        .search-filter input[type="text"], .search-filter select {
-            padding: 8px;
-            border: 1px solid #ccc;
+        .filter-btn {
+            background: #333;
+            border: 1px solid #4CAF50;
+            color: #fff;
+            padding: 5px 10px;
             border-radius: 4px;
-            background: #fff;
-            transition: border-color 0.3s ease;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 12px;
         }
-        .search-filter input[type="text"]:focus, .search-filter select:focus {
-            border-color: #00ffcc;
-            outline: none;
+        .filter-btn:hover, .filter-btn.active {
+            background: #4CAF50;
+        }
+        .theme-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .theme-btn {
+            background: #333;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            font-size: 20px;
+        }
+        .theme-btn:hover, .theme-btn.active {
+            transform: scale(1.1);
+            background: #4CAF50;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            color: #fff;
+            margin-bottom: 20px;
         }
         .mod-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
         }
         .mod-card {
-            background: #fff;
-            border: 1px solid #ddd;
+            background: #1e1e1e;
+            border: 1px solid #333;
             padding: 10px;
             text-align: center;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .mod-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
         }
         .mod-card img {
             width: 100%;
             height: 120px;
             object-fit: cover;
             border-radius: 4px;
-            transition: opacity 0.3s ease;
         }
-        .mod-card img:hover { opacity: 0.8; }
-        .mod-title { font-weight: bold; margin: 5px 0; }
-        .mod-versions { font-size: 12px; color: #666; }
-        .mod-desc { font-size: 14px; color: #777; margin: 5px 0; }
-        .rating { color: #ffd700; font-size: 16px; }
+        .mod-title { font-weight: bold; margin: 5px 0; color: #4CAF50; }
+        .mod-versions { font-size: 12px; color: #ccc; }
+        .mod-desc { font-size: 14px; color: #bbb; margin: 5px 0; }
+        .rating { color: #ffd700; font-size: 14px; }
         .pagination {
             text-align: center;
             margin: 20px 0;
-            animation: fadeIn 0.5s ease;
         }
         .pagination button {
             padding: 8px 15px;
-            background: #007bff;
+            background: #4CAF50;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
-        .pagination button:hover { background: #0056b3; }
-        #details {
+        .pagination button:hover { background: #45a049; }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .action-btn:hover { background: #45a049; }
+        #details, .section {
             display: none;
-            background: #fff;
+            background: #1e1e1e;
             padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,255,0,0.1);
             margin-top: 20px;
-            animation: fadeIn 0.5s ease;
         }
+        .section.active { display: block; }
         #details img { width: 200px; border-radius: 4px; }
-        #details button {
-            padding: 8px 15px;
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+        #details button { background: #dc3545; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        #install-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
         }
-        #details button:hover { background: #c82333; }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .container > * { animation: fadeIn 0.5s ease; }
     </style>
 </head>
 <body>
     <header>
-        <a href="#">Главная</a>
-        <a href="#">Моды</a>
-        <a href="#">Карты</a>
-        <a href="#">Текстуры</a>
-        <a href="#">Скины</a>
-        <a href="#">Форум</a>
+        <button onclick="switchSection('mods')" class="active"><i class="fas fa-home"></i> Главная</button>
+        <button onclick="switchSection('mods')"><i class="fas fa-cubes"></i> Моды</button>
+        <button onclick="switchSection('textures')"><i class="fas fa-palette"></i> Текстуры</button>
+        <button onclick="switchSection('skins')"><i class="fas fa-user"></i> Скины</button>
+        <button onclick="switchSection('servers')"><i class="fas fa-server"></i> Сервера</button>
+        <button onclick="switchSection('forum')"><i class="fas fa-comments"></i> Форум</button>
+        <button onclick="switchSection('download')"><i class="fas fa-download"></i> Скачать Minecraft</button>
+        <button onclick="switchSection('account')"><i class="fas fa-user-circle"></i> Аккаунт</button>
     </header>
     <div class="container">
-        <h1>Моды для Майнкрафт</h1>
-        <div class="search-filter">
-            <input type="text" id="search" placeholder="Поиск модов..." oninput="searchMods()">
-            <select id="category" onchange="filterMods()">
-                <option value="">Все категории</option>
-                <option value="adventure">Приключения</option>
-                <option value="tech">Техника</option>
-                <option value="magic">Магия</option>
-            </select>
-            <select id="version" onchange="filterMods()">
-                <option value="">Все версии</option>
-                <option value="1.21.8">1.21.8</option>
-                <option value="1.20.1">1.20.1</option>
-                <option value="1.19.4">1.19.4</option>
-            </select>
+        <!-- Секция Моды -->
+        <div id="mods-section" class="section active">
+            <div class="main-panel">
+                <h1>Моды для Майнкрафт</h1>
+                <p>Каталог модов для Minecraft: улучшения, карты, совместимость, либ, карты и моды на улучшение FPS. Версии: моды для Minecraft с улучшениями геймплея, моды на строительство и моды на выживание.</p>
+                <div class="filters">
+                    <div class="filter-group">
+                        <h3>Версии:</h3>
+                        <button class="filter-btn active" onclick="filterVersions('all')">Все</button>
+                        <button class="filter-btn" onclick="filterVersions('1.21.8')">1.21.8</button>
+                        <button class="filter-btn" onclick="filterVersions('1.21.5')">1.21.5</button>
+                        <button class="filter-btn" onclick="filterVersions('1.21.4')">1.21.4</button>
+                        <button class="filter-btn" onclick="filterVersions('1.21.1')">1.21.1</button>
+                        <button class="filter-btn" onclick="filterVersions('1.20.6')">1.20.6</button>
+                        <button class="filter-btn" onclick="filterVersions('1.20.4')">1.20.4</button>
+                        <button class="filter-btn" onclick="filterVersions('1.20.1')">1.20.1</button>
+                        <button class="filter-btn" onclick="filterVersions('1.19.4')">1.19.4</button>
+                        <button class="filter-btn" onclick="filterVersions('1.19.2')">1.19.2</button>
+                        <button class="filter-btn" onclick="filterVersions('1.18.2')">1.18.2</button>
+                        <button class="filter-btn" onclick="filterVersions('1.17.1')">1.17.1</button>
+                        <button class="filter-btn" onclick="filterVersions('1.16.5')">1.16.5</button>
+                        <button class="filter-btn" onclick="filterVersions('1.16.2')">1.16.2</button>
+                        <button class="filter-btn" onclick="filterVersions('1.16.4')">1.16.4</button>
+                        <button class="filter-btn" onclick="filterVersions('1.12.2')">1.12.2</button>
+                        <button class="filter-btn" onclick="filterVersions('1.8.9')">1.8.9</button>
+                        <button class="filter-btn" onclick="filterVersions('1.7.10')">1.7.10</button>
+                    </div>
+                    <div class="theme-filters">
+                        <h3>Тематики:</h3>
+                        <button class="theme-btn active" onclick="filterThemes('all')" title="Все"><i class="fas fa-star"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('weapons')" title="Оружие"><i class="fas fa-sword"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('armor')" title="Броня"><i class="fas fa-shield-alt"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('furniture')" title="Мебель"><i class="fas fa-couch"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('mobs')" title="Мобы"><i class="fas fa-spider"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('decor')" title="Декор"><i class="fas fa-gem"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('magic')" title="Магия"><i class="fas fa-magic"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('vehicles')" title="Транспорт"><i class="fas fa-car"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('maps')" title="Карты"><i class="fas fa-map"></i></button>
+                        <button class="theme-btn" onclick="filterThemes('adventure')" title="Приключения"><i class="fas fa-compass"></i></button>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Загрузчики:</h3>
+                        <button class="filter-btn active" onclick="filterLoaders('all')">Все</button>
+                        <button class="filter-btn" onclick="filterLoaders('fabric')"><i class="fab fa-react"></i> Fabric</button>
+                        <button class="filter-btn" onclick="filterLoaders('forge')"><i class="fas fa-fire"></i> Forge</button>
+                        <button class="filter-btn" onclick="filterLoaders('optifine')"><i class="fas fa-eye"></i> Optifine</button>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Сортировка:</h3>
+                        <button class="filter-btn active" onclick="sortMods('popular')">Популярные</button>
+                        <button class="filter-btn" onclick="sortMods('new')">Новые</button>
+                    </div>
+                </div>
+                <input type="text" class="search-bar" id="search" placeholder="Поиск модов..." oninput="filterMods()">
+                <div class="mod-grid" id="mod-grid"></div>
+                <div class="pagination">
+                    <button onclick="prevPage()">Предыдущая</button>
+                    <span id="page-info">Страница 1</span>
+                    <button onclick="nextPage()">Следующая</button>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="showInstallGuide()">Как устанавливать моды?</button>
+                <button class="action-btn" onclick="showTopMods()">Топ 50 модов</button>
+            </div>
         </div>
-        <div class="mod-grid" id="mod-grid"></div>
-        <div class="pagination">
-            <button onclick="prevPage()">Предыдущая</button>
-            <span id="page-info">Страница 1</span>
-            <button onclick="nextPage()">Следующая</button>
+
+        <!-- Секция Текстуры -->
+        <div id="textures-section" class="section">
+            <h1>Текстуры для Майнкрафт</h1>
+            <p>Здесь будут текстуры. Логическая среда: каталог текстур с фильтрами по разрешению и стилю.</p>
+            <!-- Заглушка, можно добавить похожую сетку -->
         </div>
+
+        <!-- Секция Скины -->
+        <div id="skins-section" class="section">
+            <h1>Скины для Майнкрафт</h1>
+            <p>Здесь будут скины. Логическая среда: галерея скинов с поиском по персонажам.</p>
+        </div>
+
+        <!-- Секция Сервера -->
+        <div id="servers-section" class="section">
+            <h1>Сервера Майнкрафт</h1>
+            <p>Здесь будут серверы. Логическая среда: список серверов с IP и описаниями.</p>
+        </div>
+
+        <!-- Секция Форум -->
+        <div id="forum-section" class="section">
+            <h1>Форум</h1>
+            <p>Здесь будут темы форума. Логическая среда: список тем с просмотрами и ответами.</p>
+        </div>
+
+        <!-- Секция Скачать Minecraft -->
+        <div id="download-section" class="section">
+            <h1>Скачать Minecraft</h1>
+            <p>Здесь ссылки на скачивание. Логическая среда: инструкции и ссылки.</p>
+        </div>
+
+        <!-- Секция Аккаунт -->
+        <div id="account-section" class="section">
+            <h1>Аккаунт</h1>
+            <p>Здесь профиль пользователя. Логическая среда: настройки и профиль.</p>
+        </div>
+
+        <!-- Детали мода -->
         <div id="details">
             <h2 id="mod-title"></h2>
             <img id="mod-img" src="">
@@ -164,55 +309,86 @@
             <p id="mod-rating"></p>
             <button onclick="backToList()">Назад к списку</button>
         </div>
+
+        <!-- Модальное окно для установки -->
+        <div id="install-modal">
+            <h3>Как устанавливать моды?</h3>
+            <p>1. Установите Forge/Fabric.<br>2. Скачайте мод.<br>3. Положите в папку mods.<br>4. Запустите игру.</p>
+            <button onclick="closeInstallGuide()">Закрыть</button>
+        </div>
     </div>
+
     <script>
         let currentPage = 1;
-        let modsPerPage = 4;
+        let modsPerPage = 8;
+        let currentFilter = { version: 'all', theme: 'all', loader: 'all', sort: 'popular' };
         let allMods = [
-            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1] [1.16.5]", rating: "★★★★☆", category: "adventure" },
-            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "[1.21.8] [1.21.1] [1.20.6] [1.19.4] [1.18.2]", rating: "★★★☆☆", category: "magic" },
-            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "[1.21.8] [1.21.1] [1.20.4] [1.19.4]", rating: "★★★☆☆", category: "adventure" },
-            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "[1.20.1] [1.19.2] [1.18.2]", rating: "★★★★☆", category: "tech" },
-            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "[1.21.1] [1.20.1]", rating: "★★★☆☆", category: "tech" },
-            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "[1.21.1]", rating: "★★★★★", category: "tech", author: "LittleHektor" },
-            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "[1.21.1]", rating: "★★★☆☆", category: "adventure", author: "testzbs" },
-            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "[1.20.1] [1.19.4] [1.19.2]", rating: "★★★★☆", category: "magic", author: "testzbs" },
-            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1]", rating: "★★★☆☆", category: "adventure" },
-            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "[1.21.4] [1.21.3] [1.21.2] [1.21.1] [1.21]", rating: "★★★★☆", category: "tech", author: "testzbs" }
+            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1] [1.16.5]", rating: "★★★★☆", theme: "adventure", loader: "forge" },
+            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "[1.21.8] [1.21.1] [1.20.6] [1.19.4] [1.18.2]", rating: "★★★☆☆", theme: "decor", loader: "fabric" },
+            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "[1.21.8] [1.21.1] [1.20.4] [1.19.4]", rating: "★★★☆☆", theme: "adventure", loader: "forge" },
+            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "[1.20.1] [1.19.2] [1.18.2]", rating: "★★★★☆", theme: "furniture", loader: "fabric" },
+            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "[1.21.1] [1.20.1]", rating: "★★★☆☆", theme: "decor", loader: "forge" },
+            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "[1.21.1]", rating: "★★★★★", theme: "tech", loader: "fabric", author: "LittleHektor" },
+            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "[1.21.1]", rating: "★★★☆☆", theme: "adventure", loader: "fabric", author: "testzbs" },
+            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "[1.20.1] [1.19.4] [1.19.2]", rating: "★★★★☆", theme: "mobs", loader: "forge", author: "testzbs" },
+            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1]", rating: "★★★☆☆", theme: "adventure", loader: "forge" },
+            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "[1.21.4] [1.21.3] [1.21.2] [1.21.1] [1.21]", rating: "★★★★☆", theme: "tech", loader: "fabric", author: "testzbs" },
+            // Добавь больше для топ-50
+            { id: 11, title: "OptiFine", desc: "Улучшение графики и FPS.", versions: "[1.21.1]", rating: "★★★★★", theme: "tech", loader: "optifine" },
+            { id: 12, title: "JourneyMap", desc: "Карта мира в реальном времени.", versions: "[1.20.1]", rating: "★★★★★", theme: "maps", loader: "forge" }
         ];
 
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
 
-        function displayMods(modsToShow) {
-            const grid = document.getElementById('mod-grid');
-            grid.innerHTML = '';
-            modsToShow.forEach(mod => {
-                const card = document.createElement('div');
-                card.className = 'mod-card';
-                card.innerHTML = `
-                    <img src="https://via.placeholder.com/220x120?text=${mod.title}" alt="${mod.title}">
-                    <div class="mod-title">${mod.title}</div>
-                    <div class="mod-versions">${mod.versions}</div>
-                    <div class="mod-desc">${mod.desc.substring(0, 50)}...</div>
-                    <div class="rating">${mod.rating}</div>
-                `;
-                card.onclick = () => showDetails(mod.id);
-                grid.appendChild(card);
-            });
+        function switchSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section + '-section').classList.add('active');
+            document.querySelectorAll('header button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            if (section === 'mods') filterMods();
+        }
+
+        function filterVersions(version) {
+            currentFilter.version = version;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            filterMods();
+        }
+
+        function filterThemes(theme) {
+            currentFilter.theme = theme;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            filterMods();
+        }
+
+        function filterLoaders(loader) {
+            currentFilter.loader = loader;
+            document.querySelectorAll('.filter-btn[onclick*="filterLoaders"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            filterMods();
+        }
+
+        function sortMods(sort) {
+            currentFilter.sort = sort;
+            document.querySelectorAll('.filter-btn[onclick*="sortMods"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            filterMods();
         }
 
         function filterMods() {
             const searchQuery = document.getElementById('search').value.toLowerCase();
-            const category = document.getElementById('category').value;
-            const version = document.getElementById('version').value;
-
             let filteredMods = allMods.filter(mod => {
                 const matchesSearch = mod.title.toLowerCase().includes(searchQuery);
-                const matchesCategory = !category || mod.category === category;
-                const matchesVersion = !version || mod.versions.includes(version);
-                return matchesSearch && matchesCategory && matchesVersion;
+                const matchesVersion = currentFilter.version === 'all' || mod.versions.includes(currentFilter.version);
+                const matchesTheme = currentFilter.theme === 'all' || mod.theme === currentFilter.theme;
+                const matchesLoader = currentFilter.loader === 'all' || mod.loader === currentFilter.loader;
+                return matchesSearch && matchesVersion && matchesTheme && matchesLoader;
             });
+
+            if (currentFilter.sort === 'new') filteredMods.sort((a, b) => b.id - a.id);
+            else if (currentFilter.sort === 'popular') filteredMods.sort((a, b) => (b.rating.length - a.rating.length) || 0);
 
             currentPage = 1;
             paginateMods(filteredMods);
@@ -226,12 +402,28 @@
             document.getElementById('page-info').textContent = `Страница ${currentPage} из ${Math.ceil(filteredMods.length / modsPerPage)}`;
         }
 
-        function searchMods() { filterMods(); }
+        function displayMods(modsToShow) {
+            const grid = document.getElementById('mod-grid');
+            grid.innerHTML = '';
+            modsToShow.forEach(mod => {
+                const card = document.createElement('div');
+                card.className = 'mod-card';
+                card.innerHTML = `
+                    <img src="https://via.placeholder.com/200x120?text=${mod.title}" alt="${mod.title}">
+                    <div class="mod-title">${mod.title}</div>
+                    <div class="mod-versions">${mod.versions}</div>
+                    <div class="mod-desc">${mod.desc.substring(0, 50)}...</div>
+                    <div class="rating">${mod.rating}</div>
+                `;
+                card.onclick = () => showDetails(mod.id);
+                grid.appendChild(card);
+            });
+        }
 
         function showDetails(id) {
             const mod = allMods.find(m => m.id === id);
             document.getElementById('mod-title').textContent = mod.title;
-            document.getElementById('mod-img').src = `https://via.placeholder.com/220x120?text=${mod.title}`;
+            document.getElementById('mod-img').src = `https://via.placeholder.com/200x120?text=${mod.title}`;
             document.getElementById('mod-desc').textContent = mod.desc;
             document.getElementById('mod-versions').textContent = `Версии: ${mod.versions}`;
             document.getElementById('mod-rating').textContent = `Рейтинг: ${mod.rating}`;
@@ -261,6 +453,21 @@
                 currentPage--;
                 filterMods();
             }
+        }
+
+        function showInstallGuide() {
+            document.getElementById('install-modal').style.display = 'block';
+        }
+
+        function closeInstallGuide() {
+            document.getElementById('install-modal').style.display = 'none';
+        }
+
+        function showTopMods() {
+            // Показать топ (отсортировать по рейтингу и показать первые 50)
+            currentFilter.sort = 'popular';
+            sortMods('popular');
+            alert('Топ 50 модов загружен! (В реальности покажи отдельный список)');
         }
 
         // Инициализация

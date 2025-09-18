@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моды для Майнкрафт - ru-minecraft.ru</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,18 +12,22 @@
             margin: 0;
             padding: 0;
             color: #333;
+            transition: all 0.3s ease;
         }
         header {
             background: #333;
             color: #fff;
             padding: 10px 0;
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         header a {
             color: #fff;
             text-decoration: none;
             margin: 0 15px;
+            transition: color 0.3s ease;
         }
+        header a:hover { color: #00ffcc; }
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -33,23 +38,25 @@
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            animation: fadeIn 0.5s ease;
         }
-        .search-filter input[type="text"] {
-            padding: 8px;
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .search-filter select {
+        .search-filter input[type="text"], .search-filter select {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+        .search-filter input[type="text"]:focus, .search-filter select:focus {
+            border-color: #00ffcc;
+            outline: none;
         }
         .mod-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
         }
         .mod-card {
             background: #fff;
@@ -58,23 +65,28 @@
             text-align: center;
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .mod-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .mod-card img {
             width: 100%;
             height: 120px;
             object-fit: cover;
             border-radius: 4px;
+            transition: opacity 0.3s ease;
         }
+        .mod-card img:hover { opacity: 0.8; }
         .mod-title { font-weight: bold; margin: 5px 0; }
         .mod-versions { font-size: 12px; color: #666; }
         .mod-desc { font-size: 14px; color: #777; margin: 5px 0; }
-        .rating {
-            color: #ffd700;
-            font-size: 16px;
-        }
+        .rating { color: #ffd700; font-size: 16px; }
         .pagination {
             text-align: center;
             margin: 20px 0;
+            animation: fadeIn 0.5s ease;
         }
         .pagination button {
             padding: 8px 15px;
@@ -83,10 +95,9 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
-        .pagination button:hover {
-            background: #0056b3;
-        }
+        .pagination button:hover { background: #0056b3; }
         #details {
             display: none;
             background: #fff;
@@ -94,10 +105,23 @@
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             margin-top: 20px;
+            animation: fadeIn 0.5s ease;
         }
         #details img { width: 200px; border-radius: 4px; }
-        #details button { padding: 8px 15px; background: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        #details button {
+            padding: 8px 15px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
         #details button:hover { background: #c82333; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -113,49 +137,20 @@
         <h1>Моды для Майнкрафт</h1>
         <div class="search-filter">
             <input type="text" id="search" placeholder="Поиск модов..." oninput="searchMods()">
-            <select id="category">
+            <select id="category" onchange="filterMods()">
                 <option value="">Все категории</option>
                 <option value="adventure">Приключения</option>
                 <option value="tech">Техника</option>
                 <option value="magic">Магия</option>
             </select>
-            <select id="version">
+            <select id="version" onchange="filterMods()">
                 <option value="">Все версии</option>
                 <option value="1.21.8">1.21.8</option>
                 <option value="1.20.1">1.20.1</option>
                 <option value="1.19.4">1.19.4</option>
             </select>
         </div>
-        <div class="mod-grid" id="mod-grid">
-            <div class="mod-card" onclick="showDetails(1)">
-                <img src="https://via.placeholder.com/220x120" alt="Villager Cleric House">
-                <div class="mod-title">Villager Cleric House</div>
-                <div class="mod-versions">[1.21.8] [1.21.4] [1.21.1] [1.20.1] [1.16.5]</div>
-                <div class="mod-desc">Дом священника, спавнится в полях, много лута.</div>
-                <div class="rating">★★★★☆</div>
-            </div>
-            <div class="mod-card" onclick="showDetails(2)">
-                <img src="https://via.placeholder.com/220x120" alt="A Man With Plushies">
-                <div class="mod-title">A Man With Plushies</div>
-                <div class="mod-versions">[1.21.8] [1.21.1] [1.20.6] [1.19.4] [1.18.2]</div>
-                <div class="mod-desc">Добавляет плюшики из других игр.</div>
-                <div class="rating">★★★☆☆</div>
-            </div>
-            <div class="mod-card" onclick="showDetails(3)">
-                <img src="https://via.placeholder.com/220x120" alt="Incapacitated">
-                <div class="mod-title">Incapacitated</div>
-                <div class="mod-versions">[1.21.8] [1.21.1] [1.20.4] [1.19.4]</div>
-                <div class="mod-desc">Система воскрешения как в Payday 2.</div>
-                <div class="rating">★★★☆☆</div>
-            </div>
-            <div class="mod-card" onclick="showDetails(4)">
-                <img src="https://via.placeholder.com/220x120" alt="Apple Crates">
-                <div class="mod-title">Apple Crates</div>
-                <div class="mod-versions">[1.20.1] [1.19.2] [1.18.2]</div>
-                <div class="mod-desc">Ящики для хранения и торговли.</div>
-                <div class="rating">★★★★☆</div>
-            </div>
-        </div>
+        <div class="mod-grid" id="mod-grid"></div>
         <div class="pagination">
             <button onclick="prevPage()">Предыдущая</button>
             <span id="page-info">Страница 1</span>
@@ -172,25 +167,34 @@
     </div>
     <script>
         let currentPage = 1;
-        let mods = [
-            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1] [1.16.5]", rating: "★★★★☆" },
-            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "[1.21.8] [1.21.1] [1.20.6] [1.19.4] [1.18.2]", rating: "★★★☆☆" },
-            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "[1.21.8] [1.21.1] [1.20.4] [1.19.4]", rating: "★★★☆☆" },
-            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "[1.20.1] [1.19.2] [1.18.2]", rating: "★★★★☆" }
+        let modsPerPage = 4;
+        let allMods = [
+            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1] [1.16.5]", rating: "★★★★☆", category: "adventure" },
+            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "[1.21.8] [1.21.1] [1.20.6] [1.19.4] [1.18.2]", rating: "★★★☆☆", category: "magic" },
+            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "[1.21.8] [1.21.1] [1.20.4] [1.19.4]", rating: "★★★☆☆", category: "adventure" },
+            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "[1.20.1] [1.19.2] [1.18.2]", rating: "★★★★☆", category: "tech" },
+            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "[1.21.1] [1.20.1]", rating: "★★★☆☆", category: "tech" },
+            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "[1.21.1]", rating: "★★★★★", category: "tech", author: "LittleHektor" },
+            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "[1.21.1]", rating: "★★★☆☆", category: "adventure", author: "testzbs" },
+            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "[1.20.1] [1.19.4] [1.19.2]", rating: "★★★★☆", category: "magic", author: "testzbs" },
+            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "[1.21.8] [1.21.4] [1.21.1] [1.20.1]", rating: "★★★☆☆", category: "adventure" },
+            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "[1.21.4] [1.21.3] [1.21.2] [1.21.1] [1.21]", rating: "★★★★☆", category: "tech", author: "testzbs" }
         ];
 
-        function searchMods() {
-            const query = document.getElementById('search').value.toLowerCase();
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+
+        function displayMods(modsToShow) {
             const grid = document.getElementById('mod-grid');
             grid.innerHTML = '';
-            mods.filter(mod => mod.title.toLowerCase().includes(query)).forEach(mod => {
+            modsToShow.forEach(mod => {
                 const card = document.createElement('div');
                 card.className = 'mod-card';
                 card.innerHTML = `
-                    <img src="https://via.placeholder.com/220x120" alt="${mod.title}">
+                    <img src="https://via.placeholder.com/220x120?text=${mod.title}" alt="${mod.title}">
                     <div class="mod-title">${mod.title}</div>
                     <div class="mod-versions">${mod.versions}</div>
-                    <div class="mod-desc">${mod.desc}</div>
+                    <div class="mod-desc">${mod.desc.substring(0, 50)}...</div>
                     <div class="rating">${mod.rating}</div>
                 `;
                 card.onclick = () => showDetails(mod.id);
@@ -198,13 +202,40 @@
             });
         }
 
+        function filterMods() {
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('category').value;
+            const version = document.getElementById('version').value;
+
+            let filteredMods = allMods.filter(mod => {
+                const matchesSearch = mod.title.toLowerCase().includes(searchQuery);
+                const matchesCategory = !category || mod.category === category;
+                const matchesVersion = !version || mod.versions.includes(version);
+                return matchesSearch && matchesCategory && matchesVersion;
+            });
+
+            currentPage = 1;
+            paginateMods(filteredMods);
+        }
+
+        function paginateMods(filteredMods) {
+            const start = (currentPage - 1) * modsPerPage;
+            const end = start + modsPerPage;
+            const modsToShow = filteredMods.slice(start, end);
+            displayMods(modsToShow);
+            document.getElementById('page-info').textContent = `Страница ${currentPage} из ${Math.ceil(filteredMods.length / modsPerPage)}`;
+        }
+
+        function searchMods() { filterMods(); }
+
         function showDetails(id) {
-            const mod = mods.find(m => m.id === id);
+            const mod = allMods.find(m => m.id === id);
             document.getElementById('mod-title').textContent = mod.title;
             document.getElementById('mod-img').src = `https://via.placeholder.com/220x120?text=${mod.title}`;
             document.getElementById('mod-desc').textContent = mod.desc;
             document.getElementById('mod-versions').textContent = `Версии: ${mod.versions}`;
             document.getElementById('mod-rating').textContent = `Рейтинг: ${mod.rating}`;
+            if (mod.author) document.getElementById('mod-desc').innerHTML += `<br>Автор: ${mod.author}`;
             document.getElementById('mod-grid').style.display = 'none';
             document.getElementById('pagination').style.display = 'none';
             document.getElementById('details').style.display = 'block';
@@ -214,14 +245,26 @@
             document.getElementById('details').style.display = 'none';
             document.getElementById('mod-grid').style.display = 'grid';
             document.getElementById('pagination').style.display = 'block';
-            searchMods(); // Обновить сетку после возврата
+            filterMods();
         }
 
-        function nextPage() { if (currentPage < 3) { currentPage++; document.getElementById('page-info').textContent = `Страница ${currentPage}`; } }
-        function prevPage() { if (currentPage > 1) { currentPage--; document.getElementById('page-info').textContent = `Страница ${currentPage}`; } }
+        function nextPage() {
+            const totalPages = Math.ceil(allMods.length / modsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                filterMods();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                filterMods();
+            }
+        }
 
         // Инициализация
-        searchMods();
+        filterMods();
     </script>
 </body>
 </html>

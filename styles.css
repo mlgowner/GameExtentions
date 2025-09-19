@@ -181,12 +181,6 @@ header button:hover, header button.active {
     margin-bottom: 5px;
     font-size: 12px;
 }
-.mod-versions {
-    font-size: 10px;
-    color: #cccccc;
-    margin-bottom: 5px;
-    font-weight: 300;
-}
 .mod-desc {
     font-size: 11px;
     color: #cccccc;
@@ -427,6 +421,17 @@ header button:hover, header button.active {
     color: #ffffff;
     cursor: pointer;
 }
+.top-mod-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(58, 122, 180, 0.4);
+}
+.top-mod-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 @media (max-width: 600px) {
     .mod-grid {
         grid-template-columns: 1fr;
@@ -455,14 +460,6 @@ header button:hover, header button.active {
     .filter-btn {
         font-size: 10px;
         padding: 5px 8px;
-    }
-    .theme-filters {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-    }
-    .theme-btn {
-        padding: 8px;
-        font-size: 12px;
     }
     .mod-grid {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

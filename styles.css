@@ -259,7 +259,7 @@ header button:hover, header button.active {
     font-weight: 300;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     text-decoration: none;
-    margin-top: 30px; /* Отступ 30px от кнопки */
+    margin-top: 30px;
 }
 .action-btn:hover {
     background: #3a7ab4;
@@ -302,7 +302,7 @@ header button:hover, header button.active {
     background: #3a7ab4;
     transform: scale(1.05);
 }
-#install-modal, #top-modal, #profile-modal {
+#install-modal, #top-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -317,7 +317,7 @@ header button:hover, header button.active {
     color: #ffffff;
     text-align: center;
 }
-#install-modal button, #top-modal button, #profile-modal button {
+#install-modal button, #top-modal button {
     background: #5a9bd4;
     color: #fff;
     border: none;
@@ -328,7 +328,7 @@ header button:hover, header button.active {
     font-weight: 300;
     transition: all 0.4s ease;
 }
-#install-modal button:hover, #top-modal button:hover, #profile-modal button:hover {
+#install-modal button:hover, #top-modal button:hover {
     background: #3a7ab4;
     transform: scale(1.05);
 }
@@ -399,38 +399,6 @@ header button:hover, header button.active {
     text-align: right;
     color: #ffffff;
     font-weight: 300;
-}
-.avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 1rem auto;
-    border: 4px solid #5a9bd4;
-    object-fit: cover;
-    display: block;
-}
-.stats {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-    color: #ffffff;
-}
-.stat {
-    text-align: center;
-    margin: 0.5rem;
-}
-.stat h4 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #ffffff;
-    font-weight: bold;
-}
-.stat p {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff;
 }
 .top-mods-list {
     display: grid;

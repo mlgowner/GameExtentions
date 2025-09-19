@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Extensions</title>
-    <link rel="icon" href="https://www.minecraft.net/favicon.ico">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="icon" href="https://www.minecraft.net/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -394,13 +393,13 @@
             font-weight: 300;
         }
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            margin-bottom: 1rem;
-            border: 3px solid #5a9bd4;
+            margin: 1rem auto;
+            border: 4px solid #5a9bd4;
+            object-fit: cover;
             display: block;
-            margin: 0 auto;
         }
         .stats {
             display: flex;
@@ -628,19 +627,19 @@
                 <h1>Текстуры для Майнкрафт</h1>
                 <div class="mod-grid">
                     <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/dramatic-skys')">
-                        <img src="https://modrinth.com/resourcepack/dramatic-skys/asset/icon.png" alt="Texture Pack">
+                        <img src="https://modrinth.com/resourcepack/dramatic-skys/asset/icon.png" alt="Dramatic Skys">
                         <div class="mod-title">Dramatic Skys</div>
                         <div class="mod-desc">HD облака и освещение.</div>
                         <div class="rating">★★★★★</div>
                     </div>
                     <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/icons')">
-                        <img src="https://modrinth.com/resourcepack/icons/asset/icon.png" alt="Pixel Art Pack">
+                        <img src="https://modrinth.com/resourcepack/icons/asset/icon.png" alt="Icons">
                         <div class="mod-title">Icons</div>
                         <div class="mod-desc">Иконки для меню.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
                     <div class="mod-card" onclick="window.open('https://texture-packs.com/resourcepack/xalis-enchanted-books-texture-pack/')">
-                        <img src="https://texture-packs.com/wp-content/uploads/2020/02/Xalis-Enchanted-Books-Texture-Pack-1.15.2.png" alt="Realistic Textures">
+                        <img src="https://texture-packs.com/wp-content/uploads/2020/02/Xalis-Enchanted-Books-Texture-Pack-1.15.2.png" alt="Xalis Enchanted Books">
                         <div class="mod-title">Xalis Enchanted Books</div>
                         <div class="mod-desc">512x для реализма.</div>
                         <div class="rating">★★★☆☆</div>
@@ -831,9 +830,6 @@
             { title: "6. Villager Cleric House - Дом священника", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png", link: "https://modrinth.com/mod/placeholder-api" }
         ];
 
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-
         function switchSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section + '-section').classList.add('active');
@@ -984,7 +980,7 @@
         }
 
         function drawAvatar() {
-            // Avatar image is now handled by HTML img tag
+            // Аватарка теперь обрабатывается через HTML img тег
         }
 
         window.onload = function() {

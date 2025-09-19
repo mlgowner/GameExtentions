@@ -132,28 +132,6 @@ header button:hover, header button.active {
     transform: scale(1.05);
     box-shadow: 0 3px 10px rgba(58, 122, 180, 0.4);
 }
-.theme-filters {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-    gap: 8px;
-    margin-bottom: 15px;
-}
-.theme-btn {
-    background: #5a9bd4;
-    border: none;
-    color: #fff;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    font-size: 14px;
-    font-weight: 300;
-}
-.theme-btn:hover, .theme-btn.active {
-    background: #3a7ab4;
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 4px 12px rgba(58, 122, 180, 0.4);
-}
 .search-bar {
     width: 100%;
     padding: 12px;

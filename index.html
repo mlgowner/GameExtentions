@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Extensions - Моды, Текстуры, Скины</title>
+    <link rel="icon" href="https://www.minecraft.net/favicon.ico">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,13 +15,16 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Oswald', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Open Sans', 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #000000 0%, #0a0a1a 50%, #1a1a2e 100%);
             color: #d0d0e0;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             line-height: 1.6;
+        }
+        h1, h2, h3, p {
+            margin-bottom: 1.5rem;
         }
         header {
             background: rgba(0, 0, 0, 0.95);
@@ -35,11 +39,11 @@
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
             width: 100%;
             min-height: 60px;
-            border-bottom: 1px solid rgba(52, 152, 219, 0.2);
+            border-bottom: 1px solid rgba(90, 155, 212, 0.2);
         }
         header button {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
-            border: 1px solid rgba(52, 152, 219, 0.3);
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.1), rgba(90, 155, 212, 0.05));
+            border: 1px solid rgba(90, 155, 212, 0.3);
             color: #d0d0e0;
             cursor: pointer;
             padding: 8px 12px;
@@ -57,10 +61,10 @@
             backdrop-filter: blur(10px);
         }
         header button:hover, header button.active {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.2));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.3), rgba(90, 155, 212, 0.2));
             transform: scale(1.05) translateY(-2px);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(90, 155, 212, 0.3);
         }
         .container {
             max-width: 100%;
@@ -88,7 +92,6 @@
         h1, h2, h3 {
             text-align: center;
             font-weight: 300;
-            margin: 1rem 0;
             color: #b0c0e0;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             font-size: 28px;
@@ -96,17 +99,17 @@
         .main-panel {
             background: linear-gradient(135deg, rgba(10, 10, 26, 0.95), rgba(20, 20, 40, 0.95));
             border-radius: 15px;
-            padding: 20px;
+            padding: 30px;
             margin-bottom: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
             transition: all 0.4s ease;
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
         }
         .main-panel:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 12px 40px rgba(90, 155, 212, 0.2);
         }
         .filters {
             display: grid;
@@ -118,7 +121,7 @@
             background: linear-gradient(135deg, rgba(20, 20, 40, 0.8), rgba(30, 30, 50, 0.8));
             padding: 15px;
             border-radius: 12px;
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
         }
         .filter-group h3 {
             margin: 0 0 10px 0;
@@ -133,8 +136,8 @@
             gap: 8px;
         }
         .filter-btn {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
-            border: 1px solid rgba(52, 152, 219, 0.3);
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.1), rgba(90, 155, 212, 0.05));
+            border: 1px solid rgba(90, 155, 212, 0.3);
             color: #d0d0e0;
             padding: 6px 10px;
             border-radius: 20px;
@@ -144,10 +147,10 @@
             font-weight: 300;
         }
         .filter-btn:hover, .filter-btn.active {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.2));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.3), rgba(90, 155, 212, 0.2));
             transform: scale(1.05);
             color: #fff;
-            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 3px 10px rgba(90, 155, 212, 0.2);
         }
         .theme-filters {
             display: grid;
@@ -156,8 +159,8 @@
             margin-bottom: 15px;
         }
         .theme-btn {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
-            border: 1px solid rgba(52, 152, 219, 0.2);
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.1), rgba(90, 155, 212, 0.05));
+            border: 1px solid rgba(90, 155, 212, 0.2);
             color: #d0d0e0;
             padding: 10px;
             border-radius: 50%;
@@ -167,16 +170,16 @@
             font-weight: 300;
         }
         .theme-btn:hover, .theme-btn.active {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.4), rgba(52, 152, 219, 0.3));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.4), rgba(90, 155, 212, 0.3));
             transform: scale(1.1) rotate(5deg);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 12px rgba(90, 155, 212, 0.3);
         }
         .search-bar {
             width: 100%;
             padding: 12px;
             background: linear-gradient(135deg, rgba(20, 20, 40, 0.8), rgba(30, 30, 50, 0.8));
-            border: 1px solid rgba(52, 152, 219, 0.3);
+            border: 1px solid rgba(90, 155, 212, 0.3);
             border-radius: 25px;
             color: #d0d0e0;
             font-size: 14px;
@@ -186,8 +189,8 @@
         }
         .search-bar:focus {
             outline: none;
-            border-color: rgba(52, 152, 219, 0.6);
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+            border-color: rgba(90, 155, 212, 0.6);
+            box-shadow: 0 0 15px rgba(90, 155, 212, 0.2);
             background: rgba(20, 20, 40, 0.95);
         }
         .mod-grid {
@@ -203,11 +206,12 @@
             text-align: center;
             transition: all 0.4s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
+            cursor: pointer;
         }
         .mod-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 10px 30px rgba(90, 155, 212, 0.3);
             background: linear-gradient(135deg, rgba(20, 20, 40, 1), rgba(30, 30, 50, 1));
         }
         .mod-card img {
@@ -251,7 +255,7 @@
         }
         .pagination button {
             padding: 10px 18px;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.2));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.3), rgba(90, 155, 212, 0.2));
             color: #fff;
             border: none;
             border-radius: 20px;
@@ -261,9 +265,9 @@
             font-weight: 300;
         }
         .pagination button:hover {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.5), rgba(52, 152, 219, 0.4));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.5), rgba(90, 155, 212, 0.4));
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(90, 155, 212, 0.3);
         }
         .action-buttons {
             display: flex;
@@ -274,7 +278,7 @@
         }
         .action-btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.2));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.3), rgba(90, 155, 212, 0.2));
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -285,9 +289,9 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .action-btn:hover {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.5), rgba(52, 152, 219, 0.4));
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.5), rgba(90, 155, 212, 0.4));
             transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 6px 20px rgba(90, 155, 212, 0.4);
         }
         .section {
             display: none;
@@ -302,7 +306,7 @@
             border-radius: 15px;
             margin-top: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
             text-align: center;
         }
         #details img {
@@ -330,7 +334,7 @@
             background: linear-gradient(135deg, rgba(231, 76, 60, 0.5), rgba(231, 76, 60, 0.4));
             transform: scale(1.05);
         }
-        #install-modal, #top-modal {
+        #install-modal, #top-modal, #profile-modal {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -342,12 +346,12 @@
             z-index: 1000;
             max-width: 90%;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(90, 155, 212, 0.2);
             backdrop-filter: blur(15px);
             text-align: center;
         }
-        #install-modal button, #top-modal button {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0.2));
+        #install-modal button, #top-modal button, #profile-modal button {
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.3), rgba(90, 155, 212, 0.2));
             color: #fff;
             border: none;
             padding: 10px 18px;
@@ -357,8 +361,8 @@
             font-weight: 300;
             transition: all 0.4s ease;
         }
-        #install-modal button:hover, #top-modal button:hover {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.5), rgba(52, 152, 219, 0.4));
+        #install-modal button:hover, #top-modal button:hover, #profile-modal button:hover {
+            background: linear-gradient(135deg, rgba(90, 155, 212, 0.5), rgba(90, 155, 212, 0.4));
             transform: scale(1.05);
         }
         @keyframes fadeIn {
@@ -371,12 +375,13 @@
             border-radius: 12px;
             margin-bottom: 15px;
             transition: all 0.4s ease;
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
             text-align: center;
+            cursor: pointer;
         }
         .forum-thread:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 6px 20px rgba(90, 155, 212, 0.2);
         }
         .server-list {
             list-style: none;
@@ -392,11 +397,12 @@
             align-items: center;
             font-size: 12px;
             transition: all 0.4s ease;
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
+            cursor: pointer;
         }
         .server-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 6px 20px rgba(90, 155, 212, 0.2);
         }
         .server-item img {
             width: 50px;
@@ -423,7 +429,7 @@
             background: linear-gradient(135deg, rgba(20, 20, 40, 0.8), rgba(30, 30, 50, 0.8));
             padding: 12px;
             margin: 15px 0;
-            border-left: 4px solid rgba(52, 152, 219, 0.5);
+            border-left: 4px solid rgba(90, 155, 212, 0.5);
             font-style: italic;
             font-size: 14px;
             font-weight: 300;
@@ -439,7 +445,7 @@
             height: 100px;
             border-radius: 50%;
             margin-bottom: 1rem;
-            border: 3px solid rgba(52, 152, 219, 0.3);
+            border: 3px solid rgba(90, 155, 212, 0.3);
             display: block;
             margin: 0 auto;
             filter: blur(0.5px);
@@ -485,7 +491,7 @@
             text-align: center;
             transition: all 0.4s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(90, 155, 212, 0.1);
         }
         /* Мобильная адаптация для Mini App */
         @media (max-width: 600px) {
@@ -583,12 +589,11 @@
                     <button class="action-btn" onclick="switchSection('textures')">Текстуры</button>
                     <button class="action-btn" onclick="switchSection('skins')">Скины</button>
                 </div>
-                <p>RU Minecraft - крупнейший русскоязычный ресурс по Minecraft с тысячами модов, текстур и скинов. Мы помогаем игрокам находить лучшие дополнения для версии 1.21+ и старше.</p>
                 <div class="main-panel" style="margin-top: 20px;">
                     <h3>Моды</h3>
                     <p>Расширьте игровой опыт с сотнями уникальных модов: от улучшения графики до новых биомов и мобов.</p>
-                    <img src="https://modrinth.com/mod/placeholder-api/asset/icon.png" alt="Пример мода" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; filter: blur(0.5px);">
-                    <p class="noise">Совет: Используйте Forge для максимальной совместимости модов!</p>
+                    <img src="https://modrinth.com/mod/sodium/asset/icon.png" alt="Пример мода" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; filter: blur(0.5px);">
+                    <p class="noise">Совет: Используйте Fabric для максимальной производительности!</p>
                 </div>
                 <div class="main-panel" style="margin-top: 20px;">
                     <h3>Текстуры</h3>
@@ -610,7 +615,6 @@
             <div class="main-panel">
                 <h1>Моды для Майнкрафт</h1>
                 <p class="noise">Исследуйте моды, которые добавляют новые миры, мобы и механики. Обновления каждую неделю!</p>
-                <p>Каталог модов для Minecraft: улучшения, карты, совместимость, либ, карты и моды на улучшение FPS.</p>
                 <div class="filters">
                     <div class="filter-group">
                         <h3>Версии:</h3>
@@ -686,21 +690,20 @@
             <div class="main-panel">
                 <h1>Текстуры для Майнкрафт</h1>
                 <p class="noise">Обновите графику с помощью текстур: реалистичные, пиксельные или фантастические – выбор за вами!</p>
-                <p>Топ 100 текстур. Фильтры по разрешению и стилю.</p>
                 <div class="mod-grid">
-                    <div class="mod-card">
+                    <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/dramatic-skys')">
                         <img src="https://modrinth.com/resourcepack/dramatic-skys/asset/icon.png" alt="Texture Pack" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Texture+Pack'">
                         <div class="mod-title">Dramatic Skys</div>
                         <div class="mod-desc">HD облака и освещение для любого пака.</div>
                         <div class="rating">★★★★★</div>
                     </div>
-                    <div class="mod-card">
-                        <img src="https://texture-packs.com/wp-content/uploads/2020/02/Pixlli-Texture-Pack-1.15.2.png" alt="Pixel Art Pack" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Pixel+Art'">
-                        <div class="mod-title">Pixlli</div>
-                        <div class="mod-desc">Классический стиль 128x для ностальгии.</div>
+                    <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/icons')">
+                        <img src="https://modrinth.com/resourcepack/icons/asset/icon.png" alt="Pixel Art Pack" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Pixel+Art'">
+                        <div class="mod-title">Icons</div>
+                        <div class="mod-desc">Иконки для меню и предметов.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
-                    <div class="mod-card">
+                    <div class="mod-card" onclick="window.open('https://texture-packs.com/resourcepack/xalis-enchanted-books-texture-pack/')">
                         <img src="https://texture-packs.com/wp-content/uploads/2020/02/Xalis-Enchanted-Books-Texture-Pack-1.15.2.png" alt="Realistic Textures" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Realistic'">
                         <div class="mod-title">Xalis Enchanted Books</div>
                         <div class="mod-desc">512x для ультра-реализма книг.</div>
@@ -716,21 +719,20 @@
             <div class="main-panel">
                 <h1>Скины для Майнкрафт</h1>
                 <p class="noise">Персонализируйте персонажа: от супергероев до монстров – тысячи вариантов!</p>
-                <p>Поиск скинов по персонажам.</p>
                 <div class="mod-grid">
-                    <div class="mod-card">
+                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/steve')">
                         <img src="https://www.minecraftskins.com/search/skin/steve/1/skin.png" alt="Steve Skin" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Steve+Skin'">
                         <div class="mod-title">Steve Skin</div>
                         <div class="mod-desc">Классический скин с современным твистом.</div>
                         <div class="rating">★★★★★</div>
                     </div>
-                    <div class="mod-card">
+                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/warrior')">
                         <img src="https://www.minecraftskins.com/search/skin/warrior/1/skin.png" alt="Warrior Skin" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Warrior'">
                         <div class="mod-title">Warrior Skin</div>
                         <div class="mod-desc">Броня и меч для PvP.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
-                    <div class="mod-card">
+                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/princess')">
                         <img src="https://www.minecraftskins.com/search/skin/princess/1/skin.png" alt="Princess Skin" onerror="this.src='https://via.placeholder.com/150x120/1a1a2e/ffffff?text=Princess'">
                         <div class="mod-title">Princess Skin</div>
                         <div class="mod-desc">Королевский вид для ролевых игр.</div>
@@ -747,28 +749,28 @@
                 <h1>Сервера Майнкрафт</h1>
                 <p class="noise">Присоединяйтесь к сообществу: PvP, выживание, креатив – сервера на любой вкус!</p>
                 <ul class="server-list">
-                    <li class="server-item">
-                        <img src="https://via.placeholder.com/50/3498db/ffffff?text=H" alt="Hypixel" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Hypixel'">
+                    <li class="server-item" onclick="copyIP('mc.hypixel.net')">
+                        <img src="https://static.wikia.nocookie.net/hypixel/images/6/6b/Hypixel_Logo.png/revision/latest?cb=20180407191737" alt="Hypixel" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Hypixel'">
                         <div class="server-info"><span>Hypixel - IP: mc.hypixel.net</span></div>
                         <div class="server-online">Онлайн: 100,000/150,000</div>
                     </li>
-                    <li class="server-item">
-                        <img src="https://via.placeholder.com/50/9b59b6/ffffff?text=M" alt="Manacube" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Manacube'">
+                    <li class="server-item" onclick="copyIP('play.manacube.com')">
+                        <img src="https://manacube.com/assets/logo.png" alt="Manacube" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Manacube'">
                         <div class="server-info"><span>Manacube - IP: play.manacube.com</span></div>
                         <div class="server-online">Онлайн: 15,000/20,000</div>
                     </li>
-                    <li class="server-item">
-                        <img src="https://via.placeholder.com/50/e74c3c/ffffff?text=MC" alt="MC Central" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=MC+Central'">
+                    <li class="server-item" onclick="copyIP('mccentral.org')">
+                        <img src="https://mccentral.org/favicon.ico" alt="MC Central" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=MC+Central'">
                         <div class="server-info"><span>MC Central - IP: mccentral.org</span></div>
                         <div class="server-online">Онлайн: 8,000/12,000</div>
                     </li>
-                    <li class="server-item">
-                        <img src="https://via.placeholder.com/50/2ecc71/ffffff?text=W" alt="Wynncraft" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Wynncraft'">
+                    <li class="server-item" onclick="copyIP('play.wynncraft.com')">
+                        <img src="https://wynncraft.com/img/logo.png" alt="Wynncraft" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=Wynncraft'">
                         <div class="server-info"><span>Wynncraft - IP: play.wynncraft.com</span></div>
                         <div class="server-online">Онлайн: 5,000/7,000</div>
                     </li>
-                    <li class="server-item">
-                        <img src="https://via.placeholder.com/50/f39c12/ffffff?text=P" alt="PikaNetwork" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=PikaNetwork'">
+                    <li class="server-item" onclick="copyIP('play.pika-network.net')">
+                        <img src="https://pika-network.net/favicon.ico" alt="PikaNetwork" onerror="this.src='https://via.placeholder.com/50/1a1a2e/ffffff?text=PikaNetwork'">
                         <div class="server-info"><span>PikaNetwork - IP: play.pika-network.net</span></div>
                         <div class="server-online">Онлайн: 10,000/15,000</div>
                     </li>
@@ -782,24 +784,24 @@
             <div class="main-panel">
                 <h1>Форум</h1>
                 <p class="noise">Обсуждайте моды, делитесь билдами и находите друзей для совместной игры!</p>
-                <div class="forum-thread">
+                <div class="forum-thread" onclick="alert('Открыть тему...')">
                     <h3>SERVER MINECRAFT RANDOM LAND</h3>
                     <p>Просмотров: 167 | Ответов: 1</p>
                     <p><strong>User1:</strong> Отличный сервер, много лута!</p>
                     <p><strong>User2:</strong> Да, но лагов многовато...</p>
                 </div>
-                <div class="forum-thread">
+                <div class="forum-thread" onclick="alert('Открыть тему...')">
                     <h3>Помогите с модом OptiFine</h3>
                     <p>Просмотров: 89 | Ответов: 2</p>
                     <p><strong>User3:</strong> Не устанавливается, что делать?</p>
                     <p><strong>User4:</strong> Проверь версию игры, нужна 1.21.1.</p>
                 </div>
-                <div class="forum-thread">
+                <div class="forum-thread" onclick="alert('Открыть тему...')">
                     <h3>Ищу напарника для игры</h3>
                     <p>Просмотров: 45 | Ответов: 0</p>
                     <p><strong>User5:</strong> Играю на 1.20.1, пишите!</p>
                 </div>
-                <div class="forum-thread">
+                <div class="forum-thread" onclick="alert('Открыть тему...')">
                     <h3>Обновление текстур</h3>
                     <p>Просмотров: 120 | Ответов: 3</p>
                     <p><strong>User6:</strong> Новая 512x текстура топ!</p>
@@ -827,7 +829,7 @@
             <div class="main-panel">
                 <h1>Аккаунт</h1>
                 <p class="noise">Управляйте профилем, просматривайте статистику и делитесь достижениями!</p>
-                <img src="https://www.minecraftskins.com/search/skin/user/1/skin.png" alt="User Avatar" class="avatar">
+                <canvas id="avatar" class="avatar"></canvas>
                 <h2>Добро пожаловать, Майнер!</h2>
                 <p>Уровень: 42 | Присоединился: Январь 2024</p>
                 <div class="stats">
@@ -845,7 +847,7 @@
                     </div>
                 </div>
                 <p>Настройки профиля, избранные моды и история скачиваний.</p>
-                <button class="action-btn">Редактировать профиль</button>
+                <button class="action-btn" onclick="editProfile()">Редактировать профиль</button>
                 <p class="noise">Подсказка: Добавьте аватарку для персонализации!</p>
             </div>
         </div>
@@ -874,34 +876,42 @@
         </div>
         <button onclick="closeTopModal()" class="action-btn">Закрыть</button>
     </div>
+    <div id="profile-modal">
+        <h3>Редактировать профиль</h3>
+        <p>Здесь вы можете изменить имя, аватар и другие настройки.</p>
+        <button onclick="closeProfileModal()" class="action-btn">Сохранить</button>
+    </div>
 
     <script>
         let currentPage = 1;
         let modsPerPage = 6;
         let currentFilter = { version: 'all', theme: 'all', loader: 'all', sort: 'popular' };
         let allMods = [
-            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png" },
-            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★☆☆", theme: "decor", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items/images" },
-            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/littlepictureframes/asset/icon.png" },
-            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings/images" },
-            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★☆☆", theme: "decor", loader: "forge", img: "https://www.curseforge.com/minecraft/mc-mods/signpicture/images" },
-            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/placeholdermaker/asset/icon.png" },
-            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★☆☆", theme: "adventure", loader: "fabric", img: "https://www.spigotmc.org/proxy.php?image=http%3A%2F%2Fwww.spigotmc.org%2Fdata%2Fresources%2Ficons%2F6245.jpg" },
-            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-1.jpg" },
-            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-biomes-oplus-mods.jpg" },
-            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-3.jpg" },
-            { id: 11, title: "OptiFine", desc: "Улучшение графики и FPS.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-5.jpg" },
-            { id: 12, title: "JourneyMap", desc: "Карта мира в реальном времени.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg" }
+            { id: 1, title: "Villager Cleric House", desc: "Дом священника, спавнится в полях, много лута.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png", link: "https://modrinth.com/mod/placeholder-api" },
+            { id: 2, title: "A Man With Plushies", desc: "Добавляет плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★☆☆", theme: "decor", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items/images", link: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items" },
+            { id: 3, title: "Incapacitated", desc: "Система воскрешения как в Payday 2.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/littlepictureframes/asset/icon.png", link: "https://modrinth.com/mod/littlepictureframes" },
+            { id: 4, title: "Apple Crates", desc: "Ящики для хранения и торговли.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings/images", link: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings" },
+            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★☆☆", theme: "decor", loader: "forge", img: "https://www.curseforge.com/minecraft/mc-mods/signpicture/images", link: "https://www.curseforge.com/minecraft/mc-mods/signpicture" },
+            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/placeholdermaker/asset/icon.png", link: "https://modrinth.com/mod/placeholdermaker" },
+            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★☆☆", theme: "adventure", loader: "fabric", img: "https://www.spigotmc.org/proxy.php?image=http%3A%2F%2Fwww.spigotmc.org%2Fdata%2Fresources%2Ficons%2F6245.jpg", link: "#" },
+            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид от Тревора Хендерсона.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-1.jpg", link: "#" },
+            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-biomes-oplus-mods.jpg", link: "#" },
+            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость до 1200.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-3.jpg", link: "#" },
+            { id: 11, title: "OptiFine", desc: "Улучшение графики и FPS.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://optifine.net/favicon.ico", link: "https://optifine.net" },
+            { id: 12, title: "JourneyMap", desc: "Карта мира в реальном времени.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg", link: "#" },
+            { id: 13, title: "Sodium", desc: "Мод для повышения FPS на Fabric.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/sodium/asset/icon.png", link: "https://modrinth.com/mod/sodium" },
+            { id: 14, title: "Iris Shaders", desc: "Поддержка шейдеров для Sodium.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/iris/asset/icon.png", link: "https://modrinth.com/mod/iris" },
+            { id: 15, title: "Fabric API", desc: "Библиотека для Fabric модов.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/fabric-api/asset/icon.png", link: "https://modrinth.com/mod/fabric-api" }
         ];
 
         const topModsList = [
-            { title: "1. OptiFine - Улучшение FPS", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-5.jpg" },
-            { title: "2. JourneyMap - Карта мира", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg" },
-            { title: "3. Villager Cleric House - Дом священника", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png" },
-            { title: "4. A Man With Plushies - Плюшевые игрушки", img: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items/images" },
-            { title: "5. Incapacitated - Система воскрешения", img: "https://modrinth.com/mod/littlepictureframes/asset/icon.png" },
-            { title: "6. Apple Crates - Ящики для хранения", img: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings/images" },
-            // Добавьте больше по необходимости, до 50
+            { title: "1. OptiFine - Улучшение FPS", img: "https://optifine.net/favicon.ico", link: "https://optifine.net" },
+            { title: "2. JourneyMap - Карта мира", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg", link: "#" },
+            { title: "3. Sodium - Производительность", img: "https://modrinth.com/mod/sodium/asset/icon.png", link: "https://modrinth.com/mod/sodium" },
+            { title: "4. Iris - Шейдеры", img: "https://modrinth.com/mod/iris/asset/icon.png", link: "https://modrinth.com/mod/iris" },
+            { title: "5. Fabric API - Библиотека", img: "https://modrinth.com/mod/fabric-api/asset/icon.png", link: "https://modrinth.com/mod/fabric-api" },
+            { title: "6. Villager Cleric House - Дом священника", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png", link: "https://modrinth.com/mod/placeholder-api" },
+            // Добавьте больше по необходимости
         ];
 
         Telegram.WebApp.ready();
@@ -913,6 +923,7 @@
             document.querySelectorAll('header button').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             if (section === 'mods') filterMods();
+            if (section === 'account') drawAvatar();
         }
 
         function filterVersions(version) {
@@ -981,7 +992,7 @@
                     <div class="mod-desc">${mod.desc.substring(0, 80)}...</div>
                     <div class="rating">${mod.rating}</div>
                 `;
-                card.onclick = () => showDetails(mod.id);
+                card.onclick = () => showDetails(mod.id, mod.link);
                 grid.appendChild(card);
             });
         }
@@ -1001,7 +1012,7 @@
             }
         }
 
-        function showDetails(id) {
+        function showDetails(id, link) {
             const mod = allMods.find(m => m.id === id);
             document.getElementById('mod-title').textContent = mod.title;
             document.getElementById('mod-img').src = mod.img;
@@ -1010,6 +1021,8 @@
             document.getElementById('mod-versions').textContent = `Версии: ${mod.versions.replace(/,/g, ', ')}`;
             document.getElementById('mod-rating').textContent = `Рейтинг: ${mod.rating}`;
             switchSection('details');
+            // Add download or link
+            setTimeout(() => window.open(link, '_blank'), 1000); // Auto open after show
         }
 
         function backToList() {
@@ -1028,7 +1041,7 @@
         function showTopMods() {
             const list = document.getElementById('top-mods-list');
             list.innerHTML = topModsList.map(item => `
-                <div class="top-mod-item">
+                <div class="top-mod-item" onclick="window.open('${item.link}', '_blank')">
                     <img src="${item.img}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/150/1a1a2e/ffffff?text=Mod'">
                     <div>${item.title}</div>
                 </div>
@@ -1040,13 +1053,41 @@
             document.getElementById('top-modal').style.display = 'none';
         }
 
-        function simulateDownload() {
-            window.open('https://www.mediafire.com/file/example/setup-mode-1.21.7.exe/download', '_blank');
+        function copyIP(ip) {
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('IP скопирован в буфер обмена: ' + ip);
+            });
+        }
+
+        function editProfile() {
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+            alert('Профиль сохранен!');
+        }
+
+        function drawAvatar() {
+            const canvas = document.getElementById('avatar');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+            gradient.addColorStop(0, '#3498db');
+            gradient.addColorStop(1, '#2980b9');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 100, 100);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 48px Open Sans';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('М', 50, 50);
         }
 
         // Инициализация
         window.onload = function() {
             filterMods();
+            drawAvatar();
         };
     </script>
 </body>

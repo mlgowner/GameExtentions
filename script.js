@@ -182,14 +182,6 @@ function closeTopModal() {
     document.getElementById('top-modal').style.display = 'none';
 }
 
-function editProfile() {
-    document.getElementById('profile-modal').style.display = 'block';
-}
-
-function closeProfileModal() {
-    document.getElementById('profile-modal').style.display = 'none';
-}
-
 function copyIP(ip) {
     navigator.clipboard.writeText(ip).then(() => alert(`IP ${ip} скопирован!`));
 }

@@ -5,7 +5,7 @@
 }
 body {
     font-family: 'Open Sans', 'Segoe UI', Arial, sans-serif;
-    background: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6b/Plains_Water.png') no-repeat center/cover fixed, #2c2f33;
+    background: url('https://files.vgtimes.ru/gallery/main/186/3159328782_huge_2023-09-07_160612.webp') no-repeat center/cover fixed;
     color: #ffffff;
     margin: 0;
     padding: 0;
@@ -92,6 +92,24 @@ header button:hover, header button.active {
 .main-panel:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(58, 122, 180, 0.4);
+}
+#home-section .main-panel:nth-child(2) {
+    background-image: url('https://files.vgtimes.ru/gallery/main/186/3916146659_huge_2023-09-07_160901.webp');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+}
+#home-section .main-panel:nth-child(3) {
+    background-image: url('https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+}
+#home-section .main-panel:nth-child(4) {
+    background-image: url('https://files.vgtimes.ru/gallery/main/186/1648813797_cherryblossom_1280x720_5.webp');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
 }
 .filters {
     display: grid;

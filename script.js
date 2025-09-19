@@ -2,30 +2,30 @@ let currentPage = 1;
 let modsPerPage = 6;
 let currentFilter = { version: 'all', theme: 'all', loader: 'all', sort: 'popular' };
 let allMods = [
-    { id: 1, title: "Villager Cleric House", desc: "Дом священника с лутом.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/54/Cobblestone_JE4_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" },
-    { id: 2, title: "A Man With Plushies", desc: "Плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★★☆", theme: "decor", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Grass_Block_JE7_BE5.png", link: "https://www.curseforge.com/minecraft/mc-mods/plushies" },
-    { id: 3, title: "Incapacitated", desc: "Система воскрешения.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Stone_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/incapacitated" },
-    { id: 4, title: "Apple Crates", desc: "Ящики для хранения.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Dirt_JE2_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/apple-crates" },
-    { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "decor", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6b/Sand_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/natures-delight" },
-    { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/54/Cobblestone_JE4_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/conveyor-belts" },
-    { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★★★", theme: "adventure", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Grass_Block_JE7_BE5.png", link: "https://www.curseforge.com/minecraft/mc-mods/dive-in" },
-    { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Stone_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/country-road" },
-    { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Dirt_JE2_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/pagoda-houses" },
-    { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6b/Sand_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/brightness-plus" },
-    { id: 11, title: "OptiFine", desc: "Улучшение графики.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/54/Cobblestone_JE4_BE2.png", link: "https://optifine.net" },
-    { id: 12, title: "JourneyMap", desc: "Карта мира.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Grass_Block_JE7_BE5.png", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
-    { id: 13, title: "Sodium", desc: "Повышение FPS.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Stone_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
-    { id: 14, title: "Iris Shaders", desc: "Поддержка шейдеров.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Dirt_JE2_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
-    { id: 15, title: "Fabric API", desc: "Библиотека для модов.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6b/Sand_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" }
+    { id: 1, title: "Villager Cleric House", desc: "Дом священника с лутом.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7e0d0e6f8e8e6e6e6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" },
+    { id: 2, title: "A Man With Plushies", desc: "Плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★★☆", theme: "decor", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/plushies" },
+    { id: 3, title: "Incapacitated", desc: "Система воскрешения.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/incapacitated" },
+    { id: 4, title: "Apple Crates", desc: "Ящики для хранения.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/apple-crates" },
+    { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "decor", loader: "forge", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/natures-delight" },
+    { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/conveyor-belts" },
+    { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★★★", theme: "adventure", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/dive-in" },
+    { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/country-road" },
+    { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/pagoda-houses" },
+    { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/brightness-plus" },
+    { id: 11, title: "OptiFine", desc: "Улучшение графики.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://optifine.net" },
+    { id: 12, title: "JourneyMap", desc: "Карта мира.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
+    { id: 13, title: "Sodium", desc: "Повышение FPS.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
+    { id: 14, title: "Iris Shaders", desc: "Поддержка шейдеров.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
+    { id: 15, title: "Fabric API", desc: "Библиотека для модов.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" }
 ];
 
 const topModsList = [
-    { title: "1. OptiFine - Улучшение FPS", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/54/Cobblestone_JE4_BE2.png", link: "https://optifine.net" },
-    { title: "2. JourneyMap - Карта мира", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Grass_Block_JE7_BE5.png", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
-    { title: "3. Sodium - Производительность", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Stone_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
-    { title: "4. Iris - Шейдеры", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Dirt_JE2_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
-    { title: "5. Fabric API - Библиотека", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6b/Sand_JE5_BE3.png", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" },
-    { title: "6. Villager Cleric House - Дом священника", img: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/54/Cobblestone_JE4_BE2.png", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" }
+    { title: "1. OptiFine - Улучшение FPS", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://optifine.net" },
+    { title: "2. JourneyMap - Карта мира", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
+    { title: "3. Sodium - Производительность", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
+    { title: "4. Iris - Шейдеры", img: "https://vgtimes.ru/upload/iblock/6b1/6b1b5e6b8e25b7е0d0е6f8е8е6е6е6е6/minecraft-1-20-5-snapshot-23w45а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
+    { title: "5. Fabric API - Библиотека", img: "https://vgtimes.ru/upload/iblock/1а8/1а8а1а8а1а8а1а8/minecraft-1-21-2-snapshot-24w18а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" },
+    { title: "6. Villager Cleric House - Дом священника", img: "https://vgtimes.ru/upload/iblock/9f9/9f9ф9ф9ф9ф9/minecraft-1-20-4-snapshot-23w40а-1.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" }
 ];
 
 function switchSection(sectionId) {
@@ -180,6 +180,14 @@ function showTopMods() {
 
 function closeTopModal() {
     document.getElementById('top-modal').style.display = 'none';
+}
+
+function editProfile() {
+    document.getElementById('profile-modal').style.display = 'block';
+}
+
+function closeProfileModal() {
+    document.getElementById('profile-modal').style.display = 'none';
 }
 
 function copyIP(ip) {

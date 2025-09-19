@@ -15,8 +15,8 @@
         }
         body {
             font-family: 'Open Sans', 'Segoe UI', Arial, sans-serif;
-            background: url('https://www.minecraft.net/content/dam/games/minecraft/screenshots/1-21-update.jpg') no-repeat center/cover fixed, #f9f9f9;
-            color: #333;
+            background: url('https://www.minecraft.net/content/dam/games/minecraft/screenshots/1-21-update.jpg') no-repeat center/cover fixed, #2c2f33;
+            color: #ffffff;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -24,6 +24,12 @@
         }
         h1, h2, h3, p {
             margin-bottom: 1.5rem;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 20px;
         }
         header {
             background: #4682b4;
@@ -35,7 +41,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
             width: 100%;
             min-height: 60px;
         }
@@ -48,7 +54,8 @@
             margin: 2px;
             border-radius: 25px;
             transition: all 0.4s ease;
-            font-size: 12px;
+            font-size: 14px;
+            font-weight: bold;
             flex: 1 1 auto;
             max-width: 120px;
             min-width: 60px;
@@ -60,7 +67,7 @@
         header button:hover, header button.active {
             background: #3a7ab4;
             transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 4px 15px rgba(58, 122, 180, 0.3);
+            box-shadow: 0 4px 15px rgba(58, 122, 180, 0.5);
         }
         .container {
             max-width: 100%;
@@ -68,39 +75,33 @@
             padding: 10px;
         }
         .hero {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(44, 47, 51, 0.8);
             height: 150px;
             border-radius: 15px;
             margin-bottom: 20px;
             position: relative;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .hero-content {
             text-align: center;
-            color: #333;
+            color: #ffffff;
             font-size: 24px;
         }
-        h1, h2, h3 {
-            text-align: center;
-            font-weight: 300;
-            color: #333;
-            font-size: 28px;
-        }
         .main-panel {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(44, 47, 51, 0.9);
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             transition: all 0.4s ease;
             text-align: center;
         }
         .main-panel:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(58, 122, 180, 0.2);
+            box-shadow: 0 12px 40px rgba(58, 122, 180, 0.4);
         }
         .filters {
             display: grid;
@@ -109,15 +110,15 @@
             margin-bottom: 20px;
         }
         .filter-group {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             padding: 15px;
             border-radius: 12px;
         }
         .filter-group h3 {
             margin: 0 0 10px 0;
-            color: #333;
-            font-size: 18px;
-            font-weight: 300;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
             text-align: center;
         }
         .version-filters, .loader-filters, .sort-filters {
@@ -139,7 +140,7 @@
         .filter-btn:hover, .filter-btn.active {
             background: #3a7ab4;
             transform: scale(1.05);
-            box-shadow: 0 3px 10px rgba(58, 122, 180, 0.2);
+            box-shadow: 0 3px 10px rgba(58, 122, 180, 0.4);
         }
         .theme-filters {
             display: grid;
@@ -161,15 +162,15 @@
         .theme-btn:hover, .theme-btn.active {
             background: #3a7ab4;
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 4px 12px rgba(58, 122, 180, 0.3);
+            box-shadow: 0 4px 12px rgba(58, 122, 180, 0.4);
         }
         .search-bar {
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ddd;
+            background: rgba(44, 47, 51, 0.95);
+            border: 1px solid #555;
             border-radius: 25px;
-            color: #333;
+            color: #ffffff;
             font-size: 14px;
             margin-bottom: 20px;
             transition: all 0.4s ease;
@@ -178,7 +179,7 @@
         .search-bar:focus {
             outline: none;
             border-color: #3a7ab4;
-            box-shadow: 0 0 15px rgba(58, 122, 180, 0.2);
+            box-shadow: 0 0 15px rgba(58, 122, 180, 0.4);
         }
         .mod-grid {
             display: grid;
@@ -187,17 +188,17 @@
             margin-bottom: 20px;
         }
         .mod-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             border-radius: 12px;
             padding: 15px;
             text-align: center;
             transition: all 0.4s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             cursor: pointer;
         }
         .mod-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(58, 122, 180, 0.3);
+            box-shadow: 0 10px 30px rgba(58, 122, 180, 0.4);
         }
         .mod-card img {
             width: 100%;
@@ -208,19 +209,19 @@
         }
         .mod-title {
             font-weight: 400;
-            color: #333;
+            color: #ffffff;
             margin-bottom: 5px;
             font-size: 12px;
         }
         .mod-versions {
             font-size: 10px;
-            color: #666;
+            color: #cccccc;
             margin-bottom: 5px;
             font-weight: 300;
         }
         .mod-desc {
             font-size: 11px;
-            color: #666;
+            color: #cccccc;
             margin-bottom: 8px;
             font-weight: 300;
         }
@@ -247,7 +248,7 @@
         .pagination button:hover {
             background: #3a7ab4;
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(58, 122, 180, 0.3);
+            box-shadow: 0 4px 15px rgba(58, 122, 180, 0.4);
         }
         .action-buttons {
             display: flex;
@@ -266,7 +267,7 @@
             transition: all 0.4s ease;
             font-size: 14px;
             font-weight: 300;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             text-decoration: none;
         }
         .action-btn:hover {
@@ -282,11 +283,11 @@
             animation: fadeIn 0.6s ease;
         }
         #details {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(44, 47, 51, 0.9);
             padding: 20px;
             border-radius: 15px;
             margin-top: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
         #details img {
@@ -315,13 +316,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             padding: 20px;
             border-radius: 15px;
             display: none;
             z-index: 1000;
             max-width: 90%;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
             text-align: center;
         }
         #install-modal button, #top-modal button, #profile-modal button {
@@ -344,24 +346,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .forum-thread {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
             transition: all 0.4s ease;
             text-align: center;
             cursor: pointer;
+            color: #ffffff;
         }
         .forum-thread:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(58, 122, 180, 0.2);
+            box-shadow: 0 6px 20px rgba(58, 122, 180, 0.4);
         }
         .server-list {
             list-style: none;
             padding: 0;
         }
         .server-item {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
@@ -371,10 +374,11 @@
             font-size: 12px;
             transition: all 0.4s ease;
             cursor: pointer;
+            color: #ffffff;
         }
         .server-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(58, 122, 180, 0.2);
+            box-shadow: 0 6px 20px rgba(58, 122, 180, 0.4);
         }
         .server-item img {
             width: 50px;
@@ -389,7 +393,7 @@
         }
         .server-online {
             text-align: right;
-            color: #333;
+            color: #ffffff;
             font-weight: 300;
         }
         .avatar {
@@ -406,6 +410,7 @@
             justify-content: space-around;
             margin-top: 1rem;
             flex-wrap: wrap;
+            color: #ffffff;
         }
         .stat {
             text-align: center;
@@ -414,14 +419,14 @@
         .stat h4 {
             margin: 0;
             font-size: 1.2rem;
-            color: #333;
-            font-weight: 300;
+            color: #ffffff;
+            font-weight: bold;
         }
         .stat p {
             margin: 0;
             font-size: 2rem;
             font-weight: 700;
-            color: #333;
+            color: #ffffff;
         }
         .top-mods-list {
             display: grid;
@@ -431,12 +436,14 @@
             text-align: center;
         }
         .top-mod-item {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(44, 47, 51, 0.95);
             border-radius: 12px;
             padding: 15px;
             text-align: center;
             transition: all 0.4s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            cursor: pointer;
         }
         @media (max-width: 600px) {
             .mod-grid {
@@ -452,7 +459,7 @@
             }
             header button {
                 min-width: 80px;
-                font-size: 11px;
+                font-size: 13px;
                 margin: 0 2px;
             }
             .filters {
@@ -534,17 +541,17 @@
                 <div class="main-panel" style="margin-top: 20px;">
                     <h3>Моды</h3>
                     <p>Расширьте игровой опыт с сотнями уникальных модов.</p>
-                    <img src="https://modrinth.com/mod/sodium/asset/icon.png" alt="Пример мода" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;">
+                    <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Modded-Minecraft.jpg" alt="Пример мода" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/300x150/2c2f33/ffffff?text=Mod+Example';">
                 </div>
                 <div class="main-panel" style="margin-top: 20px;">
                     <h3>Текстуры</h3>
                     <p>Измените визуальный стиль игры с текстурами.</p>
-                    <img src="https://modrinth.com/resourcepack/dramatic-skys/asset/icon.png" alt="Пример текстуры" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;">
+                    <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Texture-Pack.jpg" alt="Пример текстуры" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/300x150/2c2f33/ffffff?text=Texture+Example';">
                 </div>
                 <div class="main-panel" style="margin-top: 20px;">
                     <h3>Скины</h3>
                     <p>Создайте уникальный образ персонажа с тысячами скинов.</p>
-                    <img src="https://www.minecraftskins.com/search/skin/steve/1/skin.png" alt="Пример скина" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;">
+                    <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Skin-Customization.jpg" alt="Пример скина" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/300x150/2c2f33/ffffff?text=Skin+Example';">
                 </div>
             </div>
         </div>
@@ -577,7 +584,6 @@
                         </div>
                     </div>
                     <div class="filter-group">
-                        <h3>Тематика:</h3>
                         <div class="theme-filters">
                             <button class="theme-btn active" onclick="filterThemes('all')" title="Все"><i class="fas fa-star"></i></button>
                             <button class="theme-btn" onclick="filterThemes('weapons')" title="Оружие"><i class="fas fa-sword"></i></button>
@@ -626,23 +632,23 @@
             <div class="main-panel">
                 <h1>Текстуры для Майнкрафт</h1>
                 <div class="mod-grid">
-                    <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/dramatic-skys')">
-                        <img src="https://modrinth.com/resourcepack/dramatic-skys/asset/icon.png" alt="Dramatic Skys">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Marketplace-Texture-Pack.jpg" alt="Dramatic Skys" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Dramatic+Skys';">
                         <div class="mod-title">Dramatic Skys</div>
                         <div class="mod-desc">HD облака и освещение.</div>
                         <div class="rating">★★★★★</div>
                     </div>
-                    <div class="mod-card" onclick="window.open('https://modrinth.com/resourcepack/icons')">
-                        <img src="https://modrinth.com/resourcepack/icons/asset/icon.png" alt="Icons">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Texture-Pack-Example.jpg" alt="Icons" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Icons';">
                         <div class="mod-title">Icons</div>
                         <div class="mod-desc">Иконки для меню.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
-                    <div class="mod-card" onclick="window.open('https://texture-packs.com/resourcepack/xalis-enchanted-books-texture-pack/')">
-                        <img src="https://texture-packs.com/wp-content/uploads/2020/02/Xalis-Enchanted-Books-Texture-Pack-1.15.2.png" alt="Xalis Enchanted Books">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Custom-Texture-Pack.jpg" alt="Xalis Enchanted Books" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Xalis+Books';">
                         <div class="mod-title">Xalis Enchanted Books</div>
                         <div class="mod-desc">512x для реализма.</div>
-                        <div class="rating">★★★☆☆</div>
+                        <div class="rating">★★★★★</div>
                     </div>
                 </div>
             </div>
@@ -652,23 +658,23 @@
             <div class="main-panel">
                 <h1>Скины для Майнкрафт</h1>
                 <div class="mod-grid">
-                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/steve')">
-                        <img src="https://www.minecraftskins.com/search/skin/steve/1/skin.png" alt="Steve Skin">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Steve-Skin.jpg" alt="Steve Skin" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Steve+Skin';">
                         <div class="mod-title">Steve Skin</div>
                         <div class="mod-desc">Классический скин.</div>
                         <div class="rating">★★★★★</div>
                     </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/warrior')">
-                        <img src="https://www.minecraftskins.com/search/skin/warrior/1/skin.png" alt="Warrior Skin">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Warrior-Skin.jpg" alt="Warrior Skin" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Warrior+Skin';">
                         <div class="mod-title">Warrior Skin</div>
                         <div class="mod-desc">Броня для PvP.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraftskins.com/search/skin/princess')">
-                        <img src="https://www.minecraftskins.com/search/skin/princess/1/skin.png" alt="Princess Skin">
+                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
+                        <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Princess-Skin.jpg" alt="Princess Skin" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Princess+Skin';">
                         <div class="mod-title">Princess Skin</div>
                         <div class="mod-desc">Королевский стиль.</div>
-                        <div class="rating">★★★☆☆</div>
+                        <div class="rating">★★★★★</div>
                     </div>
                 </div>
             </div>
@@ -679,29 +685,29 @@
                 <h1>Сервера Майнкрафт</h1>
                 <ul class="server-list">
                     <li class="server-item" onclick="copyIP('mc.hypixel.net')">
-                        <img src="https://static.wikia.nocookie.net/hypixel/images/6/6b/Hypixel_Logo.png" alt="Hypixel">
+                        <img src="https://www.hypixel.net/styles/hypixel-uix/hypixel-logo.png" alt="Hypixel" onerror="this.src='https://via.placeholder.com/50x50/2c2f33/ffffff?text=H';">
                         <div class="server-info"><span>Hypixel - IP: mc.hypixel.net</span></div>
-                        <div class="server-online">Онлайн: 100,000/150,000</div>
+                        <div class="server-online">Онлайн: 123456/150000</div>
                     </li>
                     <li class="server-item" onclick="copyIP('play.manacube.com')">
-                        <img src="https://manacube.com/assets/logo.png" alt="Manacube">
+                        <img src="https://manacube.com/assets/images/logo.png" alt="Manacube" onerror="this.src='https://via.placeholder.com/50x50/2c2f33/ffffff?text=M';">
                         <div class="server-info"><span>Manacube - IP: play.manacube.com</span></div>
-                        <div class="server-online">Онлайн: 15,000/20,000</div>
+                        <div class="server-online">Онлайн: 6367/20000</div>
                     </li>
                     <li class="server-item" onclick="copyIP('mccentral.org')">
-                        <img src="https://mccentral.org/favicon.ico" alt="MC Central">
+                        <img src="https://www.mccentral.org/assets/images/logo.png" alt="MC Central" onerror="this.src='https://via.placeholder.com/50x50/2c2f33/ffffff?text=MC';">
                         <div class="server-info"><span>MC Central - IP: mccentral.org</span></div>
-                        <div class="server-online">Онлайн: 8,000/12,000</div>
+                        <div class="server-online">Онлайн: 7890/12000</div>
                     </li>
                     <li class="server-item" onclick="copyIP('play.wynncraft.com')">
-                        <img src="https://wynncraft.com/img/logo.png" alt="Wynncraft">
+                        <img src="https://www.wynncraft.com/images/logo.png" alt="Wynncraft" onerror="this.src='https://via.placeholder.com/50x50/2c2f33/ffffff?text=W';">
                         <div class="server-info"><span>Wynncraft - IP: play.wynncraft.com</span></div>
-                        <div class="server-online">Онлайн: 5,000/7,000</div>
+                        <div class="server-online">Онлайн: 4567/7000</div>
                     </li>
                     <li class="server-item" onclick="copyIP('play.pika-network.net')">
-                        <img src="https://pika-network.net/favicon.ico" alt="PikaNetwork">
+                        <img src="https://pika-network.net/assets/images/logo.png" alt="PikaNetwork" onerror="this.src='https://via.placeholder.com/50x50/2c2f33/ffffff?text=P';">
                         <div class="server-info"><span>PikaNetwork - IP: play.pika-network.net</span></div>
-                        <div class="server-online">Онлайн: 10,000/15,000</div>
+                        <div class="server-online">Онлайн: 8901/15000</div>
                     </li>
                 </ul>
             </div>
@@ -741,7 +747,7 @@
             <div class="main-panel">
                 <h1>Скачать Minecraft</h1>
                 <p>Инструкции по скачиванию и установке.</p>
-                <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Launcher_Icon.jpg" alt="Minecraft Launcher" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Launcher-Icon.jpg" alt="Minecraft Launcher" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/300x150/2c2f33/ffffff?text=Launcher';">
                 <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="action-btn" target="_blank">Скачать Game Extensions.zip (Пароль: 3007)</a>
                 <p>Скачивание начнется в новой вкладке. Пароль для архива: 3007.</p>
             </div>
@@ -750,7 +756,7 @@
         <div id="account-section" class="section">
             <div class="main-panel">
                 <h1>Аккаунт</h1>
-                <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Steve.png" alt="Аватар" class="avatar">
+                <img src="https://www.minecraft.net/content/dam/games/minecraft/screenshots/Steve.png" alt="Аватар" class="avatar" onerror="this.src='https://via.placeholder.com/120x120/2c2f33/ffffff?text=Avatar';">
                 <h2>Добро пожаловать, Майнер!</h2>
                 <p>Уровень: 42 | Присоединился: Январь 2024</p>
                 <div class="stats">
@@ -774,7 +780,7 @@
 
         <div id="details" class="section">
             <h2 id="mod-title"></h2>
-            <img id="mod-img" src="" style="width: 100%; max-width: 250px; border-radius: 12px;">
+            <img id="mod-img" src="" style="width: 100%; max-width: 250px; border-radius: 12px;" onerror="this.src='https://via.placeholder.com/250x250/2c2f33/ffffff?text=Mod';">
             <p id="mod-desc"></p>
             <p id="mod-versions"></p>
             <p id="mod-rating"></p>
@@ -804,30 +810,30 @@
         let modsPerPage = 6;
         let currentFilter = { version: 'all', theme: 'all', loader: 'all', sort: 'popular' };
         let allMods = [
-            { id: 1, title: "Villager Cleric House", desc: "Дом священника с лутом.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png", link: "https://modrinth.com/mod/placeholder-api" },
-            { id: 2, title: "A Man With Plushies", desc: "Плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★☆☆", theme: "decor", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items/images", link: "https://www.curseforge.com/minecraft/mc-mods/placeholder-items" },
-            { id: 3, title: "Incapacitated", desc: "Система воскрешения.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://modrinth.com/mod/littlepictureframes/asset/icon.png", link: "https://modrinth.com/mod/littlepictureframes" },
-            { id: 4, title: "Apple Crates", desc: "Ящики для хранения.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings/images", link: "https://www.curseforge.com/minecraft/mc-mods/immersive-paintings" },
-            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★☆☆", theme: "decor", loader: "forge", img: "https://www.curseforge.com/minecraft/mc-mods/signpicture/images", link: "https://www.curseforge.com/minecraft/mc-mods/signpicture" },
-            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/placeholdermaker/asset/icon.png", link: "https://modrinth.com/mod/placeholdermaker" },
-            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★☆☆", theme: "adventure", loader: "fabric", img: "https://www.spigotmc.org/proxy.php?image=http%3A%2F%2Fwww.spigotmc.org%2Fdata%2Fresources%2Ficons%2F6245.jpg", link: "#" },
-            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-1.jpg", link: "#" },
-            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★☆☆", theme: "adventure", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-biomes-oplus-mods.jpg", link: "#" },
-            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.pcgamesn.com/wp-content/uploads/2021/10/Best-Minecraft-mods-image-3.jpg", link: "#" },
-            { id: 11, title: "OptiFine", desc: "Улучшение графики.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://optifine.net/favicon.ico", link: "https://optifine.net" },
-            { id: 12, title: "JourneyMap", desc: "Карта мира.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg", link: "#" },
-            { id: 13, title: "Sodium", desc: "Повышение FPS.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/sodium/asset/icon.png", link: "https://modrinth.com/mod/sodium" },
-            { id: 14, title: "Iris Shaders", desc: "Поддержка шейдеров.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/iris/asset/icon.png", link: "https://modrinth.com/mod/iris" },
-            { id: 15, title: "Fabric API", desc: "Библиотека для модов.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://modrinth.com/mod/fabric-api/asset/icon.png", link: "https://modrinth.com/mod/fabric-api" }
+            { id: 1, title: "Villager Cleric House", desc: "Дом священника с лутом.", versions: "1.21.8,1.21.4,1.21.1,1.20.1,1.16.5", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Modded-Village.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" },
+            { id: 2, title: "A Man With Plushies", desc: "Плюшики из других игр.", versions: "1.21.8,1.21.1,1.20.6,1.19.4,1.18.2", rating: "★★★★☆", theme: "decor", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Decor-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/plushies" },
+            { id: 3, title: "Incapacitated", desc: "Система воскрешения.", versions: "1.21.8,1.21.1,1.20.4,1.19.4", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Adventure-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/incapacitated" },
+            { id: 4, title: "Apple Crates", desc: "Ящики для хранения.", versions: "1.20.1,1.19.2,1.18.2", rating: "★★★★☆", theme: "furniture", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Storage-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/apple-crates" },
+            { id: 5, title: "Nature's Delight", desc: "Совместимость с Nature's Spirit.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "decor", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Nature-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/natures-delight" },
+            { id: 6, title: "Simple Conveyor Belts", desc: "Гибкие конвейерные ленты.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Tech-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/conveyor-belts" },
+            { id: 7, title: "Dive in", desc: "Анимация прыжка в воду.", versions: "1.21.1", rating: "★★★★★", theme: "adventure", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Water-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/dive-in" },
+            { id: 8, title: "Country Road Creature", desc: "Криповый гуманоид.", versions: "1.20.1,1.19.4,1.19.2", rating: "★★★★☆", theme: "mobs", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Mob-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/country-road" },
+            { id: 9, title: "Villager Pagoda House", desc: "Пагода в черешневом биоме.", versions: "1.21.8,1.21.4,1.21.1,1.20.1", rating: "★★★★★", theme: "adventure", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Pagoda-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/pagoda-houses" },
+            { id: 10, title: "Brightness Plus", desc: "Настраиваемая яркость.", versions: "1.21.4,1.21.3,1.21.2,1.21.1,1.21", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Brightness-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/brightness-plus" },
+            { id: 11, title: "OptiFine", desc: "Улучшение графики.", versions: "1.21.1", rating: "★★★★★", theme: "tech", loader: "optifine", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/OptiFine-Mod.jpg", link: "https://optifine.net" },
+            { id: 12, title: "JourneyMap", desc: "Карта мира.", versions: "1.20.1", rating: "★★★★★", theme: "maps", loader: "forge", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Map-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
+            { id: 13, title: "Sodium", desc: "Повышение FPS.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Sodium-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
+            { id: 14, title: "Iris Shaders", desc: "Поддержка шейдеров.", versions: "1.21.1", rating: "★★★★☆", theme: "tech", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Shader-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
+            { id: 15, title: "Fabric API", desc: "Библиотека для модов.", versions: "1.21.1,1.20.1", rating: "★★★★★", theme: "tech", loader: "fabric", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Fabric-API-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" }
         ];
 
         const topModsList = [
-            { title: "1. OptiFine - Улучшение FPS", img: "https://optifine.net/favicon.ico", link: "https://optifine.net" },
-            { title: "2. JourneyMap - Карта мира", img: "https://www.rockpapershotgun.com/wp-content/uploads/2021/03/minecraft-journeymap-mods.jpg", link: "#" },
-            { title: "3. Sodium - Производительность", img: "https://modrinth.com/mod/sodium/asset/icon.png", link: "https://modrinth.com/mod/sodium" },
-            { title: "4. Iris - Шейдеры", img: "https://modrinth.com/mod/iris/asset/icon.png", link: "https://modrinth.com/mod/iris" },
-            { title: "5. Fabric API - Библиотека", img: "https://modrinth.com/mod/fabric-api/asset/icon.png", link: "https://modrinth.com/mod/fabric-api" },
-            { title: "6. Villager Cleric House - Дом священника", img: "https://modrinth.com/mod/placeholder-api/asset/icon.png", link: "https://modrinth.com/mod/placeholder-api" }
+            { title: "1. OptiFine - Улучшение FPS", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/OptiFine-Mod.jpg", link: "https://optifine.net" },
+            { title: "2. JourneyMap - Карта мира", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Map-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/journeymap" },
+            { title: "3. Sodium - Производительность", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Sodium-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/sodium" },
+            { title: "4. Iris - Шейдеры", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Shader-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/iris-shaders" },
+            { title: "5. Fabric API - Библиотека", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Fabric-API-Mod.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/fabric-api" },
+            { title: "6. Villager Cleric House - Дом священника", img: "https://www.minecraft.net/content/dam/games/minecraft/screenshots/Modded-Village.jpg", link: "https://www.curseforge.com/minecraft/mc-mods/villager-houses" }
         ];
 
         function switchSection(section) {
@@ -899,7 +905,7 @@
                 const card = document.createElement('div');
                 card.className = 'mod-card';
                 card.innerHTML = `
-                    <img src="${mod.img}" alt="${mod.title}">
+                    <img src="${mod.img}" alt="${mod.title}" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=${mod.title.substring(0,3)}';">
                     <div class="mod-title">${mod.title}</div>
                     <div class="mod-versions">${mod.versions.replace(/,/g, ' | ')}</div>
                     <div class="mod-desc">${mod.desc.substring(0, 80)}...</div>
@@ -929,6 +935,7 @@
             const mod = allMods.find(m => m.id === id);
             document.getElementById('mod-title').textContent = mod.title;
             document.getElementById('mod-img').src = mod.img;
+            document.getElementById('mod-img').onerror = function() { this.src = 'https://via.placeholder.com/250x250/2c2f33/ffffff?text=' + mod.title.substring(0,3); };
             document.getElementById('mod-desc').textContent = mod.desc;
             document.getElementById('mod-versions').textContent = `Версии: ${mod.versions.replace(/,/g, ', ')}`;
             document.getElementById('mod-rating').textContent = `Рейтинг: ${mod.rating}`;
@@ -953,7 +960,7 @@
             const list = document.getElementById('top-mods-list');
             list.innerHTML = topModsList.map(item => `
                 <div class="top-mod-item" onclick="window.open('${item.link}', '_blank')">
-                    <img src="${item.img}" alt="${item.title}">
+                    <img src="${item.img}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/150x120/2c2f33/ffffff?text=Top+Mod';">
                     <div>${item.title}</div>
                 </div>
             `).join('');

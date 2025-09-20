@@ -1,9 +1,9 @@
 // Импорт Firebase v10
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, GoogleAuthProvider, signInWithPopup, PhoneAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
+const { initializeApp } = window.firebase || {};
+const { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, GoogleAuthProvider, signInWithPopup, PhoneAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } = window.firebase.auth || {};
+const { getDatabase, ref, set, onValue } = window.firebase.database || {};
 
-// Firebase Config
+// Firebase Config (замени на актуальный из Firebase Console)
 const firebaseConfig = {
     apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
     authDomain: "game-extensions.firebaseapp.com",
@@ -379,6 +379,7 @@ function switchSection(sectionId) {
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    console.log('Тема переключена:', document.body.classList.contains('dark-mode') ? 'темная' : 'светлая');
 }
 
 function initParticles() {
@@ -420,7 +421,7 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(18, 52, 0, 0); // 06:52 PM CEST
+    now.setHours(19, 3, 0, 0); // 07:03 PM CEST
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
@@ -441,9 +442,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
 
     // Слушатели для навигации
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchSection(btn.dataset.section));
-    });
+    document.getElementById('nav-home').addEventListener('click', () => switchSection('home'));
+    document.getElementById('nav-places').addEventListener('click', () => switchSection('places'));
+    document.getElementById('nav-scripts').addEventListener('click', () => switchSection('scripts'));
+    document.getElementById('nav-avatars').addEventListener('click', () => switchSection('avatars'));
+    document.getElementById('nav-account').addEventListener('click', () => switchSection('account'));
 
     // Слушатель для смены темы
     document.getElementById('dark-toggle-btn').addEventListener('click', toggleDarkMode);
@@ -461,3 +464,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Слушатель для фильтрации
     document.getElementById('filter-btn').addEventListener('click', filterPlaces);
 });
+
+// Загрузка Firebase (если не подключено)
+if (!window.firebase) {
+    const script = document.createElement('script');
+    script.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    script.onload = () => {
+        const script2 = document.createElement('script');
+        script2.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+        script2.onload = () => {
+            const script3 = document.createElement('script');
+            script3.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
+            script3.onload = () => location.reload();
+            document.head.appendChild(script3);
+        };
+        document.head.appendChild(script2);
+    };
+    document.head.appendChild(script);
+}

@@ -54,6 +54,11 @@ header {
     transition: all 0.3s ease;
 }
 
+body.tg-mini-app header {
+    position: fixed;
+    width: 100%;
+}
+
 body.dark-mode header {
     background: linear-gradient(135deg, #16213E, #0F141F);
     box-shadow: 0 2px 10px rgba(0, 162, 255, 0.3);

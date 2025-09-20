@@ -124,12 +124,12 @@ function saveProfile() {
 }
 
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/Wz9M1zM0k8s" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/5o4bY6X7pH8" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/0i5e9z1G5oM" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/7tY8V3T8l0s" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/-z2zIz4O2LE" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/3s3Z1W0rD0U" }
 ];
 
 let currentPage = 1;
@@ -296,7 +296,7 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(17, 45, 0, 0); // Установка времени на 05:45 PM CEST
+    now.setHours(18, 2, 0, 0); // Установка времени на 06:02 PM CEST
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPlaces();
     updateUserProgress();
     updateProfileTime();
-    setInterval(updateProfileTime, 60000); // Обновление каждую минуту
+    setInterval(updateProfileTime, 60000);
     initParticles();
 
     document.querySelectorAll('.nav-btn').forEach(btn => {

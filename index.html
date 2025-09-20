@@ -4,250 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Extensions - Roblox Mods & Places</title>
-    <link rel="icon" href="https://img.icons8.com/?size=50&id=62158&format=png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
-    <!-- Firebase SDK v10 -->
-    <script type="module">
-        // Импорт Firebase
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-        import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
-
-        // Firebase Config (твои ключи)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
-            authDomain: "game-extensions.firebaseapp.com",
-            projectId: "game-extensions",
-            storageBucket: "game-extensions.firebasestorage.app",
-            messagingSenderId: "68965248738",
-            appId: "1:68965248738:web:725083c3b89069a177b8bb",
-            measurementId: "G-GHBGWQELT8"
-        };
-
-        // Инициализация Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="https://img.icons8.com/?size=50&id=62158&format=png" alt="Game Extensions Icon" width="40">
+            <img src="https://img.icons8.com/?size=50&id=62158&format=png" alt="Logo">
             <h1>Game Extensions</h1>
         </div>
         <nav>
-            <button class="nav-btn active" onclick="switchSection('home')">Главная</button>
-            <button class="nav-btn" onclick="switchSection('places')">Плейсы</button>
-            <button class="nav-btn" onclick="switchSection('scripts')">Скрипты</button>
-            <button class="nav-btn" onclick="switchSection('avatars')">Аватары</button>
-            <button class="nav-btn" onclick="switchSection('servers')">Сервера</button>
-            <button class="nav-btn" onclick="switchSection('forum')">Форум</button>
-            <button class="nav-btn" onclick="switchSection('account')">Аккаунт</button>
+            <button class="nav-btn active" data-section="home">Главная</button>
+            <button class="nav-btn" data-section="places">Плейсы</button>
+            <button class="nav-btn" data-section="scripts">Скрипты</button>
+            <button class="nav-btn" data-section="avatars">Аватары</button>
+            <button class="nav-btn" data-section="servers">Сервера</button>
+            <button class="nav-btn" data-section="forum">Форум</button>
+            <button class="nav-btn" data-section="account">Аккаунт</button>
         </nav>
-        <div class="header-actions">
-            <button class="dark-toggle" onclick="toggleDarkMode()">
-                <img src="https://img.icons8.com/?size=50&id=lm7emUJqrpOM&format=png" alt="Dark Mode" width="24">
-            </button>
-        </div>
+        <button class="dark-toggle">
+            <img src="https://img.icons8.com/?size=50&id=648&format=png" alt="Dark Mode">
+        </button>
     </header>
 
     <div class="container">
-        <div class="hero" id="hero">
-            <div class="hero-content">
-                <h2>Game Extensions for Roblox</h2>
-                <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами!</p>
-                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank">Скачать Game Extensions.zip</a>
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Game Extensions for Roblox</h2>
+                    <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами!</p>
+                    <a href="Game Extensions.zip" class="cta-btn">Скачать Game Extensions.zip</a>
+                </div>
             </div>
-            <canvas id="particles-canvas"></canvas>
-        </div>
 
-        <div id="home" class="section active">
-            <div class="main-panel intro">
+            <div class="main-panel">
                 <h3>Добро пожаловать в Game Extensions!</h3>
                 <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">04:34 PM CEST, 20 сентября 2025</span>.</p>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <h4>Плейсов</h4>
+                        <p>100+</p>
+                    </div>
+                    <div class="stat">
+                        <h4>Скриптов</h4>
+                        <p>50+</p>
+                    </div>
+                    <div class="stat">
+                        <h4>Аватаров</h4>
+                        <p>200+</p>
+                    </div>
+                </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h4>Плейсов</h4>
-                    <p>100+</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Скриптов</h4>
-                    <p>50+</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Аватаров</h4>
-                    <p>200+</p>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <div id="places" class="section">
-            <div class="filters">
-                <input type="text" id="search-places" class="search-bar" placeholder="Поиск плейсов..." oninput="filterPlaces()">
-                <select id="genre-filter" onchange="filterPlaces()">
-                    <option value="all">Все жанры</option>
+        <section id="places" class="section">
+            <div class="filter-bar">
+                <input type="text" id="search-places" placeholder="Поиск плейсов...">
+                <select id="genre-filter">
+                    <option value="">Все жанры</option>
                     <option value="adventure">Приключения</option>
                     <option value="rpg">RPG</option>
                     <option value="obby">Obby</option>
                 </select>
+                <button class="cta-btn filter-btn">Фильтр</button>
             </div>
-            <div id="places-grid" class="places-grid"></div>
-            <div id="pagination-places" class="pagination"></div>
-        </div>
+            <div class="places-grid" id="places-grid"></div>
+            <div class="pagination" id="pagination-places"></div>
+        </section>
 
-        <div id="scripts" class="section">
-            <div class="places-grid">
-                <div class="place-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png" alt="Script 1">
-                    <p class="place-title">Auto Farm Script</p>
-                    <p class="place-desc">Автоматизация для плейсов.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn" onclick="downloadScript(1)">Скачать</button>
-                    </div>
+        <section id="scripts" class="section">
+            <div class="scripts-grid">
+                <div class="script-card">
+                    <h4>Auto Farm Script</h4>
+                    <p>Автоматизация для плейсов.</p>
+                    <button class="cta-btn download-btn" data-type="script" data-id="1">Скачать</button>
                 </div>
-                <div class="place-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=3127079818&width=420&height=420&format=png" alt="Script 2">
-                    <p class="place-title">Jailbreak Exploit</p>
-                    <p class="place-desc">Скрипт для Jailbreak.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn" onclick="downloadScript(2)">Скачать</button>
-                    </div>
+                <div class="script-card">
+                    <h4>Jailbreak Exploit</h4>
+                    <p>Скрипт для Jailbreak.</p>
+                    <button class="cta-btn download-btn" data-type="script" data-id="2">Скачать</button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="avatars" class="section">
-            <div class="places-grid">
-                <div class="place-card">
-                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar 1">
-                    <p class="place-title">Cool Roblox Avatar</p>
-                    <p class="place-desc">Скачай и используй в игре.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn" onclick="downloadAvatar(1)">Скачать</button>
-                    </div>
+        <section id="avatars" class="section">
+            <div class="avatars-grid">
+                <div class="avatar-card">
+                    <h4>Cool Roblox Avatar</h4>
+                    <p>Скачай и используй в игре.</p>
+                    <button class="cta-btn download-btn" data-type="avatar" data-id="1">Скачать</button>
                 </div>
-                <div class="place-card">
-                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=2&width=420&height=420&format=png" alt="Avatar 2">
-                    <p class="place-title">Epic Avatar</p>
-                    <p class="place-desc">Уникальный стиль.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn" onclick="downloadAvatar(2)">Скачать</button>
-                    </div>
+                <div class="avatar-card">
+                    <h4>Epic Avatar</h4>
+                    <p>Уникальный стиль.</p>
+                    <button class="cta-btn download-btn" data-type="avatar" data-id="2">Скачать</button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="servers" class="section">
-            <ul class="server-list">
-                <li class="server-item">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png" alt="Server Icon">
-                    <span class="server-info">Public Jailbreak Server</span>
-                    <span class="server-online">150/200</span>
-                    <button class="action-btn" onclick="copyIP('roblox.com/games/606849621')">Копировать ID</button>
-                </li>
-                <li class="server-item">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png" alt="Server Icon">
-                    <span class="server-info">Adopt Me! Server</span>
-                    <span class="server-online">200/250</span>
-                    <button class="action-btn" onclick="copyIP('roblox.com/games/920587237')">Копировать ID</button>
-                </li>
-            </ul>
-        </div>
+        <section id="servers" class="section">
+            <div class="servers-grid">
+                <div class="server-card">
+                    <h4>Public Jailbreak Server</h4>
+                    <p>150/200</p>
+                    <button class="cta-btn copy-btn" data-ip="jailbreak-server-id">Копировать ID</button>
+                </div>
+                <div class="server-card">
+                    <h4>Adopt Me! Server</h4>
+                    <p>200/250</p>
+                    <button class="cta-btn copy-btn" data-ip="adoptme-server-id">Копировать ID</button>
+                </div>
+            </div>
+        </section>
 
-        <div id="forum" class="section">
+        <section id="forum" class="section">
             <h3>Форум Roblox</h3>
-            <div id="forum-posts" class="forum-posts">
-                <!-- Динамически -->
-            </div>
-            <button class="cta-btn" onclick="showModal('new-post-modal')">Новый пост</button>
-        </div>
+            <div id="forum-posts"></div>
+            <button class="cta-btn" id="new-post-btn">Новый пост</button>
+        </section>
 
-        <div id="account" class="section">
-            <div class="account-form" id="auth-form">
-                <h3>Регистрация / Вход</h3>
-                <div class="input-group">
-                    <img src="https://img.icons8.com/?size=20&id=62158&format=png" alt="Email Icon" width="20">
-                    <input type="email" id="email" placeholder="Ваш email">
-                </div>
-                <div class="input-group">
-                    <img src="https://img.icons8.com/?size=20&id=lm7emUJqrpOM&format=png" alt="Password Icon" width="20">
-                    <input type="password" id="password" placeholder="Ваш пароль">
-                </div>
-                <div class="action-buttons">
-                    <button class="action-btn" onclick="signUp()">Регистрация</button>
-                    <button class="action-btn" onclick="signIn()">Вход</button>
-                </div>
-                <p id="auth-message"></p>
-            </div>
-            <div id="profile-content" style="display: none;">
-                <div class="profile-header">
-                    <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=120&height=120&format=png" alt="User Avatar">
-                    <h3 id="profile-name">RobloxPlayer</h3>
-                    <p id="profile-bio">Любитель модов и плейсов!</p>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <h4>Скачиваний</h4>
-                        <p id="user-downloads">0</p>
+        <section id="account" class="section">
+            <div class="account-form">
+                <div id="auth-form">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Пароль">
+                    <div class="action-buttons">
+                        <button class="cta-btn" id="sign-up-btn">Регистрация</button>
+                        <button class="cta-btn" id="sign-in-btn">Вход</button>
                     </div>
-                    <div class="stat">
-                        <h4>Плейсов</h4>
-                        <p id="user-places">0</p>
-                    </div>
-                    <div class="stat">
-                        <h4>Текущее время</h4>
-                        <p id="current-time-profile">04:34 PM CEST, 20 сентября 2025</p>
-                    </div>
+                    <p id="auth-message"></p>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                    <span>Прогресс: 0%</span>
+                <div id="profile-content" style="display: none;">
+                    <div class="profile-header">
+                        <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Avatar" class="avatar">
+                        <h3 id="profile-name">RobloxPlayer</h3>
+                        <p id="profile-bio">Любитель модов и плейсов!</p>
+                    </div>
+                    <div class="stats">
+                        <div class="stat">
+                            <h4>Скачиваний</h4>
+                            <p id="user-downloads">0</p>
+                        </div>
+                        <div class="stat">
+                            <h4>Плейсов</h4>
+                            <p id="user-places">0</p>
+                        </div>
+                        <div class="stat">
+                            <h4>Текущее время</h4>
+                            <p id="current-time-profile">04:34 PM CEST, 20 сентября 2025</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                        <span>Прогресс: 0%</span>
+                    </div>
+                    <button class="cta-btn" id="sign-out-btn">Выйти</button>
+                    <button class="cta-btn" id="edit-profile-btn">Редактировать профиль</button>
                 </div>
-                <button class="cta-btn" onclick="signOut()">Выйти</button>
-                <button class="cta-btn" onclick="showModal('profile-modal')">Редактировать профиль</button>
             </div>
-        </div>
+        </section>
+    </div>
 
-        <div id="details-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal('details-modal')">&times;</span>
-                <img id="place-img" src="" alt="Place Image">
-                <h3 id="place-title"></h3>
-                <p id="place-desc"></p>
-                <p id="place-rating"></p>
-                <button class="action-btn" id="download-btn" onclick="handleDownload()">Скачать</button>
-                <iframe id="place-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="place-title"></h3>
+            <p id="place-desc"></p>
+            <p id="place-rating"></p>
+            <img id="place-img" alt="Place Image">
+            <iframe id="place-video" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            <button class="cta-btn" id="download-btn">Скачать</button>
         </div>
+    </div>
 
-        <div id="new-post-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal('new-post-modal')">&times;</span>
-                <h3>Новый пост</h3>
-                <textarea id="post-content" placeholder="Ваш пост о Roblox..."></textarea>
-                <button class="action-btn" onclick="addPost()">Опубликовать</button>
-            </div>
+    <div id="new-post-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Новый пост</h3>
+            <textarea id="post-content" placeholder="Ваш пост..."></textarea>
+            <button class="cta-btn" id="add-post-btn">Опубликовать</button>
         </div>
+    </div>
 
-        <div id="profile-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal('profile-modal')">&times;</span>
-                <h3>Редактировать профиль</h3>
-                <input type="text" id="new-name" placeholder="Никнейм">
-                <textarea id="new-bio" placeholder="Био"></textarea>
-                <button class="action-btn" onclick="saveProfile()">Сохранить</button>
-            </div>
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Регистрация / профиль</h3>
+            <input type="text" id="new-name" placeholder="Никнейм">
+            <textarea id="new-bio" placeholder="Био"></textarea>
+            <button class="cta-btn" id="save-profile-btn">Сохранить</button>
         </div>
     </div>
 
     <footer>
-        <p>©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.</p>
+        ©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.
     </footer>
 
-    <script type="module" src="script.js"></script>
+    <canvas id="particles-canvas"></canvas>
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>

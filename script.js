@@ -420,14 +420,17 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(18, 37, 0, 0); // 06:37 PM CEST
+    now.setHours(18, 52, 0, 0); // 06:52 PM CEST
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Восстановление темы
     if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
+
+    // Инициализация секций
     switchSection('home');
     renderPlaces();
     renderScripts();
@@ -437,12 +440,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateProfileTime, 60000);
     initParticles();
 
+    // Слушатели для навигации
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => switchSection(btn.dataset.section));
     });
 
-    document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
+    // Слушатель для смены темы
+    document.getElementById('dark-toggle-btn').addEventListener('click', toggleDarkMode);
 
+    // Слушатели для аутентификации
     document.getElementById('sign-up-btn').addEventListener('click', signUp);
     document.getElementById('sign-in-btn').addEventListener('click', signIn);
     document.getElementById('google-sign-in-btn').addEventListener('click', googleSignIn);
@@ -452,5 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
     document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
 
-    document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
+    // Слушатель для фильтрации
+    document.getElementById('filter-btn').addEventListener('click', filterPlaces);
 });

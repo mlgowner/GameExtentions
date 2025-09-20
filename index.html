@@ -36,52 +36,59 @@
                 <div class="filter-group">
                     <h3>Версия</h3>
                     <div class="version-filters">
-                        <button class="filter-btn">1.20</button>
-                        <button class="filter-btn">1.19</button>
-                        <button class="filter-btn">1.18</button>
+                        <button class="filter-btn" onclick="filterByVersion('all')">Все</button>
+                        <button class="filter-btn" onclick="filterByVersion('1.21.1')">1.21.1</button>
+                        <button class="filter-btn" onclick="filterByVersion('1.20.1')">1.20.1</button>
+                        <button class="filter-btn" onclick="filterByVersion('1.19.2')">1.19.2</button>
                     </div>
                 </div>
                 <div class="filter-group">
                     <h3>Загрузчик</h3>
                     <div class="loader-filters">
-                        <button class="filter-btn">Forge</button>
-                        <button class="filter-btn">Fabric</button>
+                        <button class="filter-btn" onclick="filterByLoader('all')">Все</button>
+                        <button class="filter-btn" onclick="filterByLoader('forge')">Forge</button>
+                        <button class="filter-btn" onclick="filterByLoader('fabric')">Fabric</button>
                     </div>
                 </div>
                 <div class="filter-group">
                     <h3>Сортировка</h3>
                     <div class="sort-filters">
-                        <button class="filter-btn">Популярность</button>
-                        <button class="filter-btn">Дата</button>
+                        <button class="filter-btn" onclick="sortMods('popular')">Популярность</button>
+                        <button class="filter-btn" onclick="sortMods('new')">Новизна</button>
                     </div>
                 </div>
             </div>
-            <input type="text" class="search-bar" placeholder="Поиск модов...">
-            <div class="mod-grid">
-                <div class="mod-card">
-                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Mod Image">
-                    <h3 class="mod-title">Cool Mod</h3>
-                    <p class="mod-desc">A great mod for Minecraft!</p>
+            <input type="text" id="search" class="search-bar" placeholder="Поиск модов..." oninput="filterMods()">
+            <div id="mod-grid" class="mod-grid">
+                <div class="mod-card" data-link="https://www.curseforge.com/minecraft/mc-mods/villager-houses">
+                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Villager Cleric House">
+                    <p class="mod-title">Villager Cleric House</p>
+                    <p class="mod-desc">Дом священника с лутом.</p>
+                    <p class="rating">★★★★★</p>
                     <div class="action-buttons">
-                        <button class="action-btn">Download</button>
+                        <button class="action-btn" onclick="handleDownload('https://www.curseforge.com/minecraft/mc-mods/villager-houses')">Скачать</button>
+                        <button class="action-btn" onclick="showDetails({ title: 'Villager Cleric House', desc: 'Дом священника с лутом.', versions: '1.21.8,1.21.4,1.21.1,1.20.1,1.16.5', rating: '★★★★★', img: 'https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png' })">Детали</button>
                     </div>
                 </div>
-                <div class="mod-card">
-                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Mod Image">
-                    <h3 class="mod-title">Adventure Mod</h3>
-                    <p class="mod-desc">Explore new worlds!</p>
+                <div class="mod-card" data-link="https://www.curseforge.com/minecraft/mc-mods/plushies">
+                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="A Man With Plushies">
+                    <p class="mod-title">A Man With Plushies</p>
+                    <p class="mod-desc">Плюшики из других игр.</p>
+                    <p class="rating">★★★★☆</p>
                     <div class="action-buttons">
-                        <button class="action-btn">Download</button>
+                        <button class="action-btn" onclick="handleDownload('https://www.curseforge.com/minecraft/mc-mods/plushies')">Скачать</button>
+                        <button class="action-btn" onclick="showDetails({ title: 'A Man With Plushies', desc: 'Плюшики из других игр.', versions: '1.21.8,1.21.1,1.20.6,1.19.4,1.18.2', rating: '★★★★☆', img: 'https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png' })">Детали</button>
                     </div>
                 </div>
             </div>
+            <div id="pagination" class="pagination"></div>
         </div>
 
         <div id="textures-section" class="section">
             <div class="mod-grid">
                 <div class="mod-card">
-                    <img src="https://minecraft-inside.ru/uploads/skins/3a/46/280122_3d.png" alt="Texture">
-                    <h3 class="mod-title">Texture Pack 1</h3>
+                    <img src="https://minecraft-inside.ru/uploads/skins/3a/46/280122_3d.png" alt="Texture Pack 1">
+                    <p class="mod-title">Texture Pack 1</p>
                     <p class="mod-desc">Beautiful textures for Minecraft.</p>
                     <div class="action-buttons">
                         <button class="action-btn">Download</button>
@@ -93,8 +100,8 @@
         <div id="skins-section" class="section">
             <div class="mod-grid">
                 <div class="mod-card">
-                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Skin">
-                    <h3 class="mod-title">Skin 1</h3>
+                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Skin 1">
+                    <p class="mod-title">Skin 1</p>
                     <p class="mod-desc">Cool player skin.</p>
                     <div class="action-buttons">
                         <button class="action-btn">Download</button>
@@ -109,6 +116,7 @@
                     <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Server Icon">
                     <span class="server-info">Survival Server</span>
                     <span class="server-online">50/100</span>
+                    <button class="action-btn" onclick="copyIP('play.survival.com')">Копировать IP</button>
                 </li>
             </ul>
         </div>
@@ -153,68 +161,43 @@
                     <p>15</p>
                 </div>
                 <div class="stat">
-                    <h4>Время онлайн</h4>
-                    <p>120ч</p>
+                    <h4>Текущее время</h4>
+                    <p id="current-time">11:50</p>
                 </div>
             </div>
             <div class="main-panel">Последние скачивания</div>
             <div class="main-panel">Избранное</div>
+            <button class="action-btn modal-trigger" data-modal="profile-modal" onclick="editProfile()">Редактировать профиль</button>
         </div>
 
-        <div id="details" style="display:none;">
-            <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Details Image">
-            <h3>Mod Details</h3>
-            <p>More info about the mod...</p>
-            <button class="action-btn" onclick="closeDetails()">Close</button>
+        <div id="details" class="section">
+            <img id="mod-img" src="" alt="Mod Image">
+            <h3 id="mod-title"></h3>
+            <p id="mod-desc"></p>
+            <p id="mod-versions"></p>
+            <p id="mod-rating"></p>
+            <button class="action-btn" onclick="backToList()">Назад</button>
         </div>
 
-        <div id="install-modal" style="display:none;">
-            <h3>Install Mod</h3>
-            <p>Click to install the mod.</p>
-            <button class="action-btn" onclick="closeModal('install-modal')">Close</button>
+        <div id="install-modal" class="modal">
+            <h3>Инструкция по установке</h3>
+            <p>1. Скачайте мод. 2. Поместите в папку mods. 3. Запустите игру.</p>
+            <button class="action-btn close-btn" onclick="closeInstallGuide()">Закрыть</button>
         </div>
 
-        <div id="top-modal" style="display:none;">
-            <h3>Top Mods</h3>
-            <div class="top-mods-list">
-                <div class="top-mod-item">
-                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Top Mod">
-                    <h4>Top Mod 1</h4>
-                </div>
-            </div>
-            <button class="action-btn" onclick="closeModal('top-modal')">Close</button>
+        <div id="top-modal" class="modal">
+            <h3>Топ модов</h3>
+            <div id="top-mods-list" class="top-mods-list"></div>
+            <button class="action-btn close-btn" onclick="closeTopModal()">Закрыть</button>
         </div>
 
-        <div id="profile-modal" style="display:none;">
-            <h3>Profile Settings</h3>
-            <p>Edit your profile here.</p>
-            <button class="action-btn" onclick="closeModal('profile-modal')">Close</button>
+        <div id="profile-modal" class="modal">
+            <h3>Настройки профиля</h3>
+            <p>Здесь можно редактировать профиль.</p>
+            <button class="action-btn close-btn" onclick="closeProfileModal()">Закрыть</button>
         </div>
     </div>
 
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            document.querySelectorAll('header button').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`header button[onclick="showSection('${sectionId}')"]`).classList.add('active');
-        }
-
-        function showDetails() {
-            document.getElementById('details').style.display = 'block';
-        }
-
-        function closeDetails() {
-            document.getElementById('details').style.display = 'none';
-        }
-
-        function showModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

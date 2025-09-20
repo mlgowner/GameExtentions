@@ -53,6 +53,7 @@ header button {
     align-items: center;
     justify-content: center;
     gap: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 header button:hover, header button.active {
     background: #3a7ab4;
@@ -81,7 +82,7 @@ header button:hover, header button.active {
     font-size: 24px;
 }
 .main-panel {
-    background: rgba(44, 47, 51, 0.9);
+    background: #3c3f43; /* Светло-чёрный фон вместо изображений */
     border-radius: 15px;
     padding: 30px;
     margin-bottom: 20px;
@@ -93,59 +94,163 @@ header button:hover, header button.active {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(58, 122, 180, 0.4);
 }
-#home-section .main-panel:nth-child(2) {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/3916146659_huge_2023-09-07_160901.webp');
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
+.mod-card {
+    background: #2c2f33;
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-align: center;
 }
-#home-section .main-panel:nth-child(3) {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp');
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
+.mod-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
-#home-section .main-panel:nth-child(4) {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/1648813797_cherryblossom_1280x720_5.webp');
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
+.mod-card .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
 }
-#textures-section .mod-card img, #skins-section .mod-card img {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp');
-    background-size: cover;
-    background-position: center;
+.action-btn {
+    background: #5a9bd4;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 300;
 }
-#mods-section .mod-card img {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/1648813797_cherryblossom_1280x720_5.webp');
-    background-size: cover;
-    background-position: center;
-}
-#download-section img {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp');
-    background-size: cover;
-    background-position: center;
-}
-#servers-section .server-item img {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp');
-    background-size: cover;
-    background-position: center;
-}
-#forum-section .forum-thread img {
-    background-image: url('https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp');
-    background-size: cover;
-    background-position: center;
-}
-#profile-section .avatar {
-    background-image: url('https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp');
-    background-size: cover;
-    background-position: center;
+.action-btn:hover {
+    background: #3a7ab4;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(58, 122, 180, 0.5);
 }
 .filters {
     display: grid;
-    grid-template-columns: r... (truncated 4035 characters)...enter;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
 }
-#install-modal button, #top-modal button, #profile-modal button {
+.filter-group {
+    background: #2c2f33;
+    padding: 15px;
+    border-radius: 12px;
+}
+.filter-group h3 {
+    margin: 0 0 10px 0;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.version-filters, .loader-filters, .sort-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.filter-btn {
+    background: #5a9bd4;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-size: 11px;
+    font-weight: 300;
+}
+.filter-btn:hover, .filter-btn.active {
+    background: #3a7ab4;
+    transform: scale(1.05);
+    box-shadow: 0 3px 10px rgba(58, 122, 180, 0.4);
+}
+.search-bar {
+    width: 100%;
+    padding: 12px;
+    background: #2c2f33;
+    border: 1px solid #555;
+    border-radius: 25px;
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: all 0.4s ease;
+    font-weight: 300;
+}
+.search-bar:focus {
+    outline: none;
+    border-color: #3a7ab4;
+    box-shadow: 0 0 15px rgba(58, 122, 180, 0.4);
+}
+.mod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.mod-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.mod-desc {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+.rating {
+    font-size: 14px;
+    color: #ffd700;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.pagination button {
+    background: #5a9bd4;
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+.pagination button:hover:not(:disabled) {
+    background: #3a7ab4;
+    transform: scale(1.05);
+}
+.pagination button:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+.section {
+    display: none;
+}
+.section.active {
+    display: block;
+    animation: fadeIn 0.6s ease;
+}
+#details {
+    background: #2c2f33;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+#details img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 12px;
+}
+#details button {
     background: #5a9bd4;
     color: #fff;
     border: none;
@@ -155,14 +260,26 @@ header button:hover, header button.active {
     margin-top: 15px;
     font-weight: 300;
     transition: all 0.4s ease;
+    text-decoration: none;
 }
-#install-modal button:hover, #top-modal button:hover, #profile-modal button:hover {
+#details button:hover {
     background: #3a7ab4;
     transform: scale(1.05);
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+#install-modal, #top-modal, #profile-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2c2f33;
+    padding: 20px;
+    border-radius: 15px;
+    display: none;
+    z-index: 1000;
+    max-width: 90%;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    text-align: center;
 }
 .forum-thread {
     background: #2c2f33;
@@ -190,6 +307,14 @@ header button:hover, header button.active {
 .forum-thread div {
     flex: 1;
     text-align: left;
+}
+.forum-thread div h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.forum-thread div p {
+    font-size: 12px;
+    color: #ccc;
 }
 .server-list {
     list-style: none;
@@ -236,6 +361,7 @@ header button:hover, header button.active {
     border: 4px solid #5a9bd4;
     object-fit: cover;
     display: block;
+    background-image: url('https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png');
 }
 .stats {
     display: flex;
@@ -287,6 +413,22 @@ header button:hover, header button.active {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
+}
+#profile-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+#profile-section .main-panel:last-child {
+    grid-column: 2 / 3;
+}
+@media (max-width: 900px) {
+    #profile-section {
+        grid-template-columns: 1fr;
+    }
+    #profile-section .main-panel:last-child {
+        grid-column: auto;
+    }
 }
 @media (max-width: 600px) {
     .mod-grid {
@@ -348,4 +490,8 @@ header button:hover, header button.active {
     .main-panel {
         padding: 15px;
     }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }

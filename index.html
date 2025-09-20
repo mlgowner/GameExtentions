@@ -39,7 +39,7 @@
 
             <div class="main-panel">
                 <h3>Добро пожаловать в Game Extensions!</h3>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">06:02 PM CEST, 20 сентября 2025</span>.</p>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">06:37 PM CEST, 20 сентября 2025</span>.</p>
                 <div class="stats-grid">
                     <div class="stat">
                         <h4>Плейсов</h4>
@@ -97,61 +97,11 @@
         </section>
 
         <section id="scripts" class="section">
-            <div class="scripts-grid">
-                <div class="script-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png" alt="Auto Farm Script">
-                    <h4>Auto Farm Script</h4>
-                    <p>Автоматизация для плейсов.</p>
-                    <button class="cta-btn download-btn" data-type="script" data-id="1">Скачать</button>
-                </div>
-                <div class="script-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png" alt="Jailbreak Exploit">
-                    <h4>Jailbreak Exploit</h4>
-                    <p>Скрипт для Jailbreak.</p>
-                    <button class="cta-btn download-btn" data-type="script" data-id="2">Скачать</button>
-                </div>
-                <div class="script-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png" alt="Blox Fruits ESP">
-                    <h4>Blox Fruits ESP</h4>
-                    <p>Видеть врагов и предметы.</p>
-                    <button class="cta-btn download-btn" data-type="script" data-id="3">Скачать</button>
-                </div>
-                <div class="script-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png" alt="Doors Speed Hack">
-                    <h4>Doors Speed Hack</h4>
-                    <p>Увеличение скорости в Doors.</p>
-                    <button class="cta-btn download-btn" data-type="script" data-id="4">Скачать</button>
-                </div>
-            </div>
+            <div class="scripts-grid" id="scripts-grid"></div>
         </section>
 
         <section id="avatars" class="section">
-            <div class="avatars-grid">
-                <div class="avatar-card">
-                    <img src="https://tr.rbxcdn.com/avatar-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Cool Avatar">
-                    <h4>Cool Roblox Avatar</h4>
-                    <p>Скачай и используй в игре.</p>
-                    <button class="cta-btn download-btn" data-type="avatar" data-id="1">Скачать</button>
-                </div>
-                <div class="avatar-card">
-                    <img src="https://tr.rbxcdn.com/avatar-thumbnail/image?userId=2&width=420&height=420&format=png" alt="Epic Avatar">
-                    <h4>Epic Avatar</h4>
-                    <p>Уникальный стиль.</p>
-                    <button class="cta-btn download-btn" data-type="avatar" data-id="2">Скачать</button>
-                </div>
-                <div class="avatar-card">
-                    <img src="https://tr.rbxcdn.com/avatar-thumbnail/image?userId=3&width=420&height=420&format=png" alt="Neon Avatar">
-                    <h4>Neon Avatar</h4>
-                    <p>Светящийся дизайн.</p>
-                    <button class="cta-btn download-btn" data-type="avatar" data-id="3">Скачать</button>
-                </div>
-                <div class="avatar-card">
-                    <img src="https://tr.rbxcdn.com/avatar-thumbnail/image?userId=4&width=420&height=420&format=png" alt="Futuristic Avatar">
-                    <h4>Futuristic Avatar</h4>
-                    <p>Футуристический вид.</p>
-                    <button class="cta-btn download-btn" data-type="avatar" data-id="4">Скачать</button>
-                </div>
-            </div>
+            <div class="avatars-grid" id="avatars-grid"></div>
         </section>
 
         <section id="account" class="section">
@@ -171,6 +121,7 @@
                         <input type="text" id="phone-code" placeholder="Код из SMS" style="display: none;">
                         <button class="cta-btn" id="verify-phone-btn" style="display: none;">Подтвердить</button>
                     </div>
+                    <div id="recaptcha-container"></div>
                     <p id="auth-message"></p>
                 </div>
                 <div id="profile-content" style="display: none;">
@@ -196,8 +147,12 @@
                                 <p id="user-scripts">0</p>
                             </div>
                             <div class="stat-card">
+                                <h4>Аватаров</h4>
+                                <p id="user-avatars">0/4</p>
+                            </div>
+                            <div class="stat-card">
                                 <h4>Текущее время</h4>
-                                <p id="current-time-profile">06:02 PM CEST, 20 сентября 2025</p>
+                                <p id="current-time-profile">06:37 PM CEST, 20 сентября 2025</p>
                             </div>
                         </div>
                         <div class="progress-bar">
@@ -229,5 +184,4 @@
     <canvas id="particles-canvas"></canvas>
 
     <script src="script.js" type="module"></script>
-</body>
 </html>

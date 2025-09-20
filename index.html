@@ -16,11 +16,11 @@
             <h1>Game Extensions</h1>
         </div>
         <nav>
-            <button class="nav-btn" data-section="home">Главная</button>
-            <button class="nav-btn" data-section="places">Плейсы</button>
-            <button class="nav-btn" data-section="scripts">Скрипты</button>
-            <button class="nav-btn" data-section="avatars">Аватары</button>
-            <button class="nav-btn" data-section="account">Аккаунт</button>
+            <button class="nav-btn" id="nav-home" data-section="home">Главная</button>
+            <button class="nav-btn" id="nav-places" data-section="places">Плейсы</button>
+            <button class="nav-btn" id="nav-scripts" data-section="scripts">Скрипты</button>
+            <button class="nav-btn" id="nav-avatars" data-section="avatars">Аватары</button>
+            <button class="nav-btn" id="nav-account" data-section="account">Аккаунт</button>
         </nav>
         <button class="dark-toggle" id="dark-toggle-btn">
             <img src="https://img.icons8.com/?size=50&id=648&format=png" alt="Dark Mode">
@@ -39,7 +39,7 @@
 
             <div class="main-panel">
                 <h3>Добро пожаловать в Game Extensions!</h3>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">06:52 PM CEST, 20 сентября 2025</span>.</p>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">07:03 PM CEST, 20 сентября 2025</span>.</p>
                 <div class="stats-grid">
                     <div class="stat">
                         <h4>Плейсов</h4>
@@ -152,7 +152,7 @@
                             </div>
                             <div class="stat-card">
                                 <h4>Текущее время</h4>
-                                <p id="current-time-profile">06:52 PM CEST, 20 сентября 2025</p>
+                                <p id="current-time-profile">07:03 PM CEST, 20 сентября 2025</p>
                             </div>
                         </div>
                         <div class="progress-bar">
@@ -183,5 +183,5 @@
 
     <canvas id="particles-canvas"></canvas>
 
-    <script src="script.js" type="module"></script>
+    <script src="script.js"></script> <!-- Убрал type="module" для совместимости -->
 </html>

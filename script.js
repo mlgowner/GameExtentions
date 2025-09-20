@@ -1,142 +1,118 @@
-// Данные режимов FNAF (30+ вымышленных, на основе типичных max-модов)
-const allModes = [
-    { id: 1, title: "FNAF 1 Max Mode", desc: "Выживи 20/20/20/20 в первой ночи.", points: 100, difficulty: "max", img: "https://via.placeholder.com/300x150/ff0000/000?text=FNAF1", status: false, video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 2, title: "FNAF 2 Max Mode", desc: "Все аниматроники на максимуме.", points: 150, difficulty: "max", img: "https://via.placeholder.com/300x150/ff6600/000?text=FNAF2", status: false, video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    // Добавьте остальные 28 режимов аналогично, с разными очками (10-1000), сложностями (easy-hard-max)
-    // Для примера, сокращу до 5; в реале расширьте
-    { id: 3, title: "FNAF 3 Max Mode", desc: "Хэллоуин-аниматроники.", points: 200, difficulty: "hard", img: "https://via.placeholder.com/300x150/00ff00/000?text=FNAF3", status: false, video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 4, title: "FNAF 4 Max Mode", desc: "Ночные кошмары на 5+.", points: 250, difficulty: "max", img: "https://via.placeholder.com/300x150/0000ff/000?text=FNAF4", status: false, video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 5, title: "Sister Location Max Mode", desc: "Кукла-аниматроник.", points: 300, difficulty: "hard", img: "https://via.placeholder.com/300x150/ff00ff/000?text=SL", status: false, video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    // ... (добавьте полный список до 50)
+let currentPage = 1;
+let placesPerPage = 6;
+let currentFilter = { genre: 'all', search: '' };
+let userData = JSON.parse(localStorage.getItem('gameExtensionsUser')) || { name: 'RobloxPlayer', downloads: 0, places: 0, modes: {} };
+
+const allPlaces = [
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    // Добавьте больше (до 50), с проверенными thumbnails
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
 ];
 
-let currentPage = 1;
-let modesPerPage = 6;
-let currentFilter = { difficulty: 'all', search: '' };
-let userData = JSON.parse(localStorage.getItem('fnafUser')) || { name: 'Player', points: 0, completions: 0, modes: {} };
+let topPlaces = allPlaces.slice(0, 6);
 
-function renderModes() {
-    const grid = document.getElementById('modes-grid');
+function renderPlaces() {
+    const grid = document.getElementById('places-grid');
     grid.innerHTML = '';
 
-    let filtered = allModes.filter(mode => {
-        if (currentFilter.difficulty !== 'all' && mode.difficulty !== currentFilter.difficulty) return false;
-        if (currentFilter.search && !mode.title.toLowerCase().includes(currentFilter.search.toLowerCase())) return false;
+    let filtered = allPlaces.filter(place => {
+        if (currentFilter.genre !== 'all' && place.genre !== currentFilter.genre) return false;
+        if (currentFilter.search && !place.title.toLowerCase().includes(currentFilter.search.toLowerCase())) return false;
         return true;
     });
 
-    const start = (currentPage - 1) * modesPerPage;
-    const end = start + modesPerPage;
-    filtered.slice(start, end).forEach(mode => {
+    const start = (currentPage - 1) * placesPerPage;
+    const end = start + placesPerPage;
+    filtered.slice(start, end).forEach(place => {
         const card = document.createElement('div');
-        card.className = 'mode-card';
-        card.onclick = () => showModeDetails(mode);
+        card.className = 'place-card';
+        card.onclick = () => showPlaceDetails(place);
         card.innerHTML = `
-            <img src="${mode.img}" alt="${mode.title}">
-            <h4>${mode.title}</h4>
-            <p>${mode.desc}</p>
-            <div class="points">${mode.points} очков</div>
-            <button class="complete-btn ${userData.modes[mode.id] ? 'completed' : ''}" onclick="event.stopPropagation(); completeMode(${mode.id})">
-                ${userData.modes[mode.id] ? 'Пройдено!' : 'Пройти'}
-            </button>
+            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00a2ff/fff?text=Roblox';">
+            <p class="place-title">${place.title}</p>
+            <p class="place-desc">${place.desc}</p>
+            <p class="rating">${place.rating}</p>
+            <div class="action-buttons">
+                <a href="${place.link}" class="action-btn" target="_blank">Играть</a>
+                <button class="action-btn" onclick="event.stopPropagation(); downloadPlace(${place.id})">Скачать мод</button>
+            </div>
         `;
         grid.appendChild(card);
     });
 
-    updatePagination(filtered.length);
+    updatePaginationPlaces(filtered.length);
     updateUserProgress();
 }
 
-function updatePagination(total) {
-    const pag = document.getElementById('pagination');
+function updatePaginationPlaces(total) {
+    const pag = document.getElementById('pagination-places');
     pag.innerHTML = '';
-    const pages = Math.ceil(total / modesPerPage);
+    const pages = Math.ceil(total / placesPerPage);
+    // Аналогично предыдущему, кнопки пагинации
     if (currentPage > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
-        prev.onclick = () => { currentPage--; renderModes(); };
+        prev.onclick = () => { currentPage--; renderPlaces(); };
         pag.appendChild(prev);
     }
     for (let i = 1; i <= pages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
         btn.className = currentPage === i ? 'active' : '';
-        btn.onclick = () => { currentPage = i; renderModes(); };
+        btn.onclick = () => { currentPage = i; renderPlaces(); };
         pag.appendChild(btn);
     }
     if (currentPage < pages) {
         const next = document.createElement('button');
         next.textContent = '→';
-        next.onclick = () => { currentPage++; renderModes(); };
+        next.onclick = () => { currentPage++; renderPlaces(); };
         pag.appendChild(next);
     }
 }
 
-function filterModes() {
-    currentFilter.search = document.getElementById('search').value;
-    currentFilter.difficulty = document.getElementById('difficulty-filter').value;
+function filterPlaces() {
+    currentFilter.search = document.getElementById('search-places').value;
+    currentFilter.genre = document.getElementById('genre-filter').value;
     currentPage = 1;
-    renderModes();
+    renderPlaces();
 }
 
-function completeMode(id) {
-    if (!userData.modes[id]) {
-        userData.modes[id] = true;
-        userData.points += allModes.find(m => m.id === id).points;
-        userData.completions++;
-        localStorage.setItem('fnafUser', JSON.stringify(userData));
-        renderModes();
-        updateLeaderboard();
-        alert('Режим пройден! +Очки добавлены.');
-    }
+function downloadPlace(id) {
+    userData.downloads++;
+    localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
+    alert(`Скачан мод для плейса ${allPlaces.find(p => p.id === id).title}!`);
+    updateUserProgress();
 }
 
-function showModeDetails(mode) {
-    document.getElementById('mode-title').textContent = mode.title;
-    document.getElementById('mode-desc').textContent = mode.desc;
-    document.getElementById('mode-points').textContent = `Очки: ${mode.points}`;
-    document.getElementById('mode-img').src = mode.img;
-    document.getElementById('mode-video').src = mode.video;
-    document.getElementById('complete-btn').onclick = () => completeMode(mode.id);
-    document.getElementById('complete-btn').className = `action-btn ${userData.modes[mode.id] ? 'completed' : ''}`;
-    document.getElementById('complete-btn').textContent = userData.modes[mode.id] ? 'Пройдено!' : 'Пройти режим';
+function showPlaceDetails(place) {
+    document.getElementById('place-title').textContent = place.title;
+    document.getElementById('place-desc').textContent = place.desc;
+    document.getElementById('place-rating').innerHTML = `Рейтинг: ${place.rating}`;
+    document.getElementById('place-img').src = place.img;
+    document.getElementById('place-video').src = place.video;
+    document.getElementById('download-btn').onclick = () => downloadPlace(place.id);
     showModal('details-modal');
 }
 
 function updateUserProgress() {
-    document.getElementById('user-points').textContent = userData.points;
-    const totalModes = allModes.length;
-    const percent = (userData.completions / totalModes * 100).toFixed(1);
-    document.getElementById('user-completions').textContent = `${userData.completions}/${totalModes}`;
+    document.getElementById('user-downloads').textContent = userData.downloads;
+    const totalPlaces = allPlaces.length;
+    const percent = (userData.places / totalPlaces * 100).toFixed(1);
+    document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
     document.getElementById('progress-fill').style.width = percent + '%';
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
 
-function updateLeaderboard() {
-    const tbody = document.getElementById('leaderboard-body');
-    tbody.innerHTML = '';
-    // Симуляция лидерборда (в реале — API)
-    const fakeUsers = [
-        { name: 'ProFreddy', points: 4500, percent: 95 },
-        { name: 'MaxChica', points: 4200, percent: 90 },
-        { name: 'user', points: userData.points, percent: (userData.completions / allModes.length * 100).toFixed(1) }
-    ];
-    fakeUsers.sort((a, b) => b.points - a.points);
-    fakeUsers.forEach((user, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${index + 1}</td><td>${user.name}</td><td>${user.points}</td><td>${user.percent}%</td>`;
-        tbody.appendChild(row);
-    });
-}
-
 function addPost() {
+    // Аналогично предыдущему
     const content = document.getElementById('post-content').value;
     if (content) {
         const posts = document.getElementById('forum-posts');
         const post = document.createElement('div');
         post.className = 'forum-post';
         post.innerHTML = `
-            <img src="https://via.placeholder.com/50/ff0000/fff?text=U" alt="User">
+            <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
             <div>
                 <h4>${userData.name}</h4>
                 <p>${content}</p>
@@ -149,9 +125,10 @@ function addPost() {
 }
 
 function saveProfile() {
+    // Аналогично
     userData.name = document.getElementById('new-name').value || userData.name;
     userData.bio = document.getElementById('new-bio').value || userData.bio;
-    localStorage.setItem('fnafUser', JSON.stringify(userData));
+    localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
     document.getElementById('profile-name').textContent = userData.name;
     document.getElementById('profile-bio').textContent = userData.bio;
     closeModal('profile-modal');
@@ -177,8 +154,8 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Particle system для фона (удивление!)
 function initParticles() {
+    // Аналогично предыдущему, синие частицы для Roblox
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -191,7 +168,7 @@ function initParticles() {
             vx: (Math.random() - 0.5) * 2,
             vy: (Math.random() - 0.5) * 2,
             radius: Math.random() * 3 + 1,
-            color: `hsl(${Math.random() * 60 + 0}, 100%, 50%)` // Красные оттенки FNAF
+            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)` // Синие оттенки Roblox
         });
     }
     function animate() {
@@ -215,11 +192,18 @@ function initParticles() {
     });
 }
 
+function updateProfileTime() {
+    const now = new Date();
+    const timeElement = document.getElementById('current-time');
+    const timeProfile = document.getElementById('current-time-profile');
+    if (timeElement) timeElement.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    if (timeProfile) timeProfile.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
     switchSection('home');
-    renderModes();
-    updateLeaderboard();
+    renderPlaces();
     updateUserProgress();
     updateProfileTime();
     setInterval(updateProfileTime, 60000);

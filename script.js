@@ -1,9 +1,9 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
-// Firebase Config (твои ключи)
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
     authDomain: "game-extensions.firebaseapp.com",
@@ -32,9 +32,14 @@ onAuthStateChanged(auth, user => {
             userData = snapshot.val() || userData;
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-bio').textContent = userData.bio;
+            document.getElementById('new-name').value = userData.name;
+            document.getElementById('new-bio').value = userData.bio;
             updateUserProgress();
-        }, (error) => {
-            console.error('Ошибка загрузки данных пользователя:', error);
+            if (!user.emailVerified) {
+                document.getElementById('auth-message').textContent = 'Email не подтверждён. Проверьте почту.';
+            } else {
+                document.getElementById('auth-message').textContent = '';
+            }
         });
         loadPosts();
     } else {
@@ -50,8 +55,13 @@ function signUp() {
         .then((userCredential) => {
             const user = userCredential.user;
             set(ref(db, 'users/' + user.uid), userData);
-            document.getElementById('auth-message').textContent = 'Регистрация успешна!';
-            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
+            sendEmailVerification(user)
+                .then(() => {
+                    document.getElementById('auth-message').textContent = 'Регистрация успешна! Подтвердите email (ссылка отправлена на почту).';
+                })
+                .catch((error) => {
+                    document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
+                });
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
@@ -80,6 +90,18 @@ function signOutUser() {
     });
 }
 
+function resendVerification() {
+    if (auth.currentUser) {
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                document.getElementById('auth-message').textContent = 'Код подтверждения повторно отправлен на email!';
+            })
+            .catch((error) => {
+                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
+            });
+    }
+}
+
 function loadPosts() {
     const postsRef = ref(db, 'posts');
     onValue(postsRef, (snapshot) => {
@@ -98,8 +120,6 @@ function loadPosts() {
             `;
             posts.appendChild(post);
         });
-    }, (error) => {
-        console.error('Ошибка загрузки постов:', error);
     });
 }
 
@@ -113,7 +133,6 @@ function addPost() {
             timestamp: Date.now()
         });
         document.getElementById('post-content').value = '';
-        closeModal('new-post-modal');
     } else {
         alert('Войдите, чтобы добавить пост!');
     }
@@ -128,7 +147,6 @@ function saveProfile() {
             name: newName,
             bio: newBio
         });
-        closeModal('profile-modal');
     }
 }
 
@@ -137,7 +155,7 @@ const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    // Добавь больше плейсов по аналогии, если нужно
+    // Добавь больше
 ];
 
 let currentPage = 1;
@@ -159,10 +177,21 @@ function renderPlaces() {
             <p>${place.desc}</p>
             <p>${place.rating}</p>
             <button class="cta-btn details-btn" data-id="${place.id}">Подробнее</button>
+            <div class="place-details" style="display: none;">
+                <iframe width="100%" height="200" src="${place.video}" frameborder="0" allowfullscreen></iframe>
+                <button class="cta-btn download-btn" data-type="place" data-id="${place.id}">Скачать</button>
+            </div>
         `;
         grid.appendChild(card);
     });
     updatePaginationPlaces(filtered.length);
+    // Добавляем listeners для details
+    document.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const details = btn.nextElementSibling;
+            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        });
+    });
 }
 
 function updatePaginationPlaces(total) {
@@ -202,7 +231,7 @@ function downloadPlace(id) {
         userData.places++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан мод для плейса ${allPlaces.find(p => p.id === id).title}!`);
+        alert(`Скачан мод для плейса #${id}!`);
     } else {
         alert('Войдите для скачивания!');
     }
@@ -230,16 +259,6 @@ function downloadAvatar(id) {
     }
 }
 
-function showPlaceDetails(place) {
-    document.getElementById('place-title').textContent = place.title;
-    document.getElementById('place-desc').textContent = place.desc;
-    document.getElementById('place-rating').innerHTML = `Рейтинг: ${place.rating}`;
-    document.getElementById('place-img').src = place.img;
-    document.getElementById('place-video').src = place.video;
-    document.getElementById('download-btn').dataset.id = place.id;
-    showModal('details-modal');
-}
-
 function updateUserProgress() {
     document.getElementById('user-downloads').textContent = userData.downloads;
     const totalPlaces = allPlaces.length;
@@ -260,14 +279,6 @@ function switchSection(sectionId) {
     document.getElementById(sectionId).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
-}
-
-function showModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
 }
 
 function toggleDarkMode() {
@@ -314,10 +325,11 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    const options = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: 'long', year: 'numeric' };
-    const timeString = now.toLocaleString('ru-RU', options);
-    document.getElementById('current-time').textContent = timeString;
-    document.getElementById('current-time-profile').textContent = timeString;
+    const timeElement = document.getElementById('current-time');
+    const timeProfile = document.getElementById('current-time-profile');
+    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    if (timeElement) timeElement.textContent = timeString;
+    if (timeProfile) timeProfile.textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -339,29 +351,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sign-up-btn').addEventListener('click', signUp);
     document.getElementById('sign-in-btn').addEventListener('click', signIn);
     document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
-    document.getElementById('edit-profile-btn').addEventListener('click', () => showModal('profile-modal'));
     document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
-
-    document.getElementById('new-post-btn').addEventListener('click', () => showModal('new-post-modal'));
+    document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
     document.getElementById('add-post-btn').addEventListener('click', addPost);
 
     document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
 
-    document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const place = allPlaces.find(p => p.id === parseInt(btn.dataset.id));
-            showPlaceDetails(place);
-        });
-    });
-
-    document.getElementById('download-btn').addEventListener('click', () => {
-        const id = parseInt(document.getElementById('download-btn').dataset.id);
-        downloadPlace(id);
-    });
-
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = parseInt(btn.dataset.id);
+            if (btn.dataset.type === 'place') downloadPlace(id);
             if (btn.dataset.type === 'script') downloadScript(id);
             if (btn.dataset.type === 'avatar') downloadAvatar(id);
         });
@@ -369,12 +368,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', () => copyIP(btn.dataset.ip));
-    });
-
-    document.querySelectorAll('.close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', () => {
-            const modal = closeBtn.closest('.modal');
-            closeModal(modal.id);
-        });
     });
 });

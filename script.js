@@ -1,17 +1,17 @@
 // Импорт Firebase v10
-const { initializeApp } = window.firebase || {};
-const { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, GoogleAuthProvider, signInWithPopup, PhoneAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } = window.firebase.auth || {};
-const { getDatabase, ref, set, onValue } = window.firebase.database || {};
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
-// Firebase Config (замени на актуальный из Firebase Console)
+// Firebase Config (замени на свои ключи)
 const firebaseConfig = {
-    apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
-    authDomain: "game-extensions.firebaseapp.com",
-    projectId: "game-extensions",
-    storageBucket: "game-extensions.firebasestorage.app",
-    messagingSenderId: "68965248738",
-    appId: "1:68965248738:web:725083c3b89069a177b8bb",
-    measurementId: "G-GHBGWQELT8"
+  apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
+  authDomain: "game-extensions.firebaseapp.com",
+  projectId: "game-extensions",
+  storageBucket: "game-extensions.firebasestorage.app",
+  messagingSenderId: "68965248738",
+  appId: "1:68965248738:web:725083c3b89069a177b8bb",
+  measurementId: "G-GHBGWQELT8"
 };
 
 // Инициализация Firebase
@@ -19,20 +19,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Providers
-const googleProvider = new GoogleAuthProvider();
-const phoneProvider = new PhoneAuthProvider(auth);
-
-// Recaptcha for phone
-window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-    'size': 'invisible',
-    'callback': () => { /* reCAPTCHA solved */ }
-}, auth);
-
 let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0 };
-let confirmationResult;
 
-onAuthStateChanged(auth, (user) => {
+auth.onAuthStateChanged(user => {
     const authForm = document.getElementById('auth-form');
     const profileContent = document.getElementById('profile-content');
     if (user) {
@@ -41,47 +30,27 @@ onAuthStateChanged(auth, (user) => {
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
             userData = snapshot.val() || userData;
-            document.getElementById('profile-name').textContent = userData.name || user.displayName || 'RobloxPlayer';
+            document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-bio').textContent = userData.bio;
-            document.getElementById('new-name').value = userData.name || user.displayName || '';
-            document.getElementById('new-bio').value = userData.bio;
             updateUserProgress();
-            if (!user.emailVerified && user.providerData[0].providerId === 'password') {
-                document.getElementById('auth-message').textContent = 'Подтвердите email.';
-            } else {
-                document.getElementById('auth-message').textContent = '';
-            }
+        }, (error) => {
+            console.error('Ошибка загрузки данных пользователя:', error);
         });
+        loadPosts();
     } else {
         authForm.style.display = 'block';
         profileContent.style.display = 'none';
     }
 });
 
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.style.display = 'block';
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 3000);
-}
-
-// Email/Password Authentication
 function signUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            sendEmailVerification(user)
-                .then(() => {
-                    showToast('Регистрация успешна! Проверьте email для подтверждения.');
-                    set(ref(db, 'users/' + user.uid), userData);
-                })
-                .catch((error) => {
-                    document.getElementById('auth-message').textContent = 'Ошибка верификации: ' + error.message;
-                });
+            set(ref(db, 'users/' + user.uid), userData);
+            document.getElementById('auth-message').textContent = 'Регистрация успешна!';
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
@@ -92,81 +61,58 @@ function signIn() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            if (!user.emailVerified) {
-                sendEmailVerification(user);
-                showToast('Подтвердите email для входа.');
-            } else {
-                showToast('Вход успешен!');
-            }
+        .then(() => {
+            document.getElementById('auth-message').textContent = 'Вход успешный!';
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
         });
 }
 
-// Google Authentication
-function googleSignIn() {
-    signInWithPopup(auth, googleProvider)
-        .then((result) => {
-            const user = result.user;
-            set(ref(db, 'users/' + user.uid), { ...userData, name: user.displayName, email: user.email });
-            showToast('Вход через Google успешен!');
-        })
-        .catch((error) => {
-            document.getElementById('auth-message').textContent = error.message;
-        });
-}
-
-// Phone Authentication
-function sendPhoneCode() {
-    const phoneNumber = document.getElementById('phone-number').value;
-    signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
-        .then((result) => {
-            confirmationResult = result;
-            document.getElementById('phone-code').style.display = 'block';
-            document.getElementById('verify-phone-btn').style.display = 'block';
-            document.getElementById('send-phone-code-btn').style.display = 'none';
-            showToast('Код отправлен на телефон!');
-        })
-        .catch((error) => {
-            document.getElementById('auth-message').textContent = error.message;
-        });
-}
-
-function verifyPhone() {
-    const code = document.getElementById('phone-code').value;
-    confirmationResult.confirm(code)
-        .then((result) => {
-            const user = result.user;
-            set(ref(db, 'users/' + user.uid), userData);
-            showToast('Вход через телефон успешен!');
-        })
-        .catch((error) => {
-            document.getElementById('auth-message').textContent = error.message;
-        });
-}
-
-// Profile Management
-function signOutUser() {
+function signOut() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
-        setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });
 }
 
-function resendVerification() {
-    if (auth.currentUser) {
-        sendEmailVerification(auth.currentUser)
-            .then(() => {
-                showToast('Код выслан на указанный адрес почты');
-            })
-            .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
-            });
+function loadPosts() {
+    const postsRef = ref(db, 'posts');
+    onValue(postsRef, (snapshot) => {
+        const posts = document.getElementById('forum-posts');
+        posts.innerHTML = '';
+        snapshot.forEach((childSnapshot) => {
+            const postData = childSnapshot.val();
+            const post = document.createElement('div');
+            post.className = 'forum-post';
+            post.innerHTML = `
+                <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
+                <div>
+                    <h4>${postData.name}</h4>
+                    <p>${postData.content}</p>
+                </div>
+            `;
+            posts.appendChild(post);
+        });
+    }, (error) => {
+        console.error('Ошибка загрузки постов:', error);
+    });
+}
+
+function addPost() {
+    const content = document.getElementById('post-content').value;
+    if (content && auth.currentUser) {
+        const postsRef = ref(db, 'posts');
+        push(postsRef, {
+            name: userData.name,
+            content: content,
+            timestamp: Date.now()
+        });
+        document.getElementById('post-content').value = '';
+        closeModal('new-post-modal');
+    } else {
+        alert('Войдите, чтобы добавить пост!');
     }
 }
 
@@ -179,111 +125,54 @@ function saveProfile() {
             name: newName,
             bio: newBio
         });
-        showToast('Профиль обновлён!');
+        closeModal('profile-modal');
     }
 }
 
-// Data for Cards (with dynamic image parsing from Roblox API)
+// Данные для плейсов
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", placeId: 920587237, video: "https://www.youtube.com/embed/Wz9M1zM0k8s" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", placeId: 4924922222, video: "https://www.youtube.com/embed/5o4bY6X7pH8" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", placeId: 606849621, video: "https://www.youtube.com/embed/0i5e9z1G5oM" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", placeId: 2753915549, video: "https://www.youtube.com/embed/7tY8V3T8l0s" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", placeId: 6516141723, video: "https://www.youtube.com/embed/-z2zIz4O2LE" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", placeId: 286090429, video: "https://www.youtube.com/embed/3s3Z1W0rD0U" }
-];
-
-const allScripts = [
-    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", scriptId: 606849621 },
-    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", scriptId: 2753915549 },
-    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", scriptId: 6516141723 },
-    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", scriptId: 286090429 }
-];
-
-const allAvatars = [
-    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", userId: 1 },
-    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", userId: 2 },
-    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", userId: 3 },
-    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", userId: 4 }
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 4, title: "Tower of Hell", desc: "Сложный обби.", rating: "★★★★☆", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=1054533950&width=420&height=420&format=png", link: "https://www.roblox.com/games/1054533950/Tower-of-Hell", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 5, title: "MeepCity", desc: "Социальная игра.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=690091570&width=420&height=420&format=png", link: "https://www.roblox.com/games/690091570/MeepCity", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
 ];
 
 let currentPage = 1;
-const placesPerPage = 6;
-let currentFilter = { search: '', genre: '' };
+let placesPerPage = 6;
+let currentFilter = { genre: 'all', search: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
     grid.innerHTML = '';
-    const filtered = allPlaces.filter(p => p.title.toLowerCase().includes(currentFilter.search.toLowerCase()) && (!currentFilter.genre || p.genre === currentFilter.genre));
+
+    let filtered = allPlaces.filter(place => {
+        if (currentFilter.genre !== 'all' && place.genre !== currentFilter.genre) return false;
+        if (currentFilter.search && !place.title.toLowerCase().includes(currentFilter.search.toLowerCase())) return false;
+        return true;
+    });
+
     const start = (currentPage - 1) * placesPerPage;
     const end = start + placesPerPage;
     filtered.slice(start, end).forEach(place => {
         const card = document.createElement('div');
         card.className = 'place-card';
-        const imgUrl = `https://thumbnails.roblox.com/v1/places/icons?placeIds=${place.placeId}&size=420x420&format=Png&isCircular=false`;
+        card.onclick = () => showPlaceDetails(place);
         card.innerHTML = `
-            <img src="${imgUrl}" alt="${place.title}">
-            <h4>${place.title}</h4>
-            <p>${place.desc}</p>
-            <p>${place.rating}</p>
-            <button class="cta-btn details-btn" data-id="${place.id}">Подробнее</button>
-            <div class="place-details" style="display: none;">
-                <iframe width="100%" height="200" src="${place.video}" frameborder="0" allowfullscreen></iframe>
-                <button class="cta-btn download-btn" data-type="place" data-id="${place.id}">Скачать</button>
+            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00A2FF/FFF?text=Roblox';">
+            <p class="place-title">${place.title}</p>
+            <p class="place-desc">${place.desc}</p>
+            <p class="rating">${place.rating}</p>
+            <div class="action-buttons">
+                <a href="${place.link}" class="action-btn" target="_blank">Играть</a>
+                <button class="action-btn" onclick="event.stopPropagation(); downloadPlace(${place.id})">Скачать мод</button>
             </div>
         `;
         grid.appendChild(card);
     });
+
     updatePaginationPlaces(filtered.length);
-    document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const details = btn.nextElementSibling;
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-    document.querySelectorAll('.download-btn[data-type="place"]').forEach(btn => {
-        btn.addEventListener('click', () => downloadPlace(parseInt(btn.dataset.id)));
-    });
-}
-
-function renderScripts() {
-    const grid = document.getElementById('scripts-grid');
-    grid.innerHTML = '';
-    allScripts.forEach(script => {
-        const card = document.createElement('div');
-        card.className = 'script-card';
-        const imgUrl = `https://tr.rbxcdn.com/asset-thumbnail/image?assetId=${script.scriptId}&width=420&height=420&format=png`;
-        card.innerHTML = `
-            <img src="${imgUrl}" alt="${script.title}">
-            <h4>${script.title}</h4>
-            <p>${script.desc}</p>
-            <button class="cta-btn download-btn" data-type="script" data-id="${script.id}">Скачать</button>
-        `;
-        grid.appendChild(card);
-    });
-    document.querySelectorAll('.download-btn[data-type="script"]').forEach(btn => {
-        btn.addEventListener('click', () => downloadScript(parseInt(btn.dataset.id)));
-    });
-}
-
-function renderAvatars() {
-    const grid = document.getElementById('avatars-grid');
-    grid.innerHTML = '';
-    allAvatars.forEach(avatar => {
-        const card = document.createElement('div');
-        card.className = 'avatar-card';
-        const imgUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${avatar.userId}&width=420&height=420&format=png`;
-        card.innerHTML = `
-            <img src="${imgUrl}" alt="${avatar.title}">
-            <h4>${avatar.title}</h4>
-            <p>${avatar.desc}</p>
-            <button class="cta-btn download-btn" data-type="avatar" data-id="${avatar.id}">Скачать</button>
-        `;
-        grid.appendChild(card);
-    });
-    document.querySelectorAll('.download-btn[data-type="avatar"]').forEach(btn => {
-        btn.addEventListener('click', () => downloadAvatar(parseInt(btn.dataset.id)));
-    });
+    updateUserProgress();
 }
 
 function updatePaginationPlaces(total) {
@@ -293,20 +182,20 @@ function updatePaginationPlaces(total) {
     if (currentPage > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
-        prev.addEventListener('click', () => { currentPage--; renderPlaces(); });
+        prev.onclick = () => { currentPage--; renderPlaces(); };
         pag.appendChild(prev);
     }
     for (let i = 1; i <= pages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
         btn.className = currentPage === i ? 'active' : '';
-        btn.addEventListener('click', () => { currentPage = i; renderPlaces(); });
+        btn.onclick = () => { currentPage = i; renderPlaces(); };
         pag.appendChild(btn);
     }
     if (currentPage < pages) {
         const next = document.createElement('button');
         next.textContent = '→';
-        next.addEventListener('click', () => { currentPage++; renderPlaces(); });
+        next.onclick = () => { currentPage++; renderPlaces(); };
         pag.appendChild(next);
     }
 }
@@ -323,11 +212,10 @@ function downloadPlace(id) {
         userData.places++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
+        alert(`Скачан мод для плейса ${allPlaces.find(p => p.id === id).title}!`);
     } else {
         alert('Войдите для скачивания!');
     }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadScript(id) {
@@ -335,11 +223,10 @@ function downloadScript(id) {
         userData.scripts++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
+        alert(`Скачан скрипт #${id}!`);
     } else {
         alert('Войдите для скачивания!');
     }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadAvatar(id) {
@@ -347,33 +234,50 @@ function downloadAvatar(id) {
         userData.avatars++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
+        alert(`Скачан аватар #${id}!`);
     } else {
         alert('Войдите для скачивания!');
     }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
+}
+
+function showPlaceDetails(place) {
+    document.getElementById('place-title').textContent = place.title;
+    document.getElementById('place-desc').textContent = place.desc;
+    document.getElementById('place-rating').innerHTML = `Рейтинг: ${place.rating}`;
+    document.getElementById('place-img').src = place.img;
+    document.getElementById('place-video').src = place.video;
+    document.getElementById('download-btn').onclick = () => downloadPlace(place.id);
+    showModal('details-modal');
 }
 
 function updateUserProgress() {
     document.getElementById('user-downloads').textContent = userData.downloads;
     const totalPlaces = allPlaces.length;
+    const percent = (userData.places / totalPlaces * 100).toFixed(1);
     document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
-    document.getElementById('user-scripts').textContent = userData.scripts;
-    const totalAvatars = allAvatars.length;
-    document.getElementById('user-avatars').textContent = `${userData.avatars}/${totalAvatars}`;
-    const percent = ((userData.places + userData.scripts + userData.avatars) / (totalPlaces + totalAvatars + allScripts.length) * 100).toFixed(1);
-    document.querySelector('.progress-fill').style.width = percent + '%';
+    document.getElementById('progress-fill').style.width = percent + '%';
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
+}
+
+function copyIP(ip) {
+    navigator.clipboard.writeText(ip).then(() => {
+        alert(`Скопирован ID: ${ip}`);
+    });
 }
 
 function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
-    if (sectionId === 'places') renderPlaces();
-    if (sectionId === 'scripts') renderScripts();
-    if (sectionId === 'avatars') renderAvatars();
+    document.querySelector(`.nav-btn[onclick="switchSection('${sectionId}')"]`).classList.add('active');
+}
+
+function showModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
 }
 
 function toggleDarkMode() {
@@ -420,64 +324,18 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(19, 17, 0, 0); // 07:17 PM CEST
-    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
-    document.getElementById('current-time').textContent = timeString;
-    document.getElementById('current-time-profile').textContent = timeString;
+    const timeElement = document.getElementById('current-time');
+    const timeProfile = document.getElementById('current-time-profile');
+    if (timeElement) timeElement.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    if (timeProfile) timeProfile.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Восстановление темы
     if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-
-    // Инициализация секций
     switchSection('home');
     renderPlaces();
-    renderScripts();
-    renderAvatars();
     updateUserProgress();
     updateProfileTime();
     setInterval(updateProfileTime, 60000);
     initParticles();
-
-    // Слушатели для навигации
-    document.getElementById('nav-home').addEventListener('click', () => switchSection('home'));
-    document.getElementById('nav-places').addEventListener('click', () => switchSection('places'));
-    document.getElementById('nav-scripts').addEventListener('click', () => switchSection('scripts'));
-    document.getElementById('nav-avatars').addEventListener('click', () => switchSection('avatars'));
-    document.getElementById('nav-account').addEventListener('click', () => switchSection('account'));
-
-    // Слушатель для смены темы
-    document.getElementById('dark-toggle-btn').addEventListener('click', toggleDarkMode);
-
-    // Слушатели для аутентификации
-    document.getElementById('sign-up-btn').addEventListener('click', signUp);
-    document.getElementById('sign-in-btn').addEventListener('click', signIn);
-    document.getElementById('google-sign-in-btn').addEventListener('click', googleSignIn);
-    document.getElementById('send-phone-code-btn').addEventListener('click', sendPhoneCode);
-    document.getElementById('verify-phone-btn').addEventListener('click', verifyPhone);
-    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
-    document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
-    document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
-
-    // Слушатель для фильтрации
-    document.getElementById('filter-btn').addEventListener('click', filterPlaces);
 });
-
-// Загрузка Firebase (если не подключено)
-if (!window.firebase) {
-    const script = document.createElement('script');
-    script.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    script.onload = () => {
-        const script2 = document.createElement('script');
-        script2.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-        script2.onload = () => {
-            const script3 = document.createElement('script');
-            script3.src = 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
-            script3.onload = () => location.reload();
-            document.head.appendChild(script3);
-        };
-        document.head.appendChild(script2);
-    };
-    document.head.appendChild(script);
-}

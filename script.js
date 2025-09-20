@@ -5,13 +5,13 @@ import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/fi
 
 // Firebase Config (замени на свои ключи)
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "your-project-id.firebaseapp.com",
-    databaseURL: "https://your-project-id.firebaseio.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project-id.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
+  authDomain: "game-extensions.firebaseapp.com",
+  projectId: "game-extensions",
+  storageBucket: "game-extensions.firebasestorage.app",
+  messagingSenderId: "68965248738",
+  appId: "1:68965248738:web:725083c3b89069a177b8bb",
+  measurementId: "G-GHBGWQELT8"
 };
 
 // Инициализация Firebase

@@ -48,6 +48,15 @@ onAuthStateChanged(auth, user => {
     }
 });
 
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
+
 function signUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -57,7 +66,7 @@ function signUp() {
             set(ref(db, 'users/' + user.uid), userData);
             sendEmailVerification(user)
                 .then(() => {
-                    document.getElementById('auth-message').textContent = 'Регистрация успешна! Подтвердите email (ссылка отправлена на почту).';
+                    showToast('Код выслан на указанный адрес почты');
                 })
                 .catch((error) => {
                     document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
@@ -94,7 +103,7 @@ function resendVerification() {
     if (auth.currentUser) {
         sendEmailVerification(auth.currentUser)
             .then(() => {
-                document.getElementById('auth-message').textContent = 'Код подтверждения повторно отправлен на email!';
+                showToast('Код выслан на указанный адрес почты');
             })
             .catch((error) => {
                 document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
@@ -107,19 +116,42 @@ function loadPosts() {
     onValue(postsRef, (snapshot) => {
         const posts = document.getElementById('forum-posts');
         posts.innerHTML = '';
-        snapshot.forEach((childSnapshot) => {
-            const postData = childSnapshot.val();
-            const post = document.createElement('div');
-            post.className = 'forum-post';
-            post.innerHTML = `
-                <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
-                <div>
-                    <h4>${postData.name}</h4>
-                    <p>${postData.content}</p>
-                </div>
-            `;
-            posts.appendChild(post);
-        });
+        if (!snapshot.exists()) {
+            // Фейковые посты
+            const fakePosts = [
+                { name: 'ProGamerRU', content: 'Лучший скрипт для Auto Farm в Adopt Me! Работает идеально, рекомендую всем.' },
+                { name: 'RobloxFan2005', content: 'Кто знает, как фиксить баги в Jailbreak? У меня крашится после 10 мин.' },
+                { name: 'ModMaster', content: 'Новый аватар Neon - огонь! Скачал и сразу поставил, выглядит круто в Brookhaven.' },
+                { name: 'SpeedRunnerPro', content: 'ESP в Blox Fruits спасает жизнь. Спасибо за моды!' },
+                { name: 'PetLover', content: 'Серверы Adopt Me! всегда полные, но с вашим ID зашёл без проблем.' }
+            ];
+            fakePosts.forEach(postData => {
+                const post = document.createElement('div');
+                post.className = 'forum-post';
+                post.innerHTML = `
+                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=${Math.floor(Math.random() * 1000) + 1}&width=50&height=50&format=png" alt="User">
+                    <div>
+                        <h4>${postData.name}</h4>
+                        <p>${postData.content}</p>
+                    </div>
+                `;
+                posts.appendChild(post);
+            });
+        } else {
+            snapshot.forEach((childSnapshot) => {
+                const postData = childSnapshot.val();
+                const post = document.createElement('div');
+                post.className = 'forum-post';
+                post.innerHTML = `
+                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
+                    <div>
+                        <h4>${postData.name}</h4>
+                        <p>${postData.content}</p>
+                    </div>
+                `;
+                posts.appendChild(post);
+            });
+        }
     });
 }
 
@@ -133,6 +165,7 @@ function addPost() {
             timestamp: Date.now()
         });
         document.getElementById('post-content').value = '';
+        showToast('Пост опубликован!');
     } else {
         alert('Войдите, чтобы добавить пост!');
     }
@@ -147,15 +180,18 @@ function saveProfile() {
             name: newName,
             bio: newBio
         });
+        showToast('Профиль обновлён!');
     }
 }
 
-// Данные для плейсов
+// Данные для плейсов (увеличено до 6 с Roblox thumbnails)
 const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    // Добавь больше
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
 ];
 
 let currentPage = 1;
@@ -231,10 +267,11 @@ function downloadPlace(id) {
         userData.places++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан мод для плейса #${id}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadScript(id) {
@@ -242,10 +279,11 @@ function downloadScript(id) {
         userData.scripts++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан скрипт #${id}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadAvatar(id) {
@@ -253,10 +291,11 @@ function downloadAvatar(id) {
         userData.avatars++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан аватар #${id}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function updateUserProgress() {
@@ -270,7 +309,7 @@ function updateUserProgress() {
 
 function copyIP(ip) {
     navigator.clipboard.writeText(ip).then(() => {
-        alert(`Скопирован ID: ${ip}`);
+        showToast(`Скопирован ID: ${ip}`);
     });
 }
 
@@ -325,11 +364,9 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    const timeElement = document.getElementById('current-time');
-    const timeProfile = document.getElementById('current-time-profile');
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
-    if (timeElement) timeElement.textContent = timeString;
-    if (timeProfile) timeProfile.textContent = timeString;
+    document.getElementById('current-time').textContent = timeString;
+    document.getElementById('current-time-profile').textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -357,13 +394,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
 
-    document.querySelectorAll('.download-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = parseInt(btn.dataset.id);
-            if (btn.dataset.type === 'place') downloadPlace(id);
-            if (btn.dataset.type === 'script') downloadScript(id);
-            if (btn.dataset.type === 'avatar') downloadAvatar(id);
-        });
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('download-btn')) {
+            const id = parseInt(e.target.dataset.id);
+            const type = e.target.dataset.type;
+            if (type === 'place') downloadPlace(id);
+            if (type === 'script') downloadScript(id);
+            if (type === 'avatar') downloadAvatar(id);
+        }
     });
 
     document.querySelectorAll('.copy-btn').forEach(btn => {

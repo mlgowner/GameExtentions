@@ -1,7 +1,7 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
+import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
 // Firebase Config
 const firebaseConfig = {
@@ -41,7 +41,6 @@ onAuthStateChanged(auth, user => {
                 document.getElementById('auth-message').textContent = '';
             }
         });
-        loadPosts();
     } else {
         authForm.style.display = 'block';
         profileContent.style.display = 'none';
@@ -108,30 +107,6 @@ function resendVerification() {
             .catch((error) => {
                 document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
             });
-    }
-}
-
-function loadPosts() {
-    const postsRef = ref(db, 'posts');
-    onValue(postsRef, (snapshot) => {
-        const posts = document.getElementById('forum-posts');
-        posts.innerHTML = '';
-    });
-}
-
-function addPost() {
-    const content = document.getElementById('post-content').value;
-    if (content && auth.currentUser) {
-        const postsRef = ref(db, 'posts');
-        push(postsRef, {
-            name: userData.name,
-            content: content,
-            timestamp: Date.now()
-        });
-        document.getElementById('post-content').value = '';
-        showToast('Пост опубликован!');
-    } else {
-        alert('Войдите, чтобы добавить пост!');
     }
 }
 
@@ -270,12 +245,6 @@ function updateUserProgress() {
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
 
-function copyIP(ip) {
-    navigator.clipboard.writeText(ip).then(() => {
-        showToast(`Скопирован ID: ${ip}`);
-    });
-}
-
 function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
@@ -327,7 +296,8 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    now.setHours(17, 45, 0, 0); // Установка времени на 05:45 PM CEST
+    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
 }
@@ -338,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPlaces();
     updateUserProgress();
     updateProfileTime();
-    setInterval(updateProfileTime, 60000);
+    setInterval(updateProfileTime, 60000); // Обновление каждую минуту
     initParticles();
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -352,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
     document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
     document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
-    document.getElementById('add-post-btn').addEventListener('click', addPost);
 
     document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
 
@@ -364,9 +333,5 @@ document.addEventListener('DOMContentLoaded', () => {
             if (type === 'script') downloadScript(id);
             if (type === 'avatar') downloadAvatar(id);
         }
-    });
-
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => copyIP(btn.dataset.ip));
     });
 });

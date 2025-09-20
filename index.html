@@ -15,7 +15,7 @@
         import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
         import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
-        // Firebase Config (используются твои ключи)
+        // Firebase Config (твои ключи)
         const firebaseConfig = {
             apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
             authDomain: "game-extensions.firebaseapp.com",
@@ -67,7 +67,7 @@
         <div id="home" class="section active">
             <div class="main-panel intro">
                 <h3>Добро пожаловать в Game Extensions!</h3>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">04:19 PM CEST, 20 сентября 2025</span>.</p>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">04:34 PM CEST, 20 сентября 2025</span>.</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -170,12 +170,12 @@
             <div class="account-form" id="auth-form">
                 <h3>Регистрация / Вход</h3>
                 <div class="input-group">
-                    <img src="https://img.icons8.com/?size=50&id=62158&format=png" alt="Email Icon" width="20">
-                    <input type="email" id="email" placeholder="Email">
+                    <img src="https://img.icons8.com/?size=20&id=62158&format=png" alt="Email Icon" width="20">
+                    <input type="email" id="email" placeholder="Ваш email">
                 </div>
                 <div class="input-group">
-                    <img src="https://img.icons8.com/?size=50&id=lm7emUJqrpOM&format=png" alt="Password Icon" width="20">
-                    <input type="password" id="password" placeholder="Пароль">
+                    <img src="https://img.icons8.com/?size=20&id=lm7emUJqrpOM&format=png" alt="Password Icon" width="20">
+                    <input type="password" id="password" placeholder="Ваш пароль">
                 </div>
                 <div class="action-buttons">
                     <button class="action-btn" onclick="signUp()">Регистрация</button>
@@ -185,7 +185,7 @@
             </div>
             <div id="profile-content" style="display: none;">
                 <div class="profile-header">
-                    <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar">
+                    <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=120&height=120&format=png" alt="User Avatar">
                     <h3 id="profile-name">RobloxPlayer</h3>
                     <p id="profile-bio">Любитель модов и плейсов!</p>
                 </div>
@@ -200,7 +200,7 @@
                     </div>
                     <div class="stat">
                         <h4>Текущее время</h4>
-                        <p id="current-time-profile">04:19 PM CEST, 20 сентября 2025</p>
+                        <p id="current-time-profile">04:34 PM CEST, 20 сентября 2025</p>
                     </div>
                 </div>
                 <div class="progress-bar">

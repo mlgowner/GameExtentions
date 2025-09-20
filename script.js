@@ -1,6 +1,6 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, GoogleAuthProvider, signInWithPopup, PhoneAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
 // Firebase Config
@@ -19,7 +19,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Providers
+const googleProvider = new GoogleAuthProvider();
+const phoneProvider = new PhoneAuthProvider(auth);
+
+// Recaptcha for phone
+window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth); // Добавьте <div id="recaptcha-container"></div> в HTML для reCAPTCHA
+
 let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0 };
+let confirmationResult; // Для phone OTP
 
 onAuthStateChanged(auth, user => {
     const authForm = document.getElementById('auth-form');
@@ -30,9 +38,9 @@ onAuthStateChanged(auth, user => {
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
             userData = snapshot.val() || userData;
-            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-name').textContent = userData.name || user.displayName || 'RobloxPlayer';
             document.getElementById('profile-bio').textContent = userData.bio;
-            document.getElementById('new-name').value = userData.name;
+            document.getElementById('new-name').value = userData.name || user.displayName || '';
             document.getElementById('new-bio').value = userData.bio;
             updateUserProgress();
             if (!user.emailVerified) {
@@ -89,6 +97,46 @@ function signIn() {
         });
 }
 
+function googleSignIn() {
+    signInWithPopup(auth, googleProvider)
+        .then((result) => {
+            const user = result.user;
+            set(ref(db, 'users/' + user.uid), { ...userData, name: user.displayName, bio: userData.bio });
+            showToast('Вход через Google успешен!');
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = error.message;
+        });
+}
+
+function sendPhoneCode() {
+    const phoneNumber = document.getElementById('phone-number').value;
+    signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+        .then((result) => {
+            confirmationResult = result;
+            document.getElementById('phone-code').style.display = 'block';
+            document.getElementById('verify-phone-btn').style.display = 'block';
+            document.getElementById('send-phone-code-btn').style.display = 'none';
+            showToast('Код отправлен на телефон');
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = error.message;
+        });
+}
+
+function verifyPhone() {
+    const code = document.getElementById('phone-code').value;
+    confirmationResult.confirm(code)
+        .then((result) => {
+            const user = result.user;
+            set(ref(db, 'users/' + user.uid), userData);
+            showToast('Вход через телефон успешен!');
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = error.message;
+        });
+}
+
 function signOutUser() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
@@ -124,12 +172,12 @@ function saveProfile() {
 }
 
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/Wz9M1zM0k8s" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/5o4bY6X7pH8" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/0i5e9z1G5oM" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/7tY8V3T8l0s" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=6516141723&width=420&height=420&format=png", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/-z2zIz4O2LE" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=286090429&width=420&height=420&format=png", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/3s3Z1W0rD0U" }
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=920587237&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/Wz9M1zM0k8s" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=4924922222&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/5o4bY6X7pH8" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=606849621&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/0i5e9z1G5oM" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=2753915549&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", video: "https://www.youtube.com/embed/7tY8V3T8l0s" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=6516141723&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/6516141723/Doors", video: "https://www.youtube.com/embed/-z2zIz4O2LE" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "https://thumbnails.roblox.com/v1/places/icons?placeIds=286090429&size=420x420&format=Png&isCircular=false", link: "https://www.roblox.com/games/286090429/Arsenal", video: "https://www.youtube.com/embed/3s3Z1W0rD0U" }
 ];
 
 let currentPage = 1;
@@ -164,6 +212,9 @@ function renderPlaces() {
             const details = btn.nextElementSibling;
             details.style.display = details.style.display === 'none' ? 'block' : 'none';
         });
+    });
+    document.querySelectorAll('.download-btn[data-type="place"]').forEach(btn => {
+        btn.addEventListener('click', () => downloadPlace(parseInt(btn.dataset.id)));
     });
 }
 
@@ -296,8 +347,7 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(18, 2, 0, 0); // Установка времени на 06:02 PM CEST
-    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
+    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
 }
@@ -319,6 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('sign-up-btn').addEventListener('click', signUp);
     document.getElementById('sign-in-btn').addEventListener('click', signIn);
+    document.getElementById('google-sign-in-btn').addEventListener('click', googleSignIn);
+    document.getElementById('send-phone-code-btn').addEventListener('click', sendPhoneCode);
+    document.getElementById('verify-phone-btn').addEventListener('click', verifyPhone);
     document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
     document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
     document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);

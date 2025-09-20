@@ -116,42 +116,6 @@ function loadPosts() {
     onValue(postsRef, (snapshot) => {
         const posts = document.getElementById('forum-posts');
         posts.innerHTML = '';
-        if (!snapshot.exists()) {
-            // Фейковые посты
-            const fakePosts = [
-                { name: 'ProGamerRU', content: 'Лучший скрипт для Auto Farm в Adopt Me! Работает идеально, рекомендую всем.' },
-                { name: 'RobloxFan2005', content: 'Кто знает, как фиксить баги в Jailbreak? У меня крашится после 10 мин.' },
-                { name: 'ModMaster', content: 'Новый аватар Neon - огонь! Скачал и сразу поставил, выглядит круто в Brookhaven.' },
-                { name: 'SpeedRunnerPro', content: 'ESP в Blox Fruits спасает жизнь. Спасибо за моды!' },
-                { name: 'PetLover', content: 'Серверы Adopt Me! всегда полные, но с вашим ID зашёл без проблем.' }
-            ];
-            fakePosts.forEach(postData => {
-                const post = document.createElement('div');
-                post.className = 'forum-post';
-                post.innerHTML = `
-                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=${Math.floor(Math.random() * 1000) + 1}&width=50&height=50&format=png" alt="User">
-                    <div>
-                        <h4>${postData.name}</h4>
-                        <p>${postData.content}</p>
-                    </div>
-                `;
-                posts.appendChild(post);
-            });
-        } else {
-            snapshot.forEach((childSnapshot) => {
-                const postData = childSnapshot.val();
-                const post = document.createElement('div');
-                post.className = 'forum-post';
-                post.innerHTML = `
-                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=50&height=50&format=png" alt="User">
-                    <div>
-                        <h4>${postData.name}</h4>
-                        <p>${postData.content}</p>
-                    </div>
-                `;
-                posts.appendChild(post);
-            });
-        }
     });
 }
 
@@ -184,7 +148,6 @@ function saveProfile() {
     }
 }
 
-// Данные для плейсов (увеличено до 6 с Roblox thumbnails)
 const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
@@ -221,7 +184,6 @@ function renderPlaces() {
         grid.appendChild(card);
     });
     updatePaginationPlaces(filtered.length);
-    // Добавляем listeners для details
     document.querySelectorAll('.details-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const details = btn.nextElementSibling;
@@ -301,8 +263,9 @@ function downloadAvatar(id) {
 function updateUserProgress() {
     document.getElementById('user-downloads').textContent = userData.downloads;
     const totalPlaces = allPlaces.length;
-    const percent = (userData.places / totalPlaces * 100).toFixed(1);
     document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
+    document.getElementById('user-scripts').textContent = userData.scripts;
+    const percent = (userData.places / totalPlaces * 100).toFixed(1);
     document.querySelector('.progress-fill').style.width = percent + '%';
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
@@ -378,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateProfileTime, 60000);
     initParticles();
 
-    // Event listeners
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => switchSection(btn.dataset.section));
     });

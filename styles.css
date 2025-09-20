@@ -211,6 +211,12 @@ body.dark-mode .main-panel {
     flex-wrap: wrap;
 }
 
+.profile-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    justify-content: center;
+}
+
 .stat {
     background: linear-gradient(135deg, #E6F0FA, #D0E4F7);
     padding: 1rem;
@@ -230,6 +236,35 @@ body.dark-mode .stat {
 .stat:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 162, 255, 0.1);
+}
+
+/* FAQ Styles */
+.faq-panel {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 162, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .faq-item {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+}
+
+.faq-item h4 {
+    color: #00A2FF;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
 }
 
 .filter-bar {
@@ -372,9 +407,19 @@ body.dark-mode .progress-bar {
 }
 
 .profile-header {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2rem;
     width: 100%;
+    padding: 1rem;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
+    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.1);
+}
+
+body.dark-mode .profile-header {
+    background: linear-gradient(135deg, #2C3E50, #24305E);
 }
 
 .avatar {
@@ -458,6 +503,20 @@ body.dark-mode footer {
     pointer-events: none;
 }
 
+.toast {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    color: #FFF;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.3);
+    animation: slideInUp 0.3s ease;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -478,6 +537,7 @@ body.dark-mode footer {
     .nav-btn { min-width: 80px; font-size: 0.9rem; }
     .places-grid, .scripts-grid, .avatars-grid, .servers-grid { gap: 1rem; }
     .stat { min-width: 100px; }
+    .profile-stats { grid-template-columns: 1fr; }
     .container { padding: 1rem; }
     .hero { padding: 2rem; }
     .account-form { padding: 1.5rem; }

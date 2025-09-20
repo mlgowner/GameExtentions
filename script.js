@@ -379,7 +379,6 @@ function switchSection(sectionId) {
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    console.log('Тема переключена:', document.body.classList.contains('dark-mode') ? 'темная' : 'светлая');
 }
 
 function initParticles() {
@@ -421,7 +420,7 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(19, 3, 0, 0); // 07:03 PM CEST
+    now.setHours(19, 17, 0, 0); // 07:17 PM CEST
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;

@@ -3,14 +3,19 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: 'Open Sans', sans-serif;
-    background: linear-gradient(135deg, #000428, #004e92); /* Roblox синий градиент */
-    color: #fff;
+    background: #FFFFFF; /* Белый фон */
+    color: #333;
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 body::before {
     content: '';
     position: fixed;
@@ -18,148 +23,186 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=1920&height=1080&format=png') repeat; /* Проверенный Roblox фон, PNG 1920x1080, ~200KB */
-    opacity: 0.1;
+    background: url('https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=1920&height=1080&format=png') no-repeat center/cover; /* Проверенный фон */
+    opacity: 0.05;
     z-index: -1;
     animation: parallax 20s infinite linear;
 }
+
 @keyframes parallax {
     0% { background-position: 0 0; }
     100% { background-position: 100px 100px; }
 }
+
 header {
-    background: rgba(0, 0, 0, 0.8);
+    background: #E6F0FA; /* Светло-синий фон */
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 2rem;
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0, 162, 255, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 162, 255, 0.1);
 }
+
 .logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
+
 .logo img {
     width: 40px;
-    filter: drop-shadow(0 0 5px #00a2ff);
+    filter: drop-shadow(0 0 5px #00A2FF);
 }
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
 nav button {
-    background: #00a2ff;
+    background: #00A2FF;
     border: none;
-    color: #fff;
+    color: #FFF;
     padding: 0.5rem 1rem;
-    margin: 0 0.25rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
     font-weight: bold;
 }
+
 nav button:hover, nav button.active {
-    background: #007acc;
+    background: #007ACC;
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 162, 255, 0.4);
 }
+
 .download-btn {
-    background: #00a2ff;
-    color: #fff;
+    background: #00A2FF;
+    color: #FFF;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     text-decoration: none;
     transition: all 0.3s;
 }
+
 .download-btn:hover {
-    background: #007acc;
+    background: #007ACC;
     transform: scale(1.05);
 }
+
 .dark-toggle {
-    background: #00a2ff;
+    background: #00A2FF;
     border: none;
-    color: #fff;
+    color: #FFF;
     padding: 0.5rem;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s;
 }
+
 .container {
+    flex: 1;
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .hero {
-    background: rgba(0, 0, 0, 0.7);
+    background: #F0F8FF; /* Очень светло-синий */
     border-radius: 20px;
     padding: 3rem;
     text-align: center;
-    position: relative;
-    overflow: hidden;
     margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
+    width: 100%;
+    max-width: 800px;
 }
+
 .cta-btn {
-    background: #00a2ff;
+    background: #00A2FF;
     border: none;
-    color: #fff;
+    color: #FFF;
     padding: 1rem 2rem;
     border-radius: 30px;
     cursor: pointer;
     font-size: 1.1rem;
     transition: all 0.3s;
-    margin-top: 1rem;
     text-decoration: none;
     display: inline-block;
 }
+
 .cta-btn:hover {
-    background: #007acc;
+    background: #007ACC;
     transform: scale(1.05);
     box-shadow: 0 5px 20px rgba(0, 162, 255, 0.4);
 }
+
 .main-panel {
-    background: #1a1a1a;
+    background: #F9FBFF; /* Почти белый с лёгким синим */
     border-radius: 15px;
     padding: 2rem;
     margin-bottom: 2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s;
+    width: 100%;
+    max-width: 800px;
 }
+
 .main-panel:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 162, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 162, 255, 0.1);
 }
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
 }
+
 .stat-card {
-    background: #23272a;
+    background: #E6F0FA;
     padding: 1rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
+    color: #333;
 }
+
 .places-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
 }
+
 .place-card {
-    background: #23272a;
+    background: #F9FBFF;
     border-radius: 15px;
     padding: 1.5rem;
     transition: all 0.3s;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
+
 .place-card:hover {
     transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
 }
+
 .place-card img {
     width: 100%;
     height: 150px;
@@ -167,47 +210,62 @@ nav button:hover, nav button.active {
     border-radius: 10px;
     margin-bottom: 1rem;
 }
+
 .progress-bar {
-    background: #333;
+    background: #E6F0FA;
     height: 20px;
     border-radius: 10px;
     overflow: hidden;
     margin: 1rem 0;
+    width: 100%;
+    max-width: 300px;
 }
+
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00a2ff, #007acc);
+    background: linear-gradient(90deg, #00A2FF, #007ACC);
     transition: width 0.5s ease;
     width: 0%;
 }
+
 .forum-posts {
     display: grid;
     gap: 1rem;
+    width: 100%;
+    max-width: 800px;
 }
+
 .forum-post {
-    background: #23272a;
+    background: #F9FBFF;
     padding: 1rem;
     border-radius: 10px;
     display: flex;
     gap: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
+
 .forum-post img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
+
 .profile-header {
     text-align: center;
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 300px;
 }
+
 .avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 3px solid #00a2ff;
+    border: 3px solid #00A2FF;
     margin: 0 auto 1rem;
-    box-shadow: 0 0 10px #00a2ff;
+    box-shadow: 0 0 10px #00A2FF;
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -215,66 +273,82 @@ nav button:hover, nav button.active {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    animation: fadeIn 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .modal-content {
-    background: #1a1a1a;
-    margin: 10% auto;
+    background: #FFF;
     padding: 2rem;
     border-radius: 15px;
     width: 80%;
     max-width: 600px;
     position: relative;
-    box-shadow: 0 0 20px #00a2ff;
+    box-shadow: 0 0 20px #00A2FF;
+    color: #333;
 }
+
 .close {
     position: absolute;
     top: 1rem;
     right: 1rem;
     font-size: 2rem;
     cursor: pointer;
-    color: #fff;
+    color: #00A2FF;
 }
+
 .pagination {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin: 2rem 0;
 }
+
 .pagination button {
-    background: #00a2ff;
+    background: #00A2FF;
     border: none;
-    color: #fff;
+    color: #FFF;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
 }
+
 .pagination button:hover {
-    background: #007acc;
+    background: #007ACC;
 }
+
 footer {
-    background: #000;
+    background: #E6F0FA;
     padding: 1rem;
     text-align: center;
-    margin-top: 3rem;
-    box-shadow: 0 -2px 10px rgba(0, 162, 255, 0.2);
+    margin-top: auto;
+    box-shadow: 0 -2px 10px rgba(0, 162, 255, 0.1);
+    color: #333;
 }
+
 .section {
     display: none;
+    width: 100%;
 }
+
 .section.active {
     display: block;
     animation: slideIn 0.5s ease;
 }
+
 @keyframes slideIn {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
 @media (max-width: 768px) {
     header { flex-direction: column; gap: 1rem; }
     .places-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; }
+    .container { padding: 1rem; }
+    .hero { padding: 2rem; }
 }

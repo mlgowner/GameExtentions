@@ -3,179 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>FNAF Max Modes Hub - Roblox Community</title>
+    <link rel="icon" href="https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <button class="active" onclick="switchSection('home')">Главная</button>
-        <button onclick="switchSection('games')">Игры</button>
-        <button onclick="switchSection('scripts')">Скрипты</button>
-        <button onclick="switchSection('avatars')">Аватары</button>
-        <button onclick="switchSection('servers')">Сервера</button>
-        <button onclick="switchSection('download')">Скачать</button>
-        <button onclick="switchSection('forum')">Форум</button>
-        <button onclick="switchSection('profile')">Профиль</button>
+        <div class="logo">
+            <img src="https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311" alt="Roblox Logo" width="40">
+            <h1>FNAF Max Modes Hub</h1>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="switchSection('home')">Главная</button>
+            <button class="nav-btn" onclick="switchSection('modes')">Режимы</button>
+            <button class="nav-btn" onclick="switchSection('leaderboard')">Лидерборд</button>
+            <button class="nav-btn" onclick="switchSection('forum')">Форум</button>
+            <button class="nav-btn" onclick="switchSection('profile')">Профиль</button>
+        </nav>
+        <div class="header-actions">
+            <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+        </div>
     </header>
 
     <div class="container">
-        <div class="hero">
-            <div class="hero-content">Добро пожаловать в Roblox Hub!</div>
+        <div class="hero" id="hero">
+            <div class="hero-content">
+                <h2>Who are we?</h2>
+                <p>We are a community that wants to push the boundaries on Five Nights at Freddy’s max modes on Roblox. We have a point system for anyone that dares to beat all of the top modes on Roblox. Check out the list below!</p>
+                <button class="cta-btn" onclick="switchSection('modes')">Начать вызов</button>
+            </div>
+            <canvas id="particles-canvas"></canvas>
         </div>
 
         <div id="home" class="section active">
-            <div class="main-panel">Добро пожаловать на главную страницу Roblox Hub!</div>
-            <div class="main-panel">Популярные игры</div>
-            <div class="main-panel">Последние обновления</div>
-            <div class="main-panel">Сообщество</div>
-        </div>
-
-        <div id="games" class="section">
-            <div class="filters">
-                <div class="filter-group">
-                    <h3>Жанр</h3>
-                    <div class="version-filters">
-                        <button class="filter-btn" onclick="filterByGenre('all')">Все</button>
-                        <button class="filter-btn" onclick="filterByGenre('adventure')">Приключения</button>
-                        <button class="filter-btn" onclick="filterByGenre('rpg')">RPG</button>
-                        <button class="filter-btn" onclick="filterByGenre('obby')">Obby</button>
-                    </div>
+            <div class="main-panel intro">
+                <h3>Присоединяйся к сообществу!</h3>
+                <p>Пройди все режимы, набери очки и стань легендой FNAF в Roblox. Текущее время: <span id="current-time">12:39 PM CEST, 20 сентября 2025</span>.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Всего режимов</h4>
+                    <p>50+</p>
                 </div>
-                <div class="filter-group">
-                    <h3>Платформа</h3>
-                    <div class="loader-filters">
-                        <button class="filter-btn" onclick="filterByPlatform('all')">Все</button>
-                        <button class="filter-btn" onclick="filterByPlatform('pc')">PC</button>
-                        <button class="filter-btn" onclick="filterByPlatform('mobile')">Mobile</button>
-                    </div>
+                <div class="stat-card">
+                    <h4>Макс. очки</h4>
+                    <p>5000</p>
                 </div>
-                <div class="filter-group">
-                    <h3>Сортировка</h3>
-                    <div class="sort-filters">
-                        <button class="filter-btn" onclick="sortGames('popular')">Популярность</button>
-                        <button class="filter-btn" onclick="sortGames('new')">Новизна</button>
-                    </div>
+                <div class="stat-card">
+                    <h4>Участников</h4>
+                    <p>1,247</p>
                 </div>
             </div>
-            <input type="text" id="search" class="search-bar" placeholder="Поиск игр..." oninput="filterGames()">
-            <div id="game-grid" class="game-grid"></div>
+        </div>
+
+        <div id="modes" class="section">
+            <div class="filters">
+                <input type="text" id="search" class="search-bar" placeholder="Поиск по режиму..." oninput="filterModes()">
+                <select id="difficulty-filter" onchange="filterModes()">
+                    <option value="all">Все сложности</option>
+                    <option value="easy">Легко</option>
+                    <option value="medium">Средне</option>
+                    <option value="hard">Сложно</option>
+                    <option value="max">Max</option>
+                </select>
+            </div>
+            <div id="modes-grid" class="modes-grid"></div>
             <div id="pagination" class="pagination"></div>
         </div>
 
-        <div id="scripts" class="section">
-            <div class="game-grid">
-                <div class="game-card">
-                    <img src="https://www.roblox.com/asset/?id=123456789" alt="Script 1">
-                    <p class="game-title">Auto Farm Script</p>
-                    <p class="game-desc">Автоматическая ферма для игр.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn">Скачать</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="avatars" class="section">
-            <div class="game-grid">
-                <div class="game-card">
-                    <img src="https://www.roblox.com/asset/?id=987654321" alt="Avatar 1">
-                    <p class="game-title">Cool Avatar</p>
-                    <p class="game-desc">Стильный аватар для Roblox.</p>
-                    <div class="action-buttons">
-                        <button class="action-btn">Скачать</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="servers" class="section">
-            <ul class="server-list">
-                <li class="server-item">
-                    <img src="https://www.roblox.com/asset/?id=456789123" alt="Server Icon">
-                    <span class="server-info">Public Server</span>
-                    <span class="server-online">150/200</span>
-                    <button class="action-btn" onclick="copyIP('play.roblox.com')">Копировать IP</button>
-                </li>
-            </ul>
-        </div>
-
-        <div id="download" class="section">
-            <img src="https://www.roblox.com/asset/?id=789123456" alt="Download Banner">
+        <div id="leaderboard" class="section">
+            <h3>Лидерборд</h3>
+            <table id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Место</th>
+                        <th>Ник</th>
+                        <th>Очки</th>
+                        <th>Процент прохождений</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Динамически заполняется JS -->
+                </tbody>
+            </table>
         </div>
 
         <div id="forum" class="section">
-            <div class="forum-thread">
-                <img src="https://cdn.pixabay.com/photo/2023/08/15/12/34/landscape-8193456_1280.jpg" alt="Avatar">
-                <div>
-                    <h4>RobloxPro</h4>
-                    <p>Just completed a new Obby!</p>
-                </div>
+            <h3>Форум</h3>
+            <div id="forum-posts" class="forum-posts">
+                <!-- Динамически заполняется JS -->
             </div>
-            <div class="forum-thread">
-                <img src="https://cdn.pixabay.com/photo/2023/07/12/12/34/mountain-8132345_1280.jpg" alt="Avatar">
-                <div>
-                    <h4>NoobMaster</h4>
-                    <p>Need help with a script...</p>
-                </div>
-            </div>
-            <div class="forum-thread">
-                <img src="https://cdn.pixabay.com/photo/2023/06/15/12/34/forest-8065789_1280.jpg" alt="Avatar">
-                <div>
-                    <h4>BlockKing</h4>
-                    <p>New game idea!</p>
-                </div>
-            </div>
+            <button class="cta-btn" onclick="showModal('new-post-modal')">Новый пост</button>
         </div>
 
         <div id="profile" class="section">
-            <div class="avatar"></div>
+            <div class="profile-header">
+                <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar">
+                <h3 id="profile-name">PlayerName</h3>
+                <p id="profile-bio">Готов к max-режимам!</p>
+            </div>
             <div class="stats">
                 <div class="stat">
-                    <h4>Регистрация</h4>
-                    <p>01.01.2023</p>
+                    <h4>Очки</h4>
+                    <p id="user-points">0</p>
                 </div>
                 <div class="stat">
-                    <h4>Уровень</h4>
-                    <p>15</p>
+                    <h4>Прохождений</h4>
+                    <p id="user-completions">0/50</p>
                 </div>
                 <div class="stat">
                     <h4>Текущее время</h4>
-                    <p id="current-time">12:39</p>
+                    <p id="current-time-profile">12:39 PM CEST, 20 сентября 2025</p>
                 </div>
             </div>
-            <div class="main-panel">Последние загрузки</div>
-            <div class="main-panel">Избранное</div>
-            <button class="action-btn" onclick="editProfile()">Редактировать профиль</button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+                <span>Прогресс: 0%</span>
+            </div>
+            <button class="cta-btn" onclick="editProfile()">Редактировать профиль</button>
         </div>
 
-        <div id="details" class="section">
-            <img id="game-img" src="" alt="Game Image">
-            <h3 id="game-title"></h3>
-            <p id="game-desc"></p>
-            <p id="game-versions"></p>
-            <p id="game-rating"></p>
-            <button class="action-btn" onclick="backToList()">Назад</button>
+        <!-- Модальные окна -->
+        <div id="details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('details-modal')">&times;</span>
+                <img id="mode-img" src="" alt="Mode Image">
+                <h3 id="mode-title"></h3>
+                <p id="mode-desc"></p>
+                <p id="mode-points">Очки: 0</p>
+                <button class="action-btn" id="complete-btn" onclick="completeMode()">Пройти режим</button>
+                <iframe id="mode-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
 
-        <div id="install-modal" class="modal">
-            <h3>Инструкция по установке</h3>
-            <p>1. Скачайте скрипт. 2. Откройте Roblox Studio. 3. Вставьте в игру.</p>
-            <button class="action-btn close-btn" onclick="closeInstallGuide()">Закрыть</button>
-        </div>
-
-        <div id="top-modal" class="modal">
-            <h3>Топ игр</h3>
-            <div id="top-games-list" class="top-games-list"></div>
-            <button class="action-btn close-btn" onclick="closeTopModal()">Закрыть</button>
+        <div id="new-post-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('new-post-modal')">&times;</span>
+                <h3>Новый пост</h3>
+                <textarea id="post-content" placeholder="Ваш пост..."></textarea>
+                <button class="action-btn" onclick="addPost()">Опубликовать</button>
+            </div>
         </div>
 
         <div id="profile-modal" class="modal">
-            <h3>Настройки профиля</h3>
-            <p>Измените свой аватар или никнейм.</p>
-            <button class="action-btn close-btn" onclick="closeProfileModal()">Закрыть</button>
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('profile-modal')">&times;</span>
+                <h3>Редактировать профиль</h3>
+                <input type="text" id="new-name" placeholder="Никнейм">
+                <textarea id="new-bio" placeholder="Био"></textarea>
+                <button class="action-btn" onclick="saveProfile()">Сохранить</button>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 FNAF Max Modes Hub. Powered by Roblox Community.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

@@ -14,6 +14,12 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background: #1A1A2E;
+    color: #E0E0E0;
 }
 
 body::before {
@@ -45,6 +51,12 @@ header {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 162, 255, 0.1);
+    transition: background 0.3s;
+}
+
+body.dark-mode header {
+    background: #16213E;
+    box-shadow: 0 2px 10px rgba(0, 162, 255, 0.3);
 }
 
 .logo {
@@ -118,6 +130,11 @@ nav button:hover, nav button.active {
     box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
     width: 100%;
     max-width: 800px;
+    transition: background 0.3s;
+}
+
+body.dark-mode .hero {
+    background: #24305E;
 }
 
 .cta-btn {
@@ -150,6 +167,11 @@ nav button:hover, nav button.active {
     max-width: 800px;
 }
 
+body.dark-mode .main-panel {
+    background: #2C3E50;
+    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.1);
+}
+
 .main-panel:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 162, 255, 0.1);
@@ -171,6 +193,12 @@ nav button:hover, nav button.active {
     text-align: center;
     box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
     color: #333;
+    transition: background 0.3s;
+}
+
+body.dark-mode .stat-card {
+    background: #34495E;
+    color: #E0E0E0;
 }
 
 .places-grid {
@@ -191,6 +219,10 @@ nav button:hover, nav button.active {
     position: relative;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .place-card {
+    background: #2C3E50;
 }
 
 .place-card:hover {
@@ -214,6 +246,11 @@ nav button:hover, nav button.active {
     margin: 1rem 0;
     width: 100%;
     max-width: 300px;
+    transition: background 0.3s;
+}
+
+body.dark-mode .progress-bar {
+    background: #34495E;
 }
 
 .progress-fill {
@@ -237,6 +274,11 @@ nav button:hover, nav button.active {
     display: flex;
     gap: 1rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s;
+}
+
+body.dark-mode .forum-post {
+    background: #2C3E50;
 }
 
 .forum-post img {
@@ -259,6 +301,44 @@ nav button:hover, nav button.active {
     border: 3px solid #00A2FF;
     margin: 0 auto 1rem;
     box-shadow: 0 0 10px #00A2FF;
+}
+
+.account-form {
+    background: #F9FBFF;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+body.dark-mode .account-form {
+    background: #2C3E50;
+}
+
+.account-form input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 1px solid #00A2FF;
+    font-family: 'Comfortaa', sans-serif;
+    background: #FFF;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode .account-form input {
+    background: #34495E;
+    color: #E0E0E0;
+}
+
+#auth-message {
+    color: #FF0000;
+    margin-top: 1rem;
 }
 
 .modal {
@@ -284,6 +364,12 @@ nav button:hover, nav button.active {
     position: relative;
     box-shadow: 0 0 20px #00A2FF;
     color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode .modal-content {
+    background: #2C3E50;
+    color: #E0E0E0;
 }
 
 .close {
@@ -323,6 +409,12 @@ footer {
     margin-top: auto;
     box-shadow: 0 -2px 10px rgba(0, 162, 255, 0.1);
     color: #333;
+    transition: background 0.3s;
+}
+
+body.dark-mode footer {
+    background: #16213E;
+    color: #E0E0E0;
 }
 
 .section {

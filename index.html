@@ -3,326 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Extensions</title>
-    <link rel="icon" href="https://images.icon-icons.com/195/PNG/256/Minecraft_Folder_23366.png" type="image/png">
+    <title>Game Extensions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <button onclick="switchSection('home')" class="active"><i class="fas fa-home"></i> Главная</button>
-        <button onclick="switchSection('mods')"><i class="fas fa-cubes"></i> Моды</button>
-        <button onclick="switchSection('textures')"><i class="fas fa-palette"></i> Текстуры</button>
-        <button onclick="switchSection('skins')"><i class="fas fa-user"></i> Скины</button>
-        <button onclick="switchSection('servers')"><i class="fas fa-server"></i> Сервера</button>
-        <button onclick="switchSection('forum')"><i class="fas fa-comments"></i> Форум</button>
-        <button onclick="switchSection('download')"><i class="fas fa-download"></i> Скачать</button>
-        <button onclick="switchSection('profile')"><i class="fas fa-user-circle"></i> Аккаунт</button>
+        <button class="active" onclick="showSection('home-section')">Главная</button>
+        <button onclick="showSection('mods-section')">Моды</button>
+        <button onclick="showSection('textures-section')">Текстуры</button>
+        <button onclick="showSection('skins-section')">Скины</button>
+        <button onclick="showSection('servers-section')">Сервера</button>
+        <button onclick="showSection('download-section')">Скачки</button>
+        <button onclick="showSection('forum-section')">Форум</button>
+        <button onclick="showSection('profile-section')">Аккаунт</button>
     </header>
 
     <div class="container">
+        <div class="hero">
+            <div class="hero-content">Добро пожаловать в Game Extensions!</div>
+        </div>
+
         <div id="home-section" class="section active">
-            <div class="hero">
-                <div class="hero-content">
-                    <h1>Minecraft Extensions</h1>
-                    <p>Добро пожаловать в мир Minecraft!</p>
-                </div>
-            </div>
-            <div class="main-panel">
-                <h2>Популярные разделы</h2>
-                <div class="action-buttons">
-                    <button class="action-btn" onclick="switchSection('mods')">Моды</button>
-                    <button class="action-btn" onclick="switchSection('textures')">Текстуры</button>
-                    <button class="action-btn" onclick="switchSection('skins')">Скины</button>
-                </div>
-            </div>
-            <div class="main-panel">
-                <h3>Моды</h3>
-                <p>Расширьте игровой опыт с сотнями уникальных модов.</p>
-            </div>
-            <div class="main-panel">
-                <h3>Текстуры</h3>
-                <p>Измените визуальный стиль игры с текстурами.</p>
-            </div>
-            <div class="main-panel">
-                <h3>Скины</h3>
-                <p>Создайте уникальный образ персонажа с тысячами скинов.</p>
-            </div>
+            <div class="main-panel">Добро пожаловать на главную страницу!</div>
+            <div class="main-panel">Секция 1</div>
+            <div class="main-panel">Секция 2</div>
+            <div class="main-panel">Секция 3</div>
         </div>
 
         <div id="mods-section" class="section">
-            <div class="main-panel">
-                <h1>Моды для Майнкрафт</h1>
-                <div class="filters">
-                    <div class="filter-group">
-                        <h3>Версии:</h3>
-                        <div class="version-filters">
-                            <button class="filter-btn active" onclick="filterVersions('all')">Все</button>
-                            <button class="filter-btn" onclick="filterVersions('1.21.8')">1.21.8</button>
-                            <button class="filter-btn" onclick="filterVersions('1.21.5')">1.21.5</button>
-                            <button class="filter-btn" onclick="filterVersions('1.21.4')">1.21.4</button>
-                            <button class="filter-btn" onclick="filterVersions('1.21.1')">1.21.1</button>
-                            <button class="filter-btn" onclick="filterVersions('1.20.6')">1.20.6</button>
-                            <button class="filter-btn" onclick="filterVersions('1.20.4')">1.20.4</button>
-                            <button class="filter-btn" onclick="filterVersions('1.20.1')">1.20.1</button>
-                            <button class="filter-btn" onclick="filterVersions('1.19.4')">1.19.4</button>
-                            <button class="filter-btn" onclick="filterVersions('1.19.2')">1.19.2</button>
-                            <button class="filter-btn" onclick="filterVersions('1.18.2')">1.18.2</button>
-                            <button class="filter-btn" onclick="filterVersions('1.17.1')">1.17.1</button>
-                            <button class="filter-btn" onclick="filterVersions('1.16.5')">1.16.5</button>
-                            <button class="filter-btn" onclick="filterVersions('1.16.2')">1.16.2</button>
-                            <button class="filter-btn" onclick="filterVersions('1.16.4')">1.16.4</button>
-                            <button class="filter-btn" onclick="filterVersions('1.12.2')">1.12.2</button>
-                            <button class="filter-btn" onclick="filterVersions('1.8.9')">1.8.9</button>
-                            <button class="filter-btn" onclick="filterVersions('1.7.10')">1.7.10</button>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <h3>Загрузчики:</h3>
-                        <div class="loader-filters">
-                            <button class="filter-btn active" onclick="filterLoaders('all')">Все</button>
-                            <button class="filter-btn" onclick="filterLoaders('fabric')"><i class="fab fa-react"></i> Fabric</button>
-                            <button class="filter-btn" onclick="filterLoaders('forge')"><i class="fas fa-fire"></i> Forge</button>
-                            <button class="filter-btn" onclick="filterLoaders('optifine')"><i class="fas fa-eye"></i> Optifine</button>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <h3>Сортировка:</h3>
-                        <div class="sort-filters">
-                            <button class="filter-btn active" onclick="sortMods('popular')">Популярные</button>
-                            <button class="filter-btn" onclick="sortMods('new')">Новые</button>
-                        </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <h3>Версия</h3>
+                    <div class="version-filters">
+                        <button class="filter-btn">1.20</button>
+                        <button class="filter-btn">1.19</button>
+                        <button class="filter-btn">1.18</button>
                     </div>
                 </div>
-                <input type="text" class="search-bar" id="search" placeholder="Поиск модов..." oninput="filterMods()">
-                <div class="mod-grid" id="mod-grid"></div>
-                <div class="pagination">
-                    <button onclick="prevPage()">Предыдущая</button>
-                    <span id="page-info">Страница 1</span>
-                    <button onclick="nextPage()">Следующая</button>
+                <div class="filter-group">
+                    <h3>Загрузчик</h3>
+                    <div class="loader-filters">
+                        <button class="filter-btn">Forge</button>
+                        <button class="filter-btn">Fabric</button>
+                    </div>
                 </div>
-                <div class="action-buttons">
-                    <button class="action-btn" onclick="showInstallGuide()">Как устанавливать моды?</button>
-                    <button class="action-btn" onclick="showTopMods()">★ Топ 50 модов</button>
+                <div class="filter-group">
+                    <h3>Сортировка</h3>
+                    <div class="sort-filters">
+                        <button class="filter-btn">Популярность</button>
+                        <button class="filter-btn">Дата</button>
+                    </div>
+                </div>
+            </div>
+            <input type="text" class="search-bar" placeholder="Поиск модов...">
+            <div class="mod-grid">
+                <div class="mod-card">
+                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Mod Image">
+                    <h3 class="mod-title">Cool Mod</h3>
+                    <p class="mod-desc">A great mod for Minecraft!</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Download</button>
+                    </div>
+                </div>
+                <div class="mod-card">
+                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Mod Image">
+                    <h3 class="mod-title">Adventure Mod</h3>
+                    <p class="mod-desc">Explore new worlds!</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Download</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="textures-section" class="section">
-            <div class="main-panel">
-                <h1>Текстуры для Майнкрафт</h1>
-                <div class="mod-grid">
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
-                        <img src="https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp" alt="Dramatic Skys" loading="lazy">
-                        <div class="mod-title">Dramatic Skys</div>
-                        <div class="mod-desc">HD облака и освещение.</div>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
-                        <img src="https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp" alt="Icons" loading="lazy">
-                        <div class="mod-title">Icons</div>
-                        <div class="mod-desc">Иконки для меню.</div>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/marketplace')">
-                        <img src="https://files.vgtimes.ru/gallery/main/186/642314297_huge_2023-09-07_160405.webp" alt="Xalis Enchanted Books" loading="lazy">
-                        <div class="mod-title">Xalis Enchanted Books</div>
-                        <div class="mod-desc">512x для реализма.</div>
-                        <div class="rating">★★★★★</div>
+            <div class="mod-grid">
+                <div class="mod-card">
+                    <img src="https://minecraft-inside.ru/uploads/skins/3a/46/280122_3d.png" alt="Texture">
+                    <h3 class="mod-title">Texture Pack 1</h3>
+                    <p class="mod-desc">Beautiful textures for Minecraft.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Download</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="skins-section" class="section">
-            <div class="main-panel">
-                <h1>Скины для Майнкрафт</h1>
-                <div class="mod-grid">
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
-                        <img src="https://i.ibb.co/X8kY8mL/steve.webp" alt="Steve Skin" loading="lazy">
-                        <div class="mod-title">Steve Skin</div>
-                        <div class="mod-desc">Классический скин.</div>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
-                        <img src="https://i.ibb.co/vj0qZ5f/alex.webp" alt="Warrior Skin" loading="lazy">
-                        <div class="mod-title">Warrior Skin</div>
-                        <div class="mod-desc">Броня для PvP.</div>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="mod-card" onclick="window.open('https://www.minecraft.net/en-us/profile/skin')">
-                        <img src="https://i.ibb.co/7nLqZ9m/princess.webp" alt="Princess Skin" loading="lazy">
-                        <div class="mod-title">Princess Skin</div>
-                        <div class="mod-desc">Королевский стиль.</div>
-                        <div class="rating">★★★★★</div>
+            <div class="mod-grid">
+                <div class="mod-card">
+                    <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Skin">
+                    <h3 class="mod-title">Skin 1</h3>
+                    <p class="mod-desc">Cool player skin.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Download</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="servers-section" class="section">
-            <div class="main-panel">
-                <h1>Сервера Майнкрафт</h1>
-                <ul class="server-list">
-                    <li class="server-item" onclick="copyIP('mc.hypixel.net')">
-                        <img src="https://www.hypixel.net/styles/hypixel-uix/hypixel-logo.png" alt="Hypixel" loading="lazy">
-                        <div class="server-info"><span>Hypixel - IP: mc.hypixel.net</span></div>
-                        <div class="server-online">Онлайн: 123456/150000</div>
-                    </li>
-                    <li class="server-item" onclick="copyIP('play.manacube.com')">
-                        <img src="https://www.manacube.com/assets/images/manacube-logo.png" alt="Manacube" loading="lazy">
-                        <div class="server-info"><span>Manacube - IP: play.manacube.com</span></div>
-                        <div class="server-online">Онлайн: 6367/20000</div>
-                    </li>
-                    <li class="server-item" onclick="copyIP('mccentral.org')">
-                        <img src="https://mccentral.org/assets/images/logo.png" alt="MC Central" loading="lazy">
-                        <div class="server-info"><span>MC Central - IP: mccentral.org</span></div>
-                        <div class="server-online">Онлайн: 7890/12000</div>
-                    </li>
-                    <li class="server-item" onclick="copyIP('play.wynncraft.com')">
-                        <img src="https://wynncraft.com/assets/images/logo.png" alt="Wynncraft" loading="lazy">
-                        <div class="server-info"><span>Wynncraft - IP: play.wynncraft.com</span></div>
-                        <div class="server-online">Онлайн: 4567/7000</div>
-                    </li>
-                    <li class="server-item" onclick="copyIP('play.pika-network.net')">
-                        <img src="https://pika-network.net/assets/images/logo.png" alt="PikaNetwork" loading="lazy">
-                        <div class="server-info"><span>PikaNetwork - IP: play.pika-network.net</span></div>
-                        <div class="server-online">Онлайн: 8901/15000</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="forum-section" class="section">
-            <div class="main-panel">
-                <h1>Форум</h1>
-                <div class="forum-thread" onclick="alert('Открыть тему...')">
-                    <img src="https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp" alt="zxcghoul" loading="lazy">
-                    <div>
-                        <h3>SERVER MINECRAFT RANDOM LAND</h3>
-                        <p>Просмотров: 167 | Ответов: 1</p>
-                        <p><strong>zxcghoul:</strong> Отличный сервер!</p>
-                        <p><strong>svo:</strong> Лаги есть...</p>
-                    </div>
-                </div>
-                <div class="forum-thread" onclick="alert('Открыть тему...')">
-                    <img src="https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp" alt="shreck" loading="lazy">
-                    <div>
-                        <h3>Помогите с модом OptiFine</h3>
-                        <p>Просмотров: 89 | Ответов: 2</p>
-                        <p><strong>shreck:</strong> Не устанавливается.</p>
-                        <p><strong>zxcghoul:</strong> Проверь версию.</p>
-                    </div>
-                </div>
-                <div class="forum-thread" onclick="alert('Открыть тему...')">
-                    <img src="https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp" alt="svo" loading="lazy">
-                    <div>
-                        <h3>Ищу напарника для игры</h3>
-                        <p>Просмотров: 45 | Ответов: 0</p>
-                        <p><strong>svo:</strong> Играю на 1.20.1.</p>
-                    </div>
-                </div>
-                <div class="forum-thread" onclick="alert('Открыть тему...')">
-                    <img src="https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp" alt="shreck" loading="lazy">
-                    <div>
-                        <h3>Обновление текстур</h3>
-                        <p>Просмотров: 120 | Ответов: 3</p>
-                        <p><strong>shreck:</strong> Новая текстура топ!</p>
-                        <p><strong>zxcghoul:</strong> Тяжело идет.</p>
-                        <p><strong>svo:</strong> С OptiFine лучше.</p>
-                    </div>
-                </div>
-            </div>
+            <ul class="server-list">
+                <li class="server-item">
+                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Server Icon">
+                    <span class="server-info">Survival Server</span>
+                    <span class="server-online">50/100</span>
+                </li>
+            </ul>
         </div>
 
         <div id="download-section" class="section">
-            <div class="main-panel">
-                <h1>Скачать Minecraft</h1>
-                <img src="https://files.vgtimes.ru/gallery/main/186/1496337730_5473.webp" alt="Minecraft Launcher" style="width: 80%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;" loading="lazy">
-                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="action-btn" target="_blank">Скачать Game Extensions.zip (Пароль: 3007)</a>
+            <img src="https://minecraft-inside.ru/uploads/skins/3a/46/280122_3d.png" alt="Download Banner">
+        </div>
+
+        <div id="forum-section" class="section">
+            <div class="forum-thread">
+                <img src="https://cdn.pixabay.com/photo/2023/08/15/12/34/landscape-8193456_1280.jpg" alt="Avatar">
+                <div>
+                    <h4>CreeperKing</h4>
+                    <p>Just built an epic castle!</p>
+                </div>
+            </div>
+            <div class="forum-thread">
+                <img src="https://cdn.pixabay.com/photo/2023/07/12/12/34/mountain-8132345_1280.jpg" alt="Avatar">
+                <div>
+                    <h4>EnderSlayer</h4>
+                    <p>Exploring the End dimension...</p>
+                </div>
+            </div>
+            <div class="forum-thread">
+                <img src="https://cdn.pixabay.com/photo/2023/06/15/12/34/forest-8065789_1280.jpg" alt="Avatar">
+                <div>
+                    <h4>BlockMaster</h4>
+                    <p>New mod suggestion!</p>
+                </div>
             </div>
         </div>
 
         <div id="profile-section" class="section">
-            <div class="main-panel">
-                <h1>Аккаунт</h1>
-                <div class="mod-grid">
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">Никнейм: Майнер</div>
-                        <div class="mod-desc">Email: miner@example.com</div>
-                        <div class="rating">Дата регистрации: Январь 2024</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">Уровень: 42</div>
-                        <div class="mod-desc">Количество скачиваний: 1,247</div>
-                        <div class="rating">Избранное: 89 модов</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">Время онлайн: 456ч</div>
-                        <div class="mod-desc">Последние скачивания:</div>
-                        <div class="rating">OptiFine (1.21.1) - 2 дня назад</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">JourneyMap (1.20.1) - 5 дней назад</div>
-                        <div class="mod-desc">Sodium (1.21.1) - 1 неделю назад</div>
-                        <div class="rating">Fabric API (1.20.1) - 2 недели назад</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">Настройки профиля:</div>
-                        <div class="mod-desc">Темная тема, уведомления о новых модах</div>
-                        <div class="rating">автоматическая загрузка обновлений</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">Избранные моды:</div>
-                        <div class="mod-desc">OptiFine, Sodium, Iris Shaders</div>
-                        <div class="rating">JourneyMap, Fabric API</div>
-                    </div>
-                    <div class="mod-card">
-                        <img src="https://cdn.pixabay.com/photo/2023/09/01/12/34/cat-8228076_1280.webp" alt="Аватар" class="avatar" loading="lazy">
-                        <div class="mod-title">История активности:</div>
-                        <div class="mod-desc">15 постов в форуме, 3 отзыва на моды</div>
-                        <div class="rating">2 рекомендаций серверов</div>
-                    </div>
+            <div class="avatar"></div>
+            <div class="stats">
+                <div class="stat">
+                    <h4>Регистрация</h4>
+                    <p>01.01.2023</p>
                 </div>
-                <button class="action-btn" onclick="editProfile()">Редактировать профиль</button>
+                <div class="stat">
+                    <h4>Уровень</h4>
+                    <p>15</p>
+                </div>
+                <div class="stat">
+                    <h4>Время онлайн</h4>
+                    <p>120ч</p>
+                </div>
             </div>
+            <div class="main-panel">Последние скачивания</div>
+            <div class="main-panel">Избранное</div>
         </div>
 
-        <div id="details" class="section">
-            <h2 id="mod-title"></h2>
-            <img id="mod-img" src="" style="width: 100%; max-width: 250px; border-radius: 12px;" loading="lazy">
-            <p id="mod-desc"></p>
-            <p id="mod-versions"></p>
-            <p id="mod-rating"></p>
-            <button onclick="backToList()" class="action-btn">Назад к списку</button>
+        <div id="details" style="display:none;">
+            <img src="https://minecraft-inside.ru/uploads/skins/59/46/280153_3d.png" alt="Details Image">
+            <h3>Mod Details</h3>
+            <p>More info about the mod...</p>
+            <button class="action-btn" onclick="closeDetails()">Close</button>
+        </div>
+
+        <div id="install-modal" style="display:none;">
+            <h3>Install Mod</h3>
+            <p>Click to install the mod.</p>
+            <button class="action-btn" onclick="closeModal('install-modal')">Close</button>
+        </div>
+
+        <div id="top-modal" style="display:none;">
+            <h3>Top Mods</h3>
+            <div class="top-mods-list">
+                <div class="top-mod-item">
+                    <img src="https://minecraft-inside.ru/uploads/skins/52/46/280146_3d.png" alt="Top Mod">
+                    <h4>Top Mod 1</h4>
+                </div>
+            </div>
+            <button class="action-btn" onclick="closeModal('top-modal')">Close</button>
+        </div>
+
+        <div id="profile-modal" style="display:none;">
+            <h3>Profile Settings</h3>
+            <p>Edit your profile here.</p>
+            <button class="action-btn" onclick="closeModal('profile-modal')">Close</button>
         </div>
     </div>
 
-    <div id="install-modal">
-        <h3>Как устанавливать моды?</h3>
-        <p>1. Установите Forge или Fabric.<br>2. Скачайте мод из карточки.<br>3. Положите .jar файл в папку mods.<br>4. Запустите Minecraft с выбранным профилем.</p>
-        <button onclick="closeInstallGuide()" class="action-btn">Закрыть</button>
-    </div>
-    <div id="top-modal">
-        <h3>Топ 50 модов</h3>
-        <div class="top-mods-list" id="top-mods-list">
-        </div>
-        <button onclick="closeTopModal()" class="action-btn">Закрыть</button>
-    </div>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('header button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`header button[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
 
-    <div id="profile-modal">
-        <h3>Редактировать профиль</h3>
-        <p>Здесь вы можете изменить имя, аватар и другие настройки.</p>
-        <button onclick="closeProfileModal()" class="action-btn">Сохранить</button>
-    </div>
+        function showDetails() {
+            document.getElementById('details').style.display = 'block';
+        }
 
-    <script src="script.js"></script>
+        function closeDetails() {
+            document.getElementById('details').style.display = 'none';
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
 </body>
 </html>

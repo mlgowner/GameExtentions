@@ -1,1 +1,15 @@
-
+{
+    "name": "FNAF Max Modes Hub",
+    "short_name": "FNAF Hub",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f0f0f",
+    "theme_color": "#ff0000",
+    "icons": [
+        {
+            "src": "https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311",
+            "sizes": "250x250",
+            "type": "image/svg+xml"
+        }
+    ]
+}

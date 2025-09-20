@@ -188,6 +188,23 @@ body.dark-mode .hero {
     box-shadow: 0 8px 20px rgba(0, 162, 255, 0.5);
 }
 
+.google-btn {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    margin-top: 1rem;
+}
+
+.phone-auth {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#recaptcha-container {
+    margin: 1rem 0;
+}
+
 .main-panel {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
@@ -215,44 +232,47 @@ body.dark-mode .main-panel {
 .profile-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
     margin: 1rem 0;
 }
 
-.stat {
+.stat-card {
     background: linear-gradient(135deg, #E6F0FA, #D0E4F7);
     padding: 1rem;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
     transition: all 0.3s ease;
-    flex: 1;
     min-width: 150px;
     max-width: 200px;
 }
 
-body.dark-mode .stat {
+body.dark-mode .stat-card {
     background: linear-gradient(135deg, #34495E, #24305E);
 }
 
-.stat:hover {
+.stat-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 162, 255, 0.1);
 }
 
 .faq-panel {
     margin-top: 2rem;
-    text-align: left;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .faq-item {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin: 0.5rem 0;
     box-shadow: 0 2px 5px rgba(0, 162, 255, 0.1);
     transition: all 0.3s ease;
-    margin: 1rem 0;
+    max-width: 600px;
+    width: 100%;
 }
 
 body.dark-mode .faq-item {
@@ -331,6 +351,9 @@ body.dark-mode .place-card, body.dark-mode .script-card, body.dark-mode .avatar-
 
 .place-details {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .account-form {
@@ -403,6 +426,9 @@ body.dark-mode .progress-bar span {
     width: 100%;
     max-width: 500px;
     margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 body.dark-mode .profile-card {
@@ -417,6 +443,8 @@ body.dark-mode .profile-card {
     padding: 1rem;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
 }
 
 body.dark-mode .profile-header {
@@ -451,6 +479,17 @@ body.dark-mode .profile-header {
 
 body.dark-mode .profile-info p {
     color: #BBB;
+}
+
+.edit-profile {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1rem;
+}
+
+.edit-profile input, .edit-profile textarea {
+    width: 100%;
+    margin: 0.5rem 0;
 }
 
 .pagination {
@@ -543,7 +582,7 @@ body.dark-mode footer {
     header { flex-direction: column; gap: 1rem; justify-content: center; }
     .nav-btn { min-width: 80px; font-size: 0.9rem; }
     .places-grid, .scripts-grid, .avatars-grid { gap: 1rem; }
-    .stat { min-width: 100px; }
+    .stat-card { min-width: 100px; }
     .profile-stats { grid-template-columns: 1fr; }
     .container { padding: 1rem; }
     .hero { padding: 2rem; }

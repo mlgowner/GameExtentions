@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Extensions - Roblox Mods & Places</title>
-    <link rel="icon" href="https://img.icons8.com/?size=50&id=NNdce6F4oX2X&format=png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://img.icons8.com/?size=50&id=62158&format=png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="https://img.icons8.com/?size=50&id=NNdce6F4oX2X&format=png" alt="Game Extensions Icon" width="40">
+            <img src="https://img.icons8.com/?size=50&id=62158&format=png" alt="Game Extensions Icon" width="40">
             <h1>Game Extensions</h1>
         </div>
         <nav>
@@ -25,8 +25,9 @@
             <button class="nav-btn" onclick="switchSection('profile')">Профиль</button>
         </nav>
         <div class="header-actions">
-            <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="download-btn" target="_blank">Скачать ZIP (21.88MB)</a>
-            <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+            <button class="dark-toggle" onclick="toggleDarkMode()">
+                <img src="https://img.icons8.com/?size=50&id=lm7emUJqrpOM&format=png" alt="Dark Mode" width="24">
+            </button>
         </div>
     </header>
 
@@ -34,8 +35,8 @@
         <div class="hero" id="hero">
             <div class="hero-content">
                 <h2>Game Extensions for Roblox</h2>
-                <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами. Скачай ZIP с инструментами прямо сейчас!</p>
-                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank">Скачать Game Extensions.zip</a>
+                <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами!</p>
+                <a href="#" class="cta-btn" onclick="alert('Скачивание временно недоступно. Проверьте позже!')">Скачать</a>
             </div>
             <canvas id="particles-canvas"></canvas>
         </div>
@@ -43,7 +44,7 @@
         <div id="home" class="section active">
             <div class="main-panel intro">
                 <h3>Добро пожаловать в Game Extensions!</h3>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">01:42 PM CEST, 20 сентября 2025</span>.</p>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">02:02 PM CEST, 20 сентября 2025</span>.</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -82,7 +83,15 @@
                     <p class="place-title">Auto Farm Script</p>
                     <p class="place-desc">Автоматизация для плейсов.</p>
                     <div class="action-buttons">
-                        <button class="action-btn">Скачать</button>
+                        <button class="action-btn" onclick="downloadScript(1)">Скачать</button>
+                    </div>
+                </div>
+                <div class="place-card">
+                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png" alt="Script 2">
+                    <p class="place-title">Jailbreak Exploit</p>
+                    <p class="place-desc">Скрипт для Jailbreak.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="downloadScript(2)">Скачать</button>
                     </div>
                 </div>
             </div>
@@ -95,7 +104,15 @@
                     <p class="place-title">Cool Roblox Avatar</p>
                     <p class="place-desc">Скачай и используй в игре.</p>
                     <div class="action-buttons">
-                        <button class="action-btn">Скачать</button>
+                        <button class="action-btn" onclick="downloadAvatar(1)">Скачать</button>
+                    </div>
+                </div>
+                <div class="place-card">
+                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=2&width=420&height=420&format=png" alt="Avatar 2">
+                    <p class="place-title">Epic Avatar</p>
+                    <p class="place-desc">Уникальный стиль.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="downloadAvatar(2)">Скачать</button>
                     </div>
                 </div>
             </div>
@@ -108,6 +125,12 @@
                     <span class="server-info">Public Jailbreak Server</span>
                     <span class="server-online">150/200</span>
                     <button class="action-btn" onclick="copyIP('roblox.com/games/606849621')">Копировать ID</button>
+                </li>
+                <li class="server-item">
+                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png" alt="Server Icon">
+                    <span class="server-info">Adopt Me! Server</span>
+                    <span class="server-online">200/250</span>
+                    <button class="action-btn" onclick="copyIP('roblox.com/games/920587237')">Копировать ID</button>
                 </li>
             </ul>
         </div>
@@ -137,14 +160,14 @@
                 </div>
                 <div class="stat">
                     <h4>Текущее время</h4>
-                    <p id="current-time-profile">01:42 PM CEST, 20 сентября 2025</p>
+                    <p id="current-time-profile">02:02 PM CEST, 20 сентября 2025</p>
                 </div>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
                 <span>Прогресс: 0%</span>
             </div>
-            <button class="cta-btn" onclick="editProfile()">Редактировать профиль</button>
+            <button class="cta-btn" onclick="showModal('profile-modal')">Редактировать профиль</button>
         </div>
 
         <div id="details-modal" class="modal">
@@ -180,7 +203,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Game Extensions. Скачай <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" target="_blank">ZIP (21.88MB)</a> для полного доступа.</p>
+        <p>©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.</p>
     </footer>
 
     <script src="script.js"></script>

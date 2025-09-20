@@ -3,15 +3,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/fireba
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
-// Firebase Config (замени на свои ключи)
+// Firebase Config (твои ключи)
 const firebaseConfig = {
-  apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
-  authDomain: "game-extensions.firebaseapp.com",
-  projectId: "game-extensions",
-  storageBucket: "game-extensions.firebasestorage.app",
-  messagingSenderId: "68965248738",
-  appId: "1:68965248738:web:725083c3b89069a177b8bb",
-  measurementId: "G-GHBGWQELT8"
+    apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
+    authDomain: "game-extensions.firebaseapp.com",
+    projectId: "game-extensions",
+    storageBucket: "game-extensions.firebasestorage.app",
+    messagingSenderId: "68965248738",
+    appId: "1:68965248738:web:725083c3b89069a177b8bb",
+    measurementId: "G-GHBGWQELT8"
 };
 
 // Инициализация Firebase
@@ -51,6 +51,7 @@ function signUp() {
             const user = userCredential.user;
             set(ref(db, 'users/' + user.uid), userData);
             document.getElementById('auth-message').textContent = 'Регистрация успешна!';
+            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
@@ -63,6 +64,7 @@ function signIn() {
     signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             document.getElementById('auth-message').textContent = 'Вход успешный!';
+            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
@@ -72,6 +74,7 @@ function signIn() {
 function signOut() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
+        setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });

@@ -122,7 +122,7 @@ nav button:hover, nav button.active {
 }
 
 .hero {
-    background: #F0F8FF;
+    background: linear-gradient(135deg, #F0F8FF, #E6F0FA);
     border-radius: 20px;
     padding: 3rem;
     text-align: center;
@@ -131,14 +131,20 @@ nav button:hover, nav button.active {
     width: 100%;
     max-width: 800px;
     transition: background 0.3s;
+    animation: fadeIn 1s ease;
 }
 
 body.dark-mode .hero {
-    background: #24305E;
+    background: linear-gradient(135deg, #24305E, #16213E);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .cta-btn {
-    background: #00A2FF;
+    background: linear-gradient(135deg, #00A2FF, #007ACC);
     border: none;
     color: #FFF;
     padding: 1rem 2rem;
@@ -148,12 +154,12 @@ body.dark-mode .hero {
     transition: all 0.3s;
     text-decoration: none;
     display: inline-block;
+    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.3);
 }
 
 .cta-btn:hover {
-    background: #007ACC;
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0, 162, 255, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 162, 255, 0.4);
 }
 
 .main-panel {
@@ -187,18 +193,29 @@ body.dark-mode .main-panel {
 }
 
 .stat-card {
-    background: #E6F0FA;
+    background: linear-gradient(135deg, #E6F0FA, #F0F8FF);
     padding: 1rem;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
     color: #333;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    animation: slideInUp 0.5s ease;
 }
 
 body.dark-mode .stat-card {
-    background: #34495E;
+    background: linear-gradient(135deg, #34495E, #24305E);
     color: #E0E0E0;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 162, 255, 0.1);
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .places-grid {
@@ -211,7 +228,7 @@ body.dark-mode .stat-card {
 }
 
 .place-card {
-    background: #F9FBFF;
+    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
     padding: 1.5rem;
     transition: all 0.3s;
@@ -222,7 +239,7 @@ body.dark-mode .stat-card {
 }
 
 body.dark-mode .place-card {
-    background: #2C3E50;
+    background: linear-gradient(135deg, #2C3E50, #24305E);
 }
 
 .place-card:hover {
@@ -236,6 +253,11 @@ body.dark-mode .place-card {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
+    transition: transform 0.3s;
+}
+
+.place-card:hover img {
+    transform: scale(1.05);
 }
 
 .progress-bar {
@@ -258,6 +280,12 @@ body.dark-mode .progress-bar {
     background: linear-gradient(90deg, #00A2FF, #007ACC);
     transition: width 0.5s ease;
     width: 0%;
+    animation: progressFill 2s ease-in-out;
+}
+
+@keyframes progressFill {
+    from { width: 0%; }
+    to { width: 100%; }
 }
 
 .forum-posts {
@@ -268,23 +296,29 @@ body.dark-mode .progress-bar {
 }
 
 .forum-post {
-    background: #F9FBFF;
+    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     padding: 1rem;
     border-radius: 10px;
     display: flex;
     gap: 1rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
 body.dark-mode .forum-post {
-    background: #2C3E50;
+    background: linear-gradient(135deg, #2C3E50, #24305E);
+}
+
+.forum-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 162, 255, 0.1);
 }
 
 .forum-post img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.2);
 }
 
 .profile-header {
@@ -300,45 +334,116 @@ body.dark-mode .forum-post {
     border-radius: 50%;
     border: 3px solid #00A2FF;
     margin: 0 auto 1rem;
-    box-shadow: 0 0 10px #00A2FF;
+    box-shadow: 0 0 20px rgba(0, 162, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 162, 255, 0.5);
 }
 
 .account-form {
-    background: #F9FBFF;
-    border-radius: 15px;
-    padding: 2rem;
+    background: linear-gradient(135deg, #F0F8FF, #E6F0FA);
+    border-radius: 20px;
+    padding: 2.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    animation: formSlideIn 0.8s ease-out;
 }
 
 body.dark-mode .account-form {
-    background: #2C3E50;
+    background: linear-gradient(135deg, #24305E, #16213E);
+    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.3);
+}
+
+@keyframes formSlideIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.account-form h3 {
+    margin-bottom: 1.5rem;
+    color: #00A2FF;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-group img {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
 }
 
 .account-form input {
     width: 100%;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 10px;
-    border: 1px solid #00A2FF;
+    padding: 1rem 1rem 1rem 2.5rem;
+    border-radius: 15px;
+    border: 2px solid #E6F0FA;
     font-family: 'Comfortaa', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s;
     background: #FFF;
     color: #333;
-    transition: background 0.3s, color 0.3s;
 }
 
 body.dark-mode .account-form input {
     background: #34495E;
     color: #E0E0E0;
+    border-color: #24305E;
+}
+
+.account-form input:focus {
+    outline: none;
+    border-color: #00A2FF;
+    box-shadow: 0 0 15px rgba(0, 162, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.input-group:focus-within img {
+    opacity: 1;
 }
 
 #auth-message {
-    color: #FF0000;
+    color: #FF6B6B;
     margin-top: 1rem;
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.action-btn {
+    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    border: none;
+    color: #FFF;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.2);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 162, 255, 0.3);
 }
 
 .modal {
@@ -353,23 +458,36 @@ body.dark-mode .account-form input {
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal-content {
-    background: #FFF;
-    padding: 2rem;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #FFF, #F0F8FF);
+    padding: 2.5rem;
+    border-radius: 20px;
     width: 80%;
     max-width: 600px;
     position: relative;
-    box-shadow: 0 0 20px #00A2FF;
+    box-shadow: 0 20px 40px rgba(0, 162, 255, 0.2);
     color: #333;
-    transition: background 0.3s, color 0.3s;
+    transition: all 0.3s;
+    animation: modalSlideIn 0.5s ease-out;
 }
 
 body.dark-mode .modal-content {
-    background: #2C3E50;
+    background: linear-gradient(135deg, #2C3E50, #24305E);
     color: #E0E0E0;
+    box-shadow: 0 20px 40px rgba(0, 162, 255, 0.4);
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .close {
@@ -379,6 +497,11 @@ body.dark-mode .modal-content {
     font-size: 2rem;
     cursor: pointer;
     color: #00A2FF;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #007ACC;
 }
 
 .pagination {
@@ -389,17 +512,19 @@ body.dark-mode .modal-content {
 }
 
 .pagination button {
-    background: #00A2FF;
+    background: linear-gradient(135deg, #00A2FF, #007ACC);
     border: none;
     color: #FFF;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.2);
 }
 
 .pagination button:hover {
-    background: #007ACC;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 162, 255, 0.3);
 }
 
 footer {
@@ -438,4 +563,7 @@ body.dark-mode footer {
     .stats-grid { grid-template-columns: 1fr; }
     .container { padding: 1rem; }
     .hero { padding: 2rem; }
+    .account-form { padding: 1.5rem; max-width: 100%; }
+    .action-buttons { flex-direction: column; }
+    .action-btn { width: 100%; }
 }

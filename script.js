@@ -21,7 +21,7 @@ const db = getDatabase(app);
 
 let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0 };
 
-auth.onAuthStateChanged(user => {
+onAuthStateChanged(auth, user => {
     const authForm = document.getElementById('auth-form');
     const profileContent = document.getElementById('profile-content');
     if (user) {
@@ -71,7 +71,7 @@ function signIn() {
         });
 }
 
-function signOut() {
+function signOutUser() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
         setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
@@ -137,45 +137,32 @@ const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 4, title: "Tower of Hell", desc: "Сложный обби.", rating: "★★★★☆", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=1054533950&width=420&height=420&format=png", link: "https://www.roblox.com/games/1054533950/Tower-of-Hell", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { id: 5, title: "MeepCity", desc: "Социальная игра.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=690091570&width=420&height=420&format=png", link: "https://www.roblox.com/games/690091570/MeepCity", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    // Добавь больше плейсов по аналогии, если нужно
 ];
 
 let currentPage = 1;
-let placesPerPage = 6;
-let currentFilter = { genre: 'all', search: '' };
+const placesPerPage = 6;
+let currentFilter = { search: '', genre: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
     grid.innerHTML = '';
-
-    let filtered = allPlaces.filter(place => {
-        if (currentFilter.genre !== 'all' && place.genre !== currentFilter.genre) return false;
-        if (currentFilter.search && !place.title.toLowerCase().includes(currentFilter.search.toLowerCase())) return false;
-        return true;
-    });
-
+    const filtered = allPlaces.filter(p => p.title.toLowerCase().includes(currentFilter.search.toLowerCase()) && (!currentFilter.genre || p.genre === currentFilter.genre));
     const start = (currentPage - 1) * placesPerPage;
     const end = start + placesPerPage;
     filtered.slice(start, end).forEach(place => {
         const card = document.createElement('div');
         card.className = 'place-card';
-        card.onclick = () => showPlaceDetails(place);
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00A2FF/FFF?text=Roblox';">
-            <p class="place-title">${place.title}</p>
-            <p class="place-desc">${place.desc}</p>
-            <p class="rating">${place.rating}</p>
-            <div class="action-buttons">
-                <a href="${place.link}" class="action-btn" target="_blank">Играть</a>
-                <button class="action-btn" onclick="event.stopPropagation(); downloadPlace(${place.id})">Скачать мод</button>
-            </div>
+            <img src="${place.img}" alt="${place.title}">
+            <h4>${place.title}</h4>
+            <p>${place.desc}</p>
+            <p>${place.rating}</p>
+            <button class="cta-btn details-btn" data-id="${place.id}">Подробнее</button>
         `;
         grid.appendChild(card);
     });
-
     updatePaginationPlaces(filtered.length);
-    updateUserProgress();
 }
 
 function updatePaginationPlaces(total) {
@@ -185,20 +172,20 @@ function updatePaginationPlaces(total) {
     if (currentPage > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
-        prev.onclick = () => { currentPage--; renderPlaces(); };
+        prev.addEventListener('click', () => { currentPage--; renderPlaces(); });
         pag.appendChild(prev);
     }
     for (let i = 1; i <= pages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
         btn.className = currentPage === i ? 'active' : '';
-        btn.onclick = () => { currentPage = i; renderPlaces(); };
+        btn.addEventListener('click', () => { currentPage = i; renderPlaces(); });
         pag.appendChild(btn);
     }
     if (currentPage < pages) {
         const next = document.createElement('button');
         next.textContent = '→';
-        next.onclick = () => { currentPage++; renderPlaces(); };
+        next.addEventListener('click', () => { currentPage++; renderPlaces(); });
         pag.appendChild(next);
     }
 }
@@ -249,7 +236,7 @@ function showPlaceDetails(place) {
     document.getElementById('place-rating').innerHTML = `Рейтинг: ${place.rating}`;
     document.getElementById('place-img').src = place.img;
     document.getElementById('place-video').src = place.video;
-    document.getElementById('download-btn').onclick = () => downloadPlace(place.id);
+    document.getElementById('download-btn').dataset.id = place.id;
     showModal('details-modal');
 }
 
@@ -258,7 +245,7 @@ function updateUserProgress() {
     const totalPlaces = allPlaces.length;
     const percent = (userData.places / totalPlaces * 100).toFixed(1);
     document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
-    document.getElementById('progress-fill').style.width = percent + '%';
+    document.querySelector('.progress-fill').style.width = percent + '%';
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
 
@@ -272,7 +259,7 @@ function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[onclick="switchSection('${sectionId}')"]`).classList.add('active');
+    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
 function showModal(modalId) {
@@ -327,10 +314,10 @@ function initParticles() {
 
 function updateProfileTime() {
     const now = new Date();
-    const timeElement = document.getElementById('current-time');
-    const timeProfile = document.getElementById('current-time-profile');
-    if (timeElement) timeElement.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
-    if (timeProfile) timeProfile.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
+    const options = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: 'long', year: 'numeric' };
+    const timeString = now.toLocaleString('ru-RU', options);
+    document.getElementById('current-time').textContent = timeString;
+    document.getElementById('current-time-profile').textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -341,4 +328,53 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProfileTime();
     setInterval(updateProfileTime, 60000);
     initParticles();
+
+    // Event listeners
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchSection(btn.dataset.section));
+    });
+
+    document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
+
+    document.getElementById('sign-up-btn').addEventListener('click', signUp);
+    document.getElementById('sign-in-btn').addEventListener('click', signIn);
+    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
+    document.getElementById('edit-profile-btn').addEventListener('click', () => showModal('profile-modal'));
+    document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
+
+    document.getElementById('new-post-btn').addEventListener('click', () => showModal('new-post-modal'));
+    document.getElementById('add-post-btn').addEventListener('click', addPost);
+
+    document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
+
+    document.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const place = allPlaces.find(p => p.id === parseInt(btn.dataset.id));
+            showPlaceDetails(place);
+        });
+    });
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+        const id = parseInt(document.getElementById('download-btn').dataset.id);
+        downloadPlace(id);
+    });
+
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = parseInt(btn.dataset.id);
+            if (btn.dataset.type === 'script') downloadScript(id);
+            if (btn.dataset.type === 'avatar') downloadAvatar(id);
+        });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => copyIP(btn.dataset.ip));
+    });
+
+    document.querySelectorAll('.close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', () => {
+            const modal = closeBtn.closest('.modal');
+            closeModal(modal.id);
+        });
+    });
 });

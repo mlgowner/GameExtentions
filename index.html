@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FNAF Max Modes Hub - Roblox Community</title>
-    <link rel="icon" href="https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311" type="image/svg+xml">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Game Extensions - Roblox Mods & Places</title>
+    <link rel="icon" href="https://img.icons8.com/?size=50&id=NNdce6F4oX2X&format=png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311" alt="Roblox Logo" width="40">
-            <h1>FNAF Max Modes Hub</h1>
+            <img src="https://img.icons8.com/?size=50&id=NNdce6F4oX2X&format=png" alt="Game Extensions Icon" width="40">
+            <h1>Game Extensions</h1>
         </div>
         <nav>
             <button class="nav-btn active" onclick="switchSection('home')">Главная</button>
-            <button class="nav-btn" onclick="switchSection('modes')">Режимы</button>
-            <button class="nav-btn" onclick="switchSection('leaderboard')">Лидерборд</button>
+            <button class="nav-btn" onclick="switchSection('places')">Плейсы</button>
+            <button class="nav-btn" onclick="switchSection('scripts')">Скрипты</button>
+            <button class="nav-btn" onclick="switchSection('avatars')">Аватары</button>
+            <button class="nav-btn" onclick="switchSection('servers')">Сервера</button>
             <button class="nav-btn" onclick="switchSection('forum')">Форум</button>
             <button class="nav-btn" onclick="switchSection('profile')">Профиль</button>
         </nav>
         <div class="header-actions">
+            <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="download-btn" target="_blank">Скачать ZIP (21.88MB)</a>
             <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
         </div>
     </header>
@@ -30,70 +33,89 @@
     <div class="container">
         <div class="hero" id="hero">
             <div class="hero-content">
-                <h2>Who are we?</h2>
-                <p>We are a community that wants to push the boundaries on Five Nights at Freddy’s max modes on Roblox. We have a point system for anyone that dares to beat all of the top modes on Roblox. Check out the list below!</p>
-                <button class="cta-btn" onclick="switchSection('modes')">Начать вызов</button>
+                <h2>Game Extensions for Roblox</h2>
+                <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами. Скачай ZIP с инструментами прямо сейчас!</p>
+                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank">Скачать Game Extensions.zip</a>
             </div>
             <canvas id="particles-canvas"></canvas>
         </div>
 
         <div id="home" class="section active">
             <div class="main-panel intro">
-                <h3>Присоединяйся к сообществу!</h3>
-                <p>Пройди все режимы, набери очки и стань легендой FNAF в Roblox. Текущее время: <span id="current-time">12:39 PM CEST, 20 сентября 2025</span>.</p>
+                <h3>Добро пожаловать в Game Extensions!</h3>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">12:39 PM CEST, 20 сентября 2025</span>.</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h4>Всего режимов</h4>
+                    <h4>Плейсов</h4>
+                    <p>100+</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Скриптов</h4>
                     <p>50+</p>
                 </div>
                 <div class="stat-card">
-                    <h4>Макс. очки</h4>
-                    <p>5000</p>
-                </div>
-                <div class="stat-card">
-                    <h4>Участников</h4>
-                    <p>1,247</p>
+                    <h4>Аватаров</h4>
+                    <p>200+</p>
                 </div>
             </div>
         </div>
 
-        <div id="modes" class="section">
+        <div id="places" class="section">
             <div class="filters">
-                <input type="text" id="search" class="search-bar" placeholder="Поиск по режиму..." oninput="filterModes()">
-                <select id="difficulty-filter" onchange="filterModes()">
-                    <option value="all">Все сложности</option>
-                    <option value="easy">Легко</option>
-                    <option value="medium">Средне</option>
-                    <option value="hard">Сложно</option>
-                    <option value="max">Max</option>
+                <input type="text" id="search-places" class="search-bar" placeholder="Поиск плейсов..." oninput="filterPlaces()">
+                <select id="genre-filter" onchange="filterPlaces()">
+                    <option value="all">Все жанры</option>
+                    <option value="adventure">Приключения</option>
+                    <option value="rpg">RPG</option>
+                    <option value="obby">Obby</option>
                 </select>
             </div>
-            <div id="modes-grid" class="modes-grid"></div>
-            <div id="pagination" class="pagination"></div>
+            <div id="places-grid" class="places-grid"></div>
+            <div id="pagination-places" class="pagination"></div>
         </div>
 
-        <div id="leaderboard" class="section">
-            <h3>Лидерборд</h3>
-            <table id="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>Место</th>
-                        <th>Ник</th>
-                        <th>Очки</th>
-                        <th>Процент прохождений</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboard-body">
-                    <!-- Динамически заполняется JS -->
-                </tbody>
-            </table>
+        <div id="scripts" class="section">
+            <div class="places-grid">
+                <div class="place-card">
+                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png" alt="Script 1">
+                    <p class="place-title">Auto Farm Script</p>
+                    <p class="place-desc">Автоматизация для плейсов.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Скачать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="avatars" class="section">
+            <div class="places-grid">
+                <div class="place-card">
+                    <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar 1">
+                    <p class="place-title">Cool Roblox Avatar</p>
+                    <p class="place-desc">Скачай и используй в игре.</p>
+                    <div class="action-buttons">
+                        <button class="action-btn">Скачать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="servers" class="section">
+            <ul class="server-list">
+                <li class="server-item">
+                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png" alt="Server Icon">
+                    <span class="server-info">Public Jailbreak Server</span>
+                    <span class="server-online">150/200</span>
+                    <button class="action-btn" onclick="copyIP('roblox.com/games/606849621')">Копировать ID</button>
+                </li>
+            </ul>
         </div>
 
         <div id="forum" class="section">
-            <h3>Форум</h3>
+            <h3>Форум Roblox</h3>
             <div id="forum-posts" class="forum-posts">
-                <!-- Динамически заполняется JS -->
+                <!-- Динамически -->
             </div>
             <button class="cta-btn" onclick="showModal('new-post-modal')">Новый пост</button>
         </div>
@@ -101,17 +123,17 @@
         <div id="profile" class="section">
             <div class="profile-header">
                 <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar">
-                <h3 id="profile-name">PlayerName</h3>
-                <p id="profile-bio">Готов к max-режимам!</p>
+                <h3 id="profile-name">RobloxPlayer</h3>
+                <p id="profile-bio">Любитель модов и плейсов!</p>
             </div>
             <div class="stats">
                 <div class="stat">
-                    <h4>Очки</h4>
-                    <p id="user-points">0</p>
+                    <h4>Скачиваний</h4>
+                    <p id="user-downloads">0</p>
                 </div>
                 <div class="stat">
-                    <h4>Прохождений</h4>
-                    <p id="user-completions">0/50</p>
+                    <h4>Плейсов</h4>
+                    <p id="user-places">0</p>
                 </div>
                 <div class="stat">
                     <h4>Текущее время</h4>
@@ -125,16 +147,16 @@
             <button class="cta-btn" onclick="editProfile()">Редактировать профиль</button>
         </div>
 
-        <!-- Модальные окна -->
+        <!-- Модалы аналогично предыдущему, адаптированные под Roblox -->
         <div id="details-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('details-modal')">&times;</span>
-                <img id="mode-img" src="" alt="Mode Image">
-                <h3 id="mode-title"></h3>
-                <p id="mode-desc"></p>
-                <p id="mode-points">Очки: 0</p>
-                <button class="action-btn" id="complete-btn" onclick="completeMode()">Пройти режим</button>
-                <iframe id="mode-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                <img id="place-img" src="" alt="Place Image">
+                <h3 id="place-title"></h3>
+                <p id="place-desc"></p>
+                <p id="place-rating"></p>
+                <button class="action-btn" id="download-btn" onclick="handleDownload()">Скачать</button>
+                <iframe id="place-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
 
@@ -142,7 +164,7 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal('new-post-modal')">&times;</span>
                 <h3>Новый пост</h3>
-                <textarea id="post-content" placeholder="Ваш пост..."></textarea>
+                <textarea id="post-content" placeholder="Ваш пост о Roblox..."></textarea>
                 <button class="action-btn" onclick="addPost()">Опубликовать</button>
             </div>
         </div>
@@ -159,7 +181,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 FNAF Max Modes Hub. Powered by Roblox Community.</p>
+        <p>&copy; 2025 Game Extensions. Скачай <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" target="_blank">ZIP (21.88MB)</a> для полного доступа.</p>
     </footer>
 
     <script src="script.js"></script>

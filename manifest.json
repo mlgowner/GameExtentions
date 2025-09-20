@@ -1,15 +1,15 @@
 {
-    "name": "FNAF Max Modes Hub",
-    "short_name": "FNAF Hub",
+    "name": "Game Extensions - Roblox",
+    "short_name": "Game Extensions",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#0f0f0f",
-    "theme_color": "#ff0000",
+    "background_color": "#000428",
+    "theme_color": "#00a2ff",
     "icons": [
         {
-            "src": "https://static.wikia.nocookie.net/logopedia/images/6/6f/Roblox_app_2022.svg/revision/latest/scale-to-width-down/250?cb=20230413000311",
-            "sizes": "250x250",
-            "type": "image/svg+xml"
+            "src": "https://img.icons8.com/?size=50&id=NNdce6F4oX2X&format=png",
+            "sizes": "50x50",
+            "type": "image/png"
         }
     ]
 }

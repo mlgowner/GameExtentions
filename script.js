@@ -1,15 +1,15 @@
 let currentPage = 1;
 let placesPerPage = 6;
 let currentFilter = { genre: 'all', search: '' };
-let userData = JSON.parse(localStorage.getItem('gameExtensionsUser')) || { name: 'RobloxPlayer', downloads: 0, places: 0, modes: {} };
+let userData = JSON.parse(localStorage.getItem('gameExtensionsUser')) || { name: 'RobloxPlayer', downloads: 0, places: 0, scripts: 0, avatars: 0, modes: {} };
 
 const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 4, title: "Tower of Hell", desc: "Сложный обби.", rating: "★★★★☆", genre: "obby", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=1054533950&width=420&height=420&format=png", link: "https://www.roblox.com/games/1054533950/Tower-of-Hell", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { id: 5, title: "MeepCity", desc: "Социальная игра.", rating: "★★★★★", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=690091570&width=420&height=420&format=png", link: "https://www.roblox.com/games/690091570/MeepCity", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
 ];
-
-let topPlaces = allPlaces.slice(0, 6);
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
@@ -84,6 +84,22 @@ function downloadPlace(id) {
     updateUserProgress();
 }
 
+function downloadScript(id) {
+    userData.downloads++;
+    userData.scripts++;
+    localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
+    alert(`Скачан скрипт #${id}!`);
+    updateUserProgress();
+}
+
+function downloadAvatar(id) {
+    userData.downloads++;
+    userData.avatars++;
+    localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
+    alert(`Скачан аватар #${id}!`);
+    updateUserProgress();
+}
+
 function showPlaceDetails(place) {
     document.getElementById('place-title').textContent = place.title;
     document.getElementById('place-desc').textContent = place.desc;
@@ -131,77 +147,12 @@ function saveProfile() {
     closeModal('profile-modal');
 }
 
-function switchSection(sectionId) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[onclick="switchSection('${sectionId}')"]`).classList.add('active');
-}
-
-function showModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-}
-
-function initParticles() {
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const particles = [];
-    for (let i = 0; i < 50; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            radius: Math.random() * 3 + 1,
-            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)`
-        });
-    }
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-        });
-        requestAnimationFrame(animate);
-    }
-    animate();
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+function copyIP(ip) {
+    navigator.clipboard.writeText(ip).then(() => {
+        alert(`Скопирован ID: ${ip}`);
     });
 }
 
-function updateProfileTime() {
-    const now = new Date();
-    const timeElement = document.getElementById('current-time');
-    const timeProfile = document.getElementById('current-time-profile');
-    if (timeElement) timeElement.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
-    if (timeProfile) timeProfile.textContent = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris' });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-    switchSection('home');
-    renderPlaces();
-    updateUserProgress();
-    updateProfileTime();
-    setInterval(updateProfileTime, 60000);
-    initParticles();
-});
+function switchSection(sectionId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(section

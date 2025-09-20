@@ -6,7 +6,6 @@ let userData = JSON.parse(localStorage.getItem('gameExtensionsUser')) || { name:
 const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png", link: "https://www.roblox.com/games/920587237/Adopt-Me", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
     { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    // Добавьте больше (до 50), с проверенными thumbnails
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png", link: "https://www.roblox.com/games/606849621/Jailbreak", video: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
 ];
 
@@ -29,7 +28,7 @@ function renderPlaces() {
         card.className = 'place-card';
         card.onclick = () => showPlaceDetails(place);
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00a2ff/fff?text=Roblox';">
+            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420x420/00A2FF/FFF?text=Roblox';">
             <p class="place-title">${place.title}</p>
             <p class="place-desc">${place.desc}</p>
             <p class="rating">${place.rating}</p>
@@ -49,7 +48,6 @@ function updatePaginationPlaces(total) {
     const pag = document.getElementById('pagination-places');
     pag.innerHTML = '';
     const pages = Math.ceil(total / placesPerPage);
-    // Аналогично предыдущему, кнопки пагинации
     if (currentPage > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
@@ -80,6 +78,7 @@ function filterPlaces() {
 
 function downloadPlace(id) {
     userData.downloads++;
+    userData.places++;
     localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
     alert(`Скачан мод для плейса ${allPlaces.find(p => p.id === id).title}!`);
     updateUserProgress();
@@ -105,7 +104,6 @@ function updateUserProgress() {
 }
 
 function addPost() {
-    // Аналогично предыдущему
     const content = document.getElementById('post-content').value;
     if (content) {
         const posts = document.getElementById('forum-posts');
@@ -125,7 +123,6 @@ function addPost() {
 }
 
 function saveProfile() {
-    // Аналогично
     userData.name = document.getElementById('new-name').value || userData.name;
     userData.bio = document.getElementById('new-bio').value || userData.bio;
     localStorage.setItem('gameExtensionsUser', JSON.stringify(userData));
@@ -155,7 +152,6 @@ function toggleDarkMode() {
 }
 
 function initParticles() {
-    // Аналогично предыдущему, синие частицы для Roblox
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -168,7 +164,7 @@ function initParticles() {
             vx: (Math.random() - 0.5) * 2,
             vy: (Math.random() - 0.5) * 2,
             radius: Math.random() * 3 + 1,
-            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)` // Синие оттенки Roblox
+            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)`
         });
     }
     function animate() {

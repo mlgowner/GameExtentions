@@ -8,6 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        // Импорт Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+        import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
+
+        // Firebase Config (замени на свои ключи)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEELkMIx4fu9qjPWCID5-LiBqRSaGKpwU",
+            authDomain: "game-extensions.firebaseapp.com",
+            projectId: "game-extensions",
+            storageBucket: "game-extensions.firebasestorage.app",
+            messagingSenderId: "68965248738",
+            appId: "1:68965248738:web:725083c3b89069a177b8bb",
+            measurementId: "G-GHBGWQELT8"
+      };
+        // Инициализация Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+    </script>
 </head>
 <body>
     <header>
@@ -22,7 +44,7 @@
             <button class="nav-btn" onclick="switchSection('avatars')">Аватары</button>
             <button class="nav-btn" onclick="switchSection('servers')">Сервера</button>
             <button class="nav-btn" onclick="switchSection('forum')">Форум</button>
-            <button class="nav-btn" onclick="switchSection('profile')">Профиль</button>
+            <button class="nav-btn" onclick="switchSection('account')">Аккаунт</button>
         </nav>
         <div class="header-actions">
             <button class="dark-toggle" onclick="toggleDarkMode()">
@@ -36,7 +58,7 @@
             <div class="hero-content">
                 <h2>Game Extensions for Roblox</h2>
                 <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами!</p>
-                <a href="#" class="cta-btn" onclick="alert('Скачивание временно недоступно. Проверьте позже!')">Скачать</a>
+                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank">Скачать Game Extensions.zip</a>
             </div>
             <canvas id="particles-canvas"></canvas>
         </div>
@@ -44,7 +66,7 @@
         <div id="home" class="section active">
             <div class="main-panel intro">
                 <h3>Добро пожаловать в Game Extensions!</h3>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">02:02 PM CEST, 20 сентября 2025</span>.</p>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">03:48 PM CEST, 20 сентября 2025</span>.</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -87,7 +109,7 @@
                     </div>
                 </div>
                 <div class="place-card">
-                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png" alt="Script 2">
+                    <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=3127079818&width=420&height=420&format=png" alt="Script 2">
                     <p class="place-title">Jailbreak Exploit</p>
                     <p class="place-desc">Скрипт для Jailbreak.</p>
                     <div class="action-buttons">
@@ -143,31 +165,44 @@
             <button class="cta-btn" onclick="showModal('new-post-modal')">Новый пост</button>
         </div>
 
-        <div id="profile" class="section">
-            <div class="profile-header">
-                <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar">
-                <h3 id="profile-name">RobloxPlayer</h3>
-                <p id="profile-bio">Любитель модов и плейсов!</p>
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <h4>Скачиваний</h4>
-                    <p id="user-downloads">0</p>
+        <div id="account" class="section">
+            <div class="account-form" id="auth-form">
+                <h3>Регистрация / Вход</h3>
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Пароль">
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="signUp()">Регистрация</button>
+                    <button class="action-btn" onclick="signIn()">Вход</button>
                 </div>
-                <div class="stat">
-                    <h4>Плейсов</h4>
-                    <p id="user-places">0</p>
-                </div>
-                <div class="stat">
-                    <h4>Текущее время</h4>
-                    <p id="current-time-profile">02:02 PM CEST, 20 сентября 2025</p>
-                </div>
+                <p id="auth-message"></p>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-                <span>Прогресс: 0%</span>
+            <div id="profile-content" style="display: none;">
+                <div class="profile-header">
+                    <img class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png" alt="Avatar">
+                    <h3 id="profile-name">RobloxPlayer</h3>
+                    <p id="profile-bio">Любитель модов и плейсов!</p>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <h4>Скачиваний</h4>
+                        <p id="user-downloads">0</p>
+                    </div>
+                    <div class="stat">
+                        <h4>Плейсов</h4>
+                        <p id="user-places">0</p>
+                    </div>
+                    <div class="stat">
+                        <h4>Текущее время</h4>
+                        <p id="current-time-profile">03:48 PM CEST, 20 сентября 2025</p>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                    <span>Прогресс: 0%</span>
+                </div>
+                <button class="cta-btn" onclick="signOut()">Выйти</button>
+                <button class="cta-btn" onclick="showModal('profile-modal')">Редактировать профиль</button>
             </div>
-            <button class="cta-btn" onclick="showModal('profile-modal')">Редактировать профиль</button>
         </div>
 
         <div id="details-modal" class="modal">
@@ -206,6 +241,6 @@
         <p>©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

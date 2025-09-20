@@ -161,8 +161,15 @@
                     <input type="email" id="email" placeholder="Email">
                     <input type="password" id="password" placeholder="Пароль">
                     <div class="action-buttons">
-                        <button class="cta-btn" id="sign-up-btn">Регистрация</button>
-                        <button class="cta-btn" id="sign-in-btn">Вход</button>
+                        <button class="cta-btn" id="sign-up-btn">Регистрация по email</button>
+                        <button class="cta-btn" id="sign-in-btn">Вход по email</button>
+                    </div>
+                    <button class="cta-btn google-btn" id="google-sign-in-btn">Войти через Google</button>
+                    <div class="phone-auth">
+                        <input type="tel" id="phone-number" placeholder="Телефон (+7...)" maxlength="16">
+                        <button class="cta-btn" id="send-phone-code-btn">Отправить код</button>
+                        <input type="text" id="phone-code" placeholder="Код из SMS" style="display: none;">
+                        <button class="cta-btn" id="verify-phone-btn" style="display: none;">Подтвердить</button>
                     </div>
                     <p id="auth-message"></p>
                 </div>
@@ -222,4 +229,5 @@
     <canvas id="particles-canvas"></canvas>
 
     <script src="script.js" type="module"></script>
+</body>
 </html>

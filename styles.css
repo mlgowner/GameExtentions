@@ -284,18 +284,14 @@ body.dark-mode .place-card {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
+    transition: transform 0.3s ease; /* Добавлен hover-эффект для изображений */
 }
 
-.scripts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1200px;
-    justify-content: center;
+.place-card:hover img {
+    transform: scale(1.05); /* Улучшение: Добавлен scale при hover для динамики */
 }
 
-.script-card {
+.script-card, .avatar-card {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
     padding: 1rem;
@@ -306,48 +302,21 @@ body.dark-mode .place-card {
     margin: 0 auto;
 }
 
-body.dark-mode .script-card {
+body.dark-mode .script-card, body.dark-mode .avatar-card {
     background: linear-gradient(135deg, #2C3E50, #24305E);
 }
 
-.script-card img {
+.script-card img, .avatar-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
+    transition: transform 0.3s ease; /* Добавлен hover-эффект */
 }
 
-.avatars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1200px;
-    justify-content: center;
-}
-
-.avatar-card {
-    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
-    border-radius: 15px;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-body.dark-mode .avatar-card {
-    background: linear-gradient(135deg, #2C3E50, #24305E);
-}
-
-.avatar-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1rem;
+.script-card:hover img, .avatar-card:hover img {
+    transform: scale(1.05);
 }
 
 .account-form {
@@ -624,4 +593,79 @@ body.dark-mode footer {
 @keyframes slideInUp {
     from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+/* Новый раздел: Стили для гайда по установке */
+.installation-guide {
+    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+
+body.dark-mode .installation-guide {
+    background: linear-gradient(135deg, #2C3E50, #24305E);
+}
+
+.installation-guide ol {
+    list-style-type: decimal;
+    padding-left: 2rem;
+}
+
+.installation-guide li {
+    margin-bottom: 1rem;
+}
+
+/* Media Queries для responsive дизайна */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem 0.5rem;
+    }
+
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .places-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .stats-grid {
+        flex-direction: column;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+
+    .place-card, .script-card, .avatar-card {
+        max-width: 100%;
+    }
+
+    .pagination button {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .installation-guide {
+        padding: 1rem;
+    }
 }

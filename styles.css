@@ -566,7 +566,6 @@ body.dark-mode .filter-bar input, body.dark-mode .filter-bar select {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    transition: opacity 0.3s ease;
 }
 
 .modal-content {
@@ -578,76 +577,14 @@ body.dark-mode .filter-bar input, body.dark-mode .filter-bar select {
     animation: fadeIn 0.3s ease;
     max-width: 400px;
     width: 90%;
-    position: relative;
-    overflow-y: auto;
-    max-height: 90vh;
 }
 
 body.dark-mode .modal-content {
     background: linear-gradient(135deg, #2C3E50, #24305E);
 }
 
-.modal-content h3 {
-    font-size: 1.5rem;
-    color: #00A2FF;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 5px rgba(0, 162, 255, 0.3);
-}
-
-.modal-content select,
-.modal-content input {
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-    border-radius: 10px;
-    border: 1px solid #007ACC;
-    background: #F9FBFF;
-    color: #333;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-body.dark-mode .modal-content select,
-body.dark-mode .modal-content input {
-    background: #2C3E50;
-    color: #E0E0E0;
-    border: 1px solid #007ACC;
-}
-
-.modal-content select:focus,
-.modal-content input:focus {
-    outline: none;
-    box-shadow: 0 0 5px #00A2FF;
-}
-
-.modal-content .action-buttons {
-    margin-top: 1.5rem;
-    gap: 0.75rem;
-}
-
-.modal-content #auth-message {
-    margin-top: 1rem;
-    color: #D32F2F;
-    font-size: 0.9rem;
-}
-
-body.dark-mode .modal-content #auth-message {
-    color: #EF5350;
-}
-
-.modal-content #recaptcha-container {
-    margin: 1.5rem 0;
-}
-
-@media (max-width: 480px) {
-    .modal-content {
-        padding: 1.5rem;
-        width: 95%;
-    }
-    .modal-content .action-buttons {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+#recaptcha-container {
+    margin: 1rem 0;
 }
 
 .toast {

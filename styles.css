@@ -15,6 +15,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     transition: all 0.3s ease;
+    overflow-y: hidden; /* Убирает лишний скролл */
 }
 
 body.dark-mode {
@@ -207,6 +208,11 @@ body.dark-mode .hero {
     box-shadow: 0 8px 20px rgba(0, 162, 255, 0.5);
 }
 
+.download-btn {
+    margin-top: auto;
+    display: block;
+}
+
 .main-panel {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
@@ -273,16 +279,17 @@ body.dark-mode .stat {
     display: block;
 }
 
-.places-grid {
+.places-grid, .scripts-grid, .avatars-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     width: 100%;
     max-width: 1200px;
     justify-content: center;
+    margin-top: 1rem;
 }
 
-.place-card {
+.place-card, .script-card, .avatar-card {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
     padding: 1rem;
@@ -296,80 +303,14 @@ body.dark-mode .stat {
     justify-content: space-between;
 }
 
-body.dark-mode .place-card {
-    background: linear-gradient(135deg, #2C3E50, #24305E);
-}
-
-.place-card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-}
-
-.scripts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1200px;
-    justify-content: center;
-}
-
-.script-card {
-    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
-    border-radius: 15px;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    width: 300px;
-    height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-body.dark-mode .script-card {
-    background: linear-gradient(135deg, #2C3E50, #24305E);
-}
-
-.script-card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-}
-
-.avatars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1200px;
-    justify-content: center;
-}
-
-.avatar-card {
-    background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
-    border-radius: 15px;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    width: 300px;
-    height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
+body.dark-mode .place-card,
+body.dark-mode .script-card,
 body.dark-mode .avatar-card {
     background: linear-gradient(135deg, #2C3E50, #24305E);
 }
 
+.place-card img,
+.script-card img,
 .avatar-card img {
     width: 100%;
     height: 300px;
@@ -508,7 +449,8 @@ body.dark-mode .profile-card {
     color: #555;
 }
 
-body.dark-mode .profile-info h3, body.dark-mode .profile-info p {
+body.dark-mode .profile-info h3,
+body.dark-mode .profile-info p {
     color: #E0E0E0;
 }
 
@@ -540,7 +482,8 @@ body.dark-mode .stat-card {
     margin-bottom: 1rem;
 }
 
-.filter-bar input, .filter-bar select {
+.filter-bar input,
+.filter-bar select {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     border: 1px solid #007ACC;
@@ -549,15 +492,21 @@ body.dark-mode .stat-card {
     transition: all 0.3s ease;
 }
 
-body.dark-mode .filter-bar input, body.dark-mode .filter-bar select {
+body.dark-mode .filter-bar input,
+body.dark-mode .filter-bar select {
     background: #2C3E50;
     color: #E0E0E0;
     border: 1px solid #007ACC;
 }
 
-.filter-bar input:focus, .filter-bar select:focus {
+.filter-bar input:focus,
+.filter-bar select:focus {
     outline: none;
     box-shadow: 0 0 5px #00A2FF;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
 }
 
 .modal {
@@ -649,6 +598,25 @@ body.dark-mode .modal-content #auth-message {
     .modal-content .action-buttons {
         flex-direction: column;
         gap: 0.5rem;
+    }
+    .nav-btn {
+        min-width: 80px;
+        padding: 0.4rem 0.8rem;
+    }
+    .hero {
+        padding: 2rem;
+    }
+    .main-panel {
+        padding: 1.5rem;
+    }
+    .place-card, .script-card, .avatar-card {
+        width: 100%;
+        height: auto;
+    }
+    .place-card img,
+    .script-card img,
+    .avatar-card img {
+        height: 200px;
     }
 }
 

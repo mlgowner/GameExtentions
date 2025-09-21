@@ -241,6 +241,18 @@ body.dark-mode .stat {
     box-shadow: 0 5px 15px rgba(0, 162, 255, 0.1);
 }
 
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.category-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
 .faq-panel {
     margin-top: 2rem;
 }
@@ -375,6 +387,26 @@ body.dark-mode .account-form {
     flex-wrap: nowrap;
     overflow-x: auto;
     margin: 1rem 0;
+}
+
+.action-buttons button {
+    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    border: none;
+    color: #FFF;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0, 162, 255, 0.2);
+    min-width: 100px;
+    text-align: center;
+}
+
+.action-buttons button:hover {
+    background: linear-gradient(135deg, #007ACC, #005F99);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 162, 255, 0.4);
 }
 
 .progress-bar {
@@ -594,7 +626,6 @@ body.dark-mode .modal-content {
     text-shadow: 0 2px 5px rgba(0, 162, 255, 0.3);
 }
 
-.modal-content select,
 .modal-content input {
     width: 100%;
     padding: 0.75rem;
@@ -607,14 +638,12 @@ body.dark-mode .modal-content {
     transition: all 0.3s ease;
 }
 
-body.dark-mode .modal-content select,
 body.dark-mode .modal-content input {
     background: #2C3E50;
     color: #E0E0E0;
     border: 1px solid #007ACC;
 }
 
-.modal-content select:focus,
 .modal-content input:focus {
     outline: none;
     box-shadow: 0 0 5px #00A2FF;

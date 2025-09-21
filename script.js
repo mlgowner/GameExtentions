@@ -25,11 +25,15 @@ const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { s
 
 let confirmationResult; // Для phone confirmation
 
+// Показ модала только при первом заходе
+let isFirstLoad = true;
 onAuthStateChanged(auth, user => {
-    const profileContent = document.getElementById('profile-content');
     const authModal = document.getElementById('auth-modal');
+    const authForm = document.getElementById('auth-form');
+    const profileContent = document.getElementById('profile-content');
     if (user) {
         authModal.style.display = 'none';
+        authForm.style.display = 'none';
         profileContent.style.display = 'block';
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
@@ -45,9 +49,11 @@ onAuthStateChanged(auth, user => {
                 document.getElementById('auth-message').textContent = '';
             }
         });
-    } else {
-        authModal.style.display = 'flex'; // Показ модала сразу
+    } else if (isFirstLoad) {
+        authModal.style.display = 'flex';
+        authForm.style.display = 'block';
         profileContent.style.display = 'none';
+        isFirstLoad = false;
     }
 });
 
@@ -95,8 +101,6 @@ document.getElementById('verify-code-btn').addEventListener('click', () => {
 });
 
 function signUp() {
-    const method = document.getElementById('auth-method').value;
-    if (method !== 'email') return;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     createUserWithEmailAndPassword(auth, email, password)
@@ -106,6 +110,9 @@ function signUp() {
             sendEmailVerification(user)
                 .then(() => {
                     showToast('Код выслан на почту');
+                })
+                .catch((error) => {
+                    document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
                 });
             document.getElementById('auth-modal').style.display = 'none';
         })
@@ -115,13 +122,12 @@ function signUp() {
 }
 
 function signIn() {
-    const method = document.getElementById('auth-method').value;
-    if (method !== 'email') return;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-            showToast('Вход успешный!');
+            document.getElementById('auth-message').textContent = 'Вход успешный!';
+            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
             document.getElementById('auth-modal').style.display = 'none';
         })
         .catch((error) => {
@@ -133,6 +139,7 @@ function signOutUser() {
     signOut(auth).then(() => {
         document.getElementById('auth-message').textContent = 'Вы вышли!';
         setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
+        document.getElementById('profile-content').style.display = 'none';
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });
@@ -145,7 +152,7 @@ function resendVerification() {
                 showToast('Код выслан на указанный адрес почты');
             })
             .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
+                document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
             });
     }
 }
@@ -170,6 +177,73 @@ function showToast(message) {
     setTimeout(() => {
         toast.style.display = 'none';
     }, 3000);
+}
+
+function switchSection(sectionId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+function initParticles() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const particles = [];
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            radius: Math.random() * 3 + 1,
+            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)`
+        });
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+}
+
+function updateProfileTime() {
+    const now = new Date();
+    now.setHours(19, 45, 0, 0); // Установка времени на 07:45 PM CEST, 21 сентября 2025
+    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
+    document.getElementById('current-time').textContent = timeString;
+    document.getElementById('current-time-profile').textContent = timeString;
+}
+
+function updateUserProgress() {
+    document.getElementById('user-downloads').textContent = userData.downloads;
+    const totalPlaces = allPlaces.length;
+    document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
+    document.getElementById('user-scripts').textContent = userData.scripts;
+    const percent = (userData.places / totalPlaces * 100).toFixed(1);
+    document.querySelector('.progress-fill').style.width = percent + '%';
+    document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
 
 const allPlaces = [
@@ -197,13 +271,13 @@ const allAvatars = [
 
 const placesPerPage = 4;
 let currentPage = 1;
-const currentFilter = { search: '', genre: 'all' };
+const currentFilter = { search: '', genre: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
     grid.innerHTML = '';
     const filtered = allPlaces.filter(p => 
-        (currentFilter.genre === 'all' || p.genre === currentFilter.genre) &&
+        (currentFilter.genre === '' || p.genre === currentFilter.genre) &&
         p.title.toLowerCase().includes(currentFilter.search.toLowerCase())
     );
     const start = (currentPage - 1) * placesPerPage;
@@ -212,22 +286,14 @@ function renderPlaces() {
         const card = document.createElement('div');
         card.className = 'place-card';
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}">
-            <h3>${place.title}</h3>
+            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <h4>${place.title}</h4>
             <p>${place.desc}</p>
             <p>${place.rating}</p>
-            <button class="download-btn" data-id="${place.id}" data-type="place">Скачать</button>
-            <button class="details-btn">Подробнее</button>
-            <div class="place-details" style="display: none;">
-                <img src="${place.img}" alt="${place.title}">
-                <a href="${place.link}" target="_blank" class="cta-btn">Играть на Roblox</a>
-            </div>
+            <button class="cta-btn download-btn" data-id="${place.id}" data-type="place">Скачать</button>
+            <a href="${place.link}" target="_blank" class="cta-btn details-btn">Подробнее</a>
         `;
         grid.appendChild(card);
-        card.querySelector('.details-btn').addEventListener('click', () => {
-            const details = card.querySelector('.place-details');
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
-        });
     });
     updatePaginationPlaces(filtered.length);
 }
@@ -239,10 +305,10 @@ function renderScripts() {
         const card = document.createElement('div');
         card.className = 'script-card';
         card.innerHTML = `
-            <img src="${script.img}" alt="${script.title}">
-            <h3>${script.title}</h3>
+            <img src="${script.img}" alt="${script.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <h4>${script.title}</h4>
             <p>${script.desc}</p>
-            <button class="download-btn" data-id="${script.id}" data-type="script">Скачать</button>
+            <button class="cta-btn download-btn" data-id="${script.id}" data-type="script">Скачать</button>
         `;
         grid.appendChild(card);
     });
@@ -255,10 +321,10 @@ function renderAvatars() {
         const card = document.createElement('div');
         card.className = 'avatar-card';
         card.innerHTML = `
-            <img src="${avatar.img}" alt="${avatar.title}">
-            <h3>${avatar.title}</h3>
+            <img src="${avatar.img}" alt="${avatar.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <h4>${avatar.title}</h4>
             <p>${avatar.desc}</p>
-            <button class="download-btn" data-id="${avatar.id}" data-type="avatar">Скачать</button>
+            <button class="cta-btn download-btn" data-id="${avatar.id}" data-type="avatar">Скачать</button>
         `;
         grid.appendChild(card);
     });
@@ -330,73 +396,6 @@ function downloadAvatar(id) {
         alert('Войдите для скачивания!');
     }
     window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
-}
-
-function updateUserProgress() {
-    document.getElementById('user-downloads').textContent = userData.downloads;
-    const totalPlaces = allPlaces.length;
-    document.getElementById('user-places').textContent = `${userData.places}/${totalPlaces}`;
-    document.getElementById('user-scripts').textContent = userData.scripts;
-    const percent = (userData.places / totalPlaces * 100).toFixed(1);
-    document.querySelector('.progress-fill').style.width = percent + '%';
-    document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
-}
-
-function switchSection(sectionId) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-}
-
-function initParticles() {
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const particles = [];
-    for (let i = 0; i < 50; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            radius: Math.random() * 3 + 1,
-            color: `hsl(${Math.random() * 60 + 210}, 100%, 50%)`
-        });
-    }
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-        });
-        requestAnimationFrame(animate);
-    }
-    animate();
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-}
-
-function updateProfileTime() {
-    const now = new Date();
-    now.setHours(19, 13, 0, 0); // Установка времени на 07:13 PM CEST
-    const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
-    document.getElementById('current-time').textContent = timeString;
-    document.getElementById('current-time-profile').textContent = timeString;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/roblox.png">
     <link rel="manifest" href="manifest.json">
-    <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
 </head>
 <body>
     <canvas id="particles-canvas"></canvas>
@@ -64,7 +63,7 @@
             </div>
 
             <div class="main-panel">
-                <h3>Добро пожаловаться в Game Extensions!</h3>
+                <h3>Добро пожаловать в Game Extensions!</h3>
                 <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">07:45 PM CEST, 21 сентября 2025</span>.</p>
                 <div class="stats-grid">
                     <div class="stat">
@@ -132,7 +131,7 @@
 
         <section id="account" class="section">
             <div class="account-form">
-                <div id="auth-form">
+                <div id="auth-form" style="display: none;">
                     <h3>Регистрация / Вход</h3>
                     <input type="email" id="email" placeholder="Email">
                     <input type="password" id="password" placeholder="Пароль">
@@ -145,7 +144,7 @@
                 <div id="profile-content" style="display: none;">
                     <div class="profile-card">
                         <div class="profile-header">
-                            <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Avatar" class="avatar" id="profile-avatar">
+                            <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Avatar" class="avatar">
                             <div class="profile-info">
                                 <h3 id="profile-name">RobloxPlayer</h3>
                                 <p id="profile-bio">Любитель модов и плейсов!</p>
@@ -177,7 +176,6 @@
                         <div class="edit-profile">
                             <input type="text" id="new-name" placeholder="Никнейм">
                             <textarea id="new-bio" placeholder="Био"></textarea>
-                            <input type="file" id="avatar-upload" accept="image/*">
                             <div class="action-buttons">
                                 <button class="cta-btn" id="save-profile-btn">Сохранить</button>
                                 <button class="cta-btn" id="resend-verification-btn">Повторно отправить код подтверждения</button>
@@ -197,4 +195,5 @@
     </footer>
 
     <script src="script.js" type="module"></script>
+</body>
 </html>

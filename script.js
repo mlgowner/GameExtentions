@@ -26,8 +26,9 @@ let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и пл
 const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
 
 let confirmationResult;
+let otpCode; // Для email OTP
 
-// EmailJS init (оставлено для обратной совместимости, замените на свои ключи)
+// EmailJS init (замените на ваши ключи от EmailJS)
 emailjs.init("your_emailjs_user_id"); // Подставьте ваш userID от EmailJS
 
 // Показ модала только при первом заходе
@@ -93,20 +94,19 @@ document.getElementById('send-code-btn').addEventListener('click', () => {
             });
     } else if (method === 'email') {
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                return sendEmailVerification(userCredential.user);
-            })
-            .then(() => {
-                showToast('Проверьте email для верификации');
-                document.getElementById('auth-message').textContent = 'Проверьте ваш email и подтвердите его.';
-                document.getElementById('verification-code').style.display = 'none';
-                document.getElementById('verify-code-btn').style.display = 'none';
-            })
-            .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
-            });
+        otpCode = Math.floor(100000 + Math.random() * 900000).toString(); // Генерация OTP
+        const tempRef = ref(db, 'temp_otp/' + btoa(email));
+        set(tempRef, { otp: otpCode, timestamp: Date.now() });
+        emailjs.send("your_service_id", "your_template_id", {
+            to_email: email,
+            otp_code: otpCode
+        }).then(() => {
+            showToast('Код отправлен на email');
+            document.getElementById('verification-code').style.display = 'block';
+            document.getElementById('verify-code-btn').style.display = 'block';
+        }).catch((error) => {
+            document.getElementById('auth-message').textContent = 'Ошибка отправки: ' + error.message;
+        });
     }
 });
 
@@ -126,13 +126,26 @@ document.getElementById('verify-code-btn').addEventListener('click', () => {
                 document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
             });
     } else if (method === 'email') {
-        if (auth.currentUser && auth.currentUser.emailVerified) {
-            set(ref(db, 'users/' + auth.currentUser.uid), userData);
-            showToast('Email подтверждён, регистрация успешна!');
-            document.getElementById('auth-modal').style.display = 'none';
-        } else {
-            document.getElementById('auth-message').textContent = 'Email ещё не подтверждён. Проверьте почту.';
-        }
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const tempRef = ref(db, 'temp_otp/' + btoa(email));
+        onValue(tempRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.otp === code) {
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        set(ref(db, 'users/' + user.uid), userData);
+                        showToast('Регистрация успешна!');
+                        document.getElementById('auth-modal').style.display = 'none';
+                    })
+                    .catch((error) => {
+                        document.getElementById('auth-message').textContent = error.message;
+                    });
+            } else {
+                document.getElementById('auth-message').textContent = 'Неверный код';
+            }
+        });
     }
 });
 
@@ -271,7 +284,7 @@ function initParticles() {
 // Обновление времени
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(20, 25, 0, 0); // 08:25 PM CEST, 21 сентября 2025
+    now.setHours(20, 11, 0, 0); // 08:11 PM CEST, 21 сентября 2025
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;

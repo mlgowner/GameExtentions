@@ -4,31 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Extensions - Roblox Mods & Places</title>
-    <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/roblox.png">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <canvas id="particles-canvas"></canvas>
     <header>
         <div class="logo">
-            <img src="https://img.icons8.com/color/48/roblox.png" alt="Logo">
-            Game Extensions
+            <img src="https://img.icons8.com/?size=50&id=62158&format=png" alt="Logo">
+            <h1>Game Extensions</h1>
         </div>
         <nav>
-            <button class="nav-btn" data-section="home">Главная</button>
+            <button class="nav-btn active" data-section="home">Главная</button>
             <button class="nav-btn" data-section="places">Плейсы</button>
             <button class="nav-btn" data-section="scripts">Скрипты</button>
             <button class="nav-btn" data-section="avatars">Аватары</button>
             <button class="nav-btn" data-section="account">Аккаунт</button>
         </nav>
         <button class="dark-toggle">
-            <img src="https://img.icons8.com/ios/50/ffffff/sun--v1.png" alt="Toggle Dark Mode">
+            <img src="https://img.icons8.com/?size=50&id=648&format=png" alt="Dark Mode">
         </button>
     </header>
 
-    <!-- Модальное окно для auth -->
     <div id="auth-modal" class="modal">
         <div class="modal-content">
             <div id="auth-form" class="account-form">
@@ -62,24 +61,26 @@
                     <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank">Скачать Game Extensions.zip</a>
                 </div>
             </div>
+
             <div class="main-panel">
-                <h2>Добро пожаловать в Game Extensions!</h2>
-                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time"></span>.</p>
+                <h3>Добро пожаловать в Game Extensions!</h3>
+                <p>Здесь ты найдёшь моды, скрипты и плейсы для Roblox. Текущее время: <span id="current-time">07:45 PM CEST, 21 сентября 2025</span>.</p>
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Плейсов</h3>
+                    <div class="stat">
+                        <h4>Плейсов</h4>
                         <p>200+</p>
                     </div>
-                    <div class="stat-card">
-                        <h3>Скриптов</h3>
+                    <div class="stat">
+                        <h4>Скриптов</h4>
                         <p>100+</p>
                     </div>
-                    <div class="stat-card">
-                        <h3>Аватаров</h3>
+                    <div class="stat">
+                        <h4>Аватаров</h4>
                         <p>300+</p>
                     </div>
                 </div>
-                <div class="faq">
+
+                <div class="faq-panel">
                     <h3>FAQ</h3>
                     <div class="faq-item">
                         <h4>Что такое Game Extensions?</h4>
@@ -106,16 +107,18 @@
         </section>
 
         <section id="places" class="section">
-            <input type="text" id="search-places" placeholder="Поиск плейсов">
-            <select id="genre-filter">
-                <option value="all">Все жанры</option>
-                <option value="adventure">Приключения</option>
-                <option value="rpg">RPG</option>
-                <option value="obby">Obby</option>
-            </select>
-            <button class="filter-btn">Фильтр</button>
+            <div class="filter-bar">
+                <input type="text" id="search-places" placeholder="Поиск плейсов...">
+                <select id="genre-filter">
+                    <option value="">Все жанры</option>
+                    <option value="adventure">Приключения</option>
+                    <option value="rpg">RPG</option>
+                    <option value="obby">Obby</option>
+                </select>
+                <button class="cta-btn filter-btn">Фильтр</button>
+            </div>
             <div class="places-grid" id="places-grid"></div>
-            <div id="pagination-places" class="pagination"></div>
+            <div class="pagination" id="pagination-places"></div>
         </section>
 
         <section id="scripts" class="section">
@@ -127,43 +130,58 @@
         </section>
 
         <section id="account" class="section">
-            <div id="profile-content" style="display: none;">
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <img src="https://tr.rbxcdn.com/asset-thumbnail/image?assetId=1&width=100&height=100&format=png" alt="Avatar" class="avatar">
-                        <div class="profile-info">
-                            <h3 id="profile-name">RobloxPlayer</h3>
-                            <p id="profile-bio">Любитель модов и плейсов!</p>
-                        </div>
+            <div class="account-form">
+                <div id="auth-form" style="display: none;">
+                    <h3>Регистрация / Вход</h3>
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Пароль">
+                    <div class="action-buttons">
+                        <button class="cta-btn" id="sign-up-btn">Регистрация</button>
+                        <button class="cta-btn" id="sign-in-btn">Вход</button>
                     </div>
-                    <div class="profile-stats">
-                        <div class="stat-card">
-                            <h3>Скачиваний</h3>
-                            <p id="user-downloads">0</p>
+                    <p id="auth-message"></p>
+                </div>
+                <div id="profile-content" style="display: none;">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Avatar" class="avatar">
+                            <div class="profile-info">
+                                <h3 id="profile-name">RobloxPlayer</h3>
+                                <p id="profile-bio">Любитель модов и плейсов!</p>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <h3>Плейсов</h3>
-                            <p id="user-places">0/6</p>
+                        <div class="stats-grid profile-stats">
+                            <div class="stat-card">
+                                <h4>Скачиваний</h4>
+                                <p id="user-downloads">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Плейсов</h4>
+                                <p id="user-places">0/6</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Скриптов</h4>
+                                <p id="user-scripts">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Текущее время</h4>
+                                <p id="current-time-profile">07:45 PM CEST, 21 сентября 2025</p>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <h3>Скриптов</h3>
-                            <p id="user-scripts">0</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                            <span>Прогресс: 0%</span>
                         </div>
-                        <div class="stat-card">
-                            <h3>Текущее время</h3>
-                            <p id="current-time-profile"></p>
+                        <h3>Редактировать профиль</h3>
+                        <div class="edit-profile">
+                            <input type="text" id="new-name" placeholder="Никнейм">
+                            <textarea id="new-bio" placeholder="Био"></textarea>
+                            <div class="action-buttons">
+                                <button class="cta-btn" id="save-profile-btn">Сохранить</button>
+                                <button class="cta-btn" id="resend-verification-btn">Повторно отправить код подтверждения</button>
+                                <button class="cta-btn" id="sign-out-btn">Выйти</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                        <span>Прогресс: 0%</span>
-                    </div>
-                    <div class="edit-profile">
-                        <input type="text" id="new-name" placeholder="Новое имя">
-                        <textarea id="new-bio" placeholder="Новая био"></textarea>
-                        <button id="save-profile-btn">Сохранить</button>
-                        <button id="resend-verification-btn">Повторно отправить код подтверждения</button>
-                        <button id="sign-out-btn">Выйти</button>
                     </div>
                 </div>
             </div>
@@ -171,8 +189,11 @@
     </div>
 
     <div id="toast" class="toast"></div>
+
     <footer>
         ©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.
     </footer>
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>

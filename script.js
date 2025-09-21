@@ -152,6 +152,7 @@ function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
     document.getElementById(sectionId).style.display = 'block';
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).dispatchEvent(new Event('click'));
     document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
@@ -161,7 +162,7 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Инициализация частиц
+// Инициализация частиц (летающие шарики)
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
@@ -202,7 +203,7 @@ function initParticles() {
 // Обновление времени
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(21, 42, 0, 0); // 09:42 PM CEST, 21 сентября 2025
+    now.setHours(21, 50, 0, 0); // 09:50 PM CEST, 21 сентября 2025
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
@@ -317,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUserProgress();
     updateProfileTime();
     setInterval(updateProfileTime, 60000);
-    initParticles();
+    initParticles(); // Исправлен вызов для частиц
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => switchSection(btn.dataset.section));

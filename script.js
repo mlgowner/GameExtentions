@@ -1,6 +1,6 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { getDatabase, ref, set, onValue, update } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js';
 
@@ -43,8 +43,6 @@ onAuthStateChanged(auth, user => {
             userData = snapshot.val() || userData;
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-bio').textContent = userData.bio;
-            document.getElementById('new-name').value = userData.name;
-            document.getElementById('new-bio').value = userData.bio;
             document.getElementById('profile-avatar').src = userData.avatarUrl;
             updateUserProgress();
         });
@@ -78,11 +76,13 @@ function sendOTP(email) {
 
 // Отправка кода
 document.getElementById('send-code-btn').addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    if (email) {
-        sendOTP(email);
-    } else {
-        document.getElementById('auth-message').textContent = 'Введите email';
+    const authMethod = document.getElementById('auth-method').value;
+    if (authMethod === 'email') {
+        const email = document.getElementById('email').value;
+        if (email) sendOTP(email);
+        else document.getElementById('auth-message').textContent = 'Введите email';
+    } else if (authMethod === 'phone') {
+        document.getElementById('auth-message').textContent = 'Телефонная авторизация временно недоступна';
     }
 });
 
@@ -135,47 +135,6 @@ document.getElementById('sign-out-btn').addEventListener('click', () => {
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });
-});
-
-// Повторная отправка кода
-document.getElementById('resend-verification-btn').addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    if (email) {
-        sendOTP(email);
-    } else {
-        document.getElementById('auth-message').textContent = 'Введите email';
-    }
-});
-
-// Сохранение профиля
-function saveProfile() {
-    if (auth.currentUser) {
-        const newName = document.getElementById('new-name').value || userData.name;
-        const newBio = document.getElementById('new-bio').value || userData.bio;
-        set(ref(db, 'users/' + auth.currentUser.uid), {
-            ...userData,
-            name: newName,
-            bio: newBio
-        });
-        showToast('Профиль обновлён!');
-    }
-}
-
-// Загрузка аватара
-document.getElementById('save-profile-btn').addEventListener('click', () => {
-    const file = document.getElementById('avatar-upload').files[0];
-    if (file) {
-        const avatarRef = storageRef(storage, 'avatars/' + auth.currentUser.uid);
-        uploadBytes(avatarRef, file).then(() => {
-            getDownloadURL(avatarRef).then((url) => {
-                userData.avatarUrl = url;
-                update(ref(db, 'users/' + auth.currentUser.uid), { avatarUrl: url });
-                document.getElementById('profile-avatar').src = url;
-                showToast('Аватар обновлён!');
-            });
-        });
-    }
-    saveProfile();
 });
 
 // Отображение уведомлений
@@ -243,7 +202,7 @@ function initParticles() {
 // Обновление времени
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(20, 42, 0, 0); // 08:42 PM CEST, 21 сентября 2025
+    now.setHours(21, 20, 0, 0); // 09:20 PM CEST, 21 сентября 2025
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
@@ -260,32 +219,33 @@ function updateUserProgress() {
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${percent}%`;
 }
 
+// Данные для категорий (по 6 штук)
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.jpg", link: "https://www.roblox.com/games/606849621/Jailbreak" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.jpg", link: "https://www.roblox.com/games/286090429/Arsenal" }
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "./images/adopt-me.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" }
 ];
 
 const allScripts = [
-    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "./images/auto-farm.jpg" },
-    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.jpg" },
-    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.jpg" },
-    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.jpg" }
+    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "./images/auto-farm.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 5, title: "Script 5", desc: "Новый скрипт.", img: "./images/script-5.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 6, title: "Script 6", desc: "Ещё один скрипт.", img: "./images/script-6.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" }
 ];
 
 const allAvatars = [
-    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", img: "./images/cool-avatar.jpg" },
-    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.jpg" },
-    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.jpg" },
-    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.jpg" }
+    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", img: "./images/cool-avatar.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 5, title: "Avatar 5", desc: "Новый аватар.", img: "./images/avatar-5.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
+    { id: 6, title: "Avatar 6", desc: "Ещё один аватар.", img: "./images/avatar-6.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" }
 ];
-
-const placesPerPage = 4;
-let currentPage = 1;
-const currentFilter = { search: '', genre: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
@@ -294,21 +254,18 @@ function renderPlaces() {
         (currentFilter.genre === '' || p.genre === currentFilter.genre) &&
         p.title.toLowerCase().includes(currentFilter.search.toLowerCase())
     );
-    const start = (currentPage - 1) * placesPerPage;
-    const end = start + placesPerPage;
-    filtered.slice(start, end).forEach(place => {
+    filtered.forEach(place => {
         const card = document.createElement('div');
         card.className = 'place-card';
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/300';">
             <h4>${place.title}</h4>
             <p>${place.desc}</p>
             <p>${place.rating}</p>
-            <button class="cta-btn download-btn" data-id="${place.id}" data-type="place">Скачать</button>
+            <a href="${place.link}" class="cta-btn download-btn" target="_blank">Скачать</a>
         `;
         grid.appendChild(card);
     });
-    updatePaginationPlaces(filtered.length);
 }
 
 function renderScripts() {
@@ -318,10 +275,10 @@ function renderScripts() {
         const card = document.createElement('div');
         card.className = 'script-card';
         card.innerHTML = `
-            <img src="${script.img}" alt="${script.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <img src="${script.img}" alt="${script.title}" onerror="this.src='https://via.placeholder.com/300';">
             <h4>${script.title}</h4>
             <p>${script.desc}</p>
-            <button class="cta-btn download-btn" data-id="${script.id}" data-type="script">Скачать</button>
+            <a href="${script.link}" class="cta-btn download-btn" target="_blank">Скачать</a>
         `;
         grid.appendChild(card);
     });
@@ -334,102 +291,19 @@ function renderAvatars() {
         const card = document.createElement('div');
         card.className = 'avatar-card';
         card.innerHTML = `
-            <img src="${avatar.img}" alt="${avatar.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <img src="${avatar.img}" alt="${avatar.title}" onerror="this.src='https://via.placeholder.com/300';">
             <h4>${avatar.title}</h4>
             <p>${avatar.desc}</p>
-            <button class="cta-btn download-btn" data-id="${avatar.id}" data-type="avatar">Скачать</button>
+            <a href="${avatar.link}" class="cta-btn download-btn" target="_blank">Скачать</a>
         `;
         grid.appendChild(card);
     });
 }
 
-function updatePaginationPlaces(total) {
-    const pag = document.getElementById('pagination-places');
-    pag.innerHTML = '';
-    const pages = Math.ceil(total / placesPerPage);
-    if (currentPage > 1) {
-        const prev = document.createElement('button');
-        prev.textContent = '←';
-        prev.addEventListener('click', () => { currentPage--; renderPlaces(); });
-        pag.appendChild(prev);
-    }
-    for (let i = 1; i <= pages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = i;
-        btn.className = currentPage === i ? 'active' : '';
-        btn.addEventListener('click', () => { currentPage = i; renderPlaces(); });
-        pag.appendChild(btn);
-    }
-    if (currentPage < pages) {
-        const next = document.createElement('button');
-        next.textContent = '→';
-        next.addEventListener('click', () => { currentPage++; renderPlaces(); });
-        pag.appendChild(next);
-    }
-}
-
 function filterPlaces() {
     currentFilter.search = document.getElementById('search-places').value;
     currentFilter.genre = document.getElementById('genre-filter').value;
-    currentPage = 1;
     renderPlaces();
-}
-
-function downloadPlace(id) {
-    if (auth.currentUser) {
-        userData.places++;
-        userData.downloads++;
-        set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
-    } else {
-        alert('Войдите для скачивания!');
-    }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
-}
-
-function downloadScript(id) {
-    if (auth.currentUser) {
-        userData.scripts++;
-        userData.downloads++;
-        set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
-    } else {
-        alert('Войдите для скачивания!');
-    }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
-}
-
-function downloadAvatar(id) {
-    if (auth.currentUser) {
-        userData.avatars++;
-        userData.downloads++;
-        set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
-    } else {
-        alert('Войдите для скачивания!');
-    }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
-}
-
-function renderCategoryContent(category) {
-    const content = document.getElementById('category-content');
-    content.innerHTML = '';
-    let items = [];
-    if (category === 'places') items = allPlaces;
-    else if (category === 'scripts') items = allScripts;
-    else if (category === 'avatars') items = allAvatars;
-
-    items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = `${category}-card`;
-        card.innerHTML = `
-            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/420';">
-            <h4>${item.title}</h4>
-            <p>${item.desc || ''}${item.rating ? '<br>' + item.rating : ''}</p>
-            <button class="cta-btn download-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}">Скачать</button>
-        `;
-        content.appendChild(card);
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -454,25 +328,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('sign-in-btn').addEventListener('click', signIn);
     document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
-    document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
-    document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
 
     document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
 
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const category = btn.dataset.category;
-            renderCategoryContent(category);
-        });
+    // Смена аватара по клику
+    const avatar = document.getElementById('profile-avatar');
+    const avatarUpload = document.getElementById('avatar-upload');
+    avatar.addEventListener('click', () => {
+        avatarUpload.click();
     });
-
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('download-btn')) {
-            const id = parseInt(e.target.dataset.id);
-            const type = e.target.dataset.type;
-            if (type === 'place') downloadPlace(id);
-            if (type === 'script') downloadScript(id);
-            if (type === 'avatar') downloadAvatar(id);
+    avatarUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const avatarRef = storageRef(storage, 'avatars/' + auth.currentUser.uid);
+            uploadBytes(avatarRef, file).then(() => {
+                getDownloadURL(avatarRef).then((url) => {
+                    userData.avatarUrl = url;
+                    update(ref(db, 'users/' + auth.currentUser.uid), { avatarUrl: url });
+                    avatar.src = url;
+                    showToast('Аватар обновлён!');
+                });
+            });
+        } else {
+            showToast('Пожалуйста, выберите только изображение!');
+            e.target.value = '';
         }
     });
 });

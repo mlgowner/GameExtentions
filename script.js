@@ -1,8 +1,7 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { getDatabase, ref, set, onValue, update } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js';
+import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 
 // Firebase Config
 const firebaseConfig = {
@@ -19,17 +18,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-const storage = getStorage(app);
 
-let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0, avatarUrl: 'https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png' };
+let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и плейсов!', downloads: 0, places: 0, scripts: 0, avatars: 0 };
 
 const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
 
-let confirmationResult;
-let otpCode; // Для email OTP
-
-// EmailJS init (замените на ваши ключи от EmailJS)
-emailjs.init("your_emailjs_user_id"); // Подставьте ваш userID от EmailJS
+let confirmationResult; // Для phone confirmation
 
 // Показ модала только при первом заходе
 let isFirstLoad = true;
@@ -48,7 +42,6 @@ onAuthStateChanged(auth, user => {
             document.getElementById('profile-bio').textContent = userData.bio;
             document.getElementById('new-name').value = userData.name;
             document.getElementById('new-bio').value = userData.bio;
-            document.getElementById('profile-avatar').src = userData.avatarUrl;
             updateUserProgress();
             if (!user.emailVerified && user.email) {
                 document.getElementById('auth-message').textContent = 'Email не подтверждён. Проверьте почту.';
@@ -72,123 +65,98 @@ document.getElementById('auth-method').addEventListener('change', (e) => {
     document.getElementById('password').style.display = method === 'email' ? 'block' : 'none';
     document.getElementById('verification-code').style.display = 'none';
     document.getElementById('verify-code-btn').style.display = 'none';
-    document.getElementById('send-code-btn').style.display = 'block';
-    document.getElementById('sign-up-btn').style.display = 'none';
-    document.getElementById('sign-in-btn').style.display = 'none';
+    document.getElementById('send-code-btn').style.display = method === 'phone' ? 'block' : 'none';
+    document.getElementById('sign-up-btn').style.display = method === 'email' ? 'block' : 'none';
+    document.getElementById('sign-in-btn').style.display = method === 'email' ? 'block' : 'none';
 });
 
-// Отправка кода
+// Отправка кода для phone
 document.getElementById('send-code-btn').addEventListener('click', () => {
-    const method = document.getElementById('auth-method').value;
-    if (method === 'phone') {
-        const phone = document.getElementById('phone').value;
-        signInWithPhoneNumber(auth, phone, recaptchaVerifier)
-            .then((result) => {
-                confirmationResult = result;
-                showToast('Код отправлен на телефон');
-                document.getElementById('verification-code').style.display = 'block';
-                document.getElementById('verify-code-btn').style.display = 'block';
-            })
-            .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
-            });
-    } else if (method === 'email') {
-        const email = document.getElementById('email').value;
-        otpCode = Math.floor(100000 + Math.random() * 900000).toString(); // Генерация OTP
-        const tempRef = ref(db, 'temp_otp/' + btoa(email));
-        set(tempRef, { otp: otpCode, timestamp: Date.now() });
-        emailjs.send("your_service_id", "your_template_id", {
-            to_email: email,
-            otp_code: otpCode
-        }).then(() => {
-            showToast('Код отправлен на email');
+    const phone = document.getElementById('phone').value;
+    signInWithPhoneNumber(auth, phone, recaptchaVerifier)
+        .then((result) => {
+            confirmationResult = result;
+            showToast('Код отправлен на телефон');
             document.getElementById('verification-code').style.display = 'block';
             document.getElementById('verify-code-btn').style.display = 'block';
-        }).catch((error) => {
-            document.getElementById('auth-message').textContent = 'Ошибка отправки: ' + error.message;
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
         });
-    }
 });
 
-// Подтверждение кода
+// Подтверждение кода для phone
 document.getElementById('verify-code-btn').addEventListener('click', () => {
-    const method = document.getElementById('auth-method').value;
     const code = document.getElementById('verification-code').value;
-    if (method === 'phone') {
-        confirmationResult.confirm(code)
-            .then((result) => {
-                const user = result.user;
-                set(ref(db, 'users/' + user.uid), userData);
-                showToast('Регистрация успешна!');
-                document.getElementById('auth-modal').style.display = 'none';
-            })
-            .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
-            });
-    } else if (method === 'email') {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const tempRef = ref(db, 'temp_otp/' + btoa(email));
-        onValue(tempRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.otp === code) {
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        set(ref(db, 'users/' + user.uid), userData);
-                        showToast('Регистрация успешна!');
-                        document.getElementById('auth-modal').style.display = 'none';
-                    })
-                    .catch((error) => {
-                        document.getElementById('auth-message').textContent = error.message;
-                    });
-            } else {
-                document.getElementById('auth-message').textContent = 'Неверный код';
-            }
+    confirmationResult.confirm(code)
+        .then((result) => {
+            const user = result.user;
+            set(ref(db, 'users/' + user.uid), userData);
+            showToast('Вход/Регистрация успешна!');
+            document.getElementById('auth-modal').style.display = 'none';
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
         });
-    }
 });
 
-// Вход
-document.getElementById('sign-in-btn').addEventListener('click', () => {
+function signUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            showToast('Вход успешный!');
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            set(ref(db, 'users/' + user.uid), userData);
+            sendEmailVerification(user)
+                .then(() => {
+                    showToast('Код выслан на почту');
+                })
+                .catch((error) => {
+                    document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
+                });
             document.getElementById('auth-modal').style.display = 'none';
         })
         .catch((error) => {
             document.getElementById('auth-message').textContent = error.message;
         });
-});
+}
 
-// Выход
-document.getElementById('sign-out-btn').addEventListener('click', () => {
+function signIn() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            document.getElementById('auth-message').textContent = 'Вход успешный!';
+            setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
+            document.getElementById('auth-modal').style.display = 'none';
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = error.message;
+        });
+}
+
+function signOutUser() {
     signOut(auth).then(() => {
-        showToast('Вы вышли!');
+        document.getElementById('auth-message').textContent = 'Вы вышли!';
+        setTimeout(() => document.getElementById('auth-message').textContent = '', 3000);
         document.getElementById('profile-content').style.display = 'none';
-        document.getElementById('auth-form').style.display = 'block';
-        document.getElementById('auth-modal').style.display = 'flex';
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });
-});
+}
 
-// Повторная отправка кода
-document.getElementById('resend-verification-btn').addEventListener('click', () => {
-    if (auth.currentUser && auth.currentUser.email) {
+function resendVerification() {
+    if (auth.currentUser) {
         sendEmailVerification(auth.currentUser)
             .then(() => {
-                showToast('Код выслан на почту');
+                showToast('Код выслан на указанный адрес почты');
             })
             .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Ошибка отправки: ' + error.message;
+                document.getElementById('auth-message').textContent = 'Ошибка отправки подтверждения: ' + error.message;
             });
     }
-});
+}
 
-// Сохранение профиля
 function saveProfile() {
     if (auth.currentUser) {
         const newName = document.getElementById('new-name').value || userData.name;
@@ -202,24 +170,6 @@ function saveProfile() {
     }
 }
 
-// Загрузка аватара
-document.getElementById('save-profile-btn').addEventListener('click', () => {
-    const file = document.getElementById('avatar-upload').files[0];
-    if (file) {
-        const avatarRef = storageRef(storage, 'avatars/' + auth.currentUser.uid);
-        uploadBytes(avatarRef, file).then(() => {
-            getDownloadURL(avatarRef).then((url) => {
-                userData.avatarUrl = url;
-                update(ref(db, 'users/' + auth.currentUser.uid), { avatarUrl: url });
-                document.getElementById('profile-avatar').src = url;
-                showToast('Аватар обновлён!');
-            });
-        });
-    }
-    saveProfile();
-});
-
-// Отображение уведомлений
 function showToast(message) {
     const toast = document.getElementById('toast');
     toast.textContent = message;
@@ -229,7 +179,6 @@ function showToast(message) {
     }, 3000);
 }
 
-// Переключение секций
 function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
@@ -237,13 +186,11 @@ function switchSection(sectionId) {
     document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
-// Переключение тёмной темы
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Инициализация частиц
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
@@ -281,16 +228,14 @@ function initParticles() {
     });
 }
 
-// Обновление времени
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(20, 11, 0, 0); // 08:11 PM CEST, 21 сентября 2025
+    now.setHours(19, 45, 0, 0); // Установка времени на 07:45 PM CEST, 21 сентября 2025
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
 }
 
-// Обновление прогресса пользователя
 function updateUserProgress() {
     document.getElementById('user-downloads').textContent = userData.downloads;
     const totalPlaces = allPlaces.length;
@@ -302,26 +247,26 @@ function updateUserProgress() {
 }
 
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me" },
-    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.jpg", link: "https://www.roblox.com/games/606849621/Jailbreak" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.jpg", link: "https://www.roblox.com/games/286090429/Arsenal" }
+    { id: 1, title: "Adopt Me!", desc: "Виртуальные питомцы.", rating: "★★★★★", genre: "adventure", img: "./images/adopt-me.png", link: "https://www.roblox.com/games/920587237/Adopt-Me" },
+    { id: 2, title: "Brookhaven", desc: "Ролевой город.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.png", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.png", link: "https://www.roblox.com/games/606849621/Jailbreak" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.png", link: "https://www.roblox.com/games/2753915549/Blox-Fruits" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.png", link: "https://www.roblox.com/games/6516141723/Doors" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.png", link: "https://www.roblox.com/games/286090429/Arsenal" }
 ];
 
 const allScripts = [
-    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "./images/auto-farm.jpg" },
-    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.jpg" },
-    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.jpg" },
-    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.jpg" }
+    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "./images/auto-farm.png" },
+    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.png" },
+    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.png" },
+    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.png" }
 ];
 
 const allAvatars = [
-    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", img: "./images/cool-avatar.jpg" },
-    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.jpg" },
-    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.jpg" },
-    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.jpg" }
+    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", img: "./images/cool-avatar.png" },
+    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.png" },
+    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.png" },
+    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.png" }
 ];
 
 const placesPerPage = 4;
@@ -346,6 +291,7 @@ function renderPlaces() {
             <p>${place.desc}</p>
             <p>${place.rating}</p>
             <button class="cta-btn download-btn" data-id="${place.id}" data-type="place">Скачать</button>
+            <a href="${place.link}" target="_blank" class="cta-btn details-btn">Подробнее</a>
         `;
         grid.appendChild(card);
     });
@@ -469,10 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
 
-    document.getElementById('sign-up-btn').addEventListener('click', () => {
-        document.getElementById('auth-method').dispatchEvent(new Event('change'));
-        document.getElementById('send-code-btn').click();
-    });
+    document.getElementById('sign-up-btn').addEventListener('click', signUp);
     document.getElementById('sign-in-btn').addEventListener('click', signIn);
     document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
     document.getElementById('save-profile-btn').addEventListener('click', saveProfile);

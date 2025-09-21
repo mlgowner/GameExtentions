@@ -137,6 +137,47 @@ document.getElementById('sign-out-btn').addEventListener('click', () => {
     });
 });
 
+// Повторная отправка кода
+document.getElementById('resend-verification-btn').addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    if (email) {
+        sendOTP(email);
+    } else {
+        document.getElementById('auth-message').textContent = 'Введите email';
+    }
+});
+
+// Сохранение профиля
+function saveProfile() {
+    if (auth.currentUser) {
+        const newName = document.getElementById('new-name').value || userData.name;
+        const newBio = document.getElementById('new-bio').value || userData.bio;
+        set(ref(db, 'users/' + auth.currentUser.uid), {
+            ...userData,
+            name: newName,
+            bio: newBio
+        });
+        showToast('Профиль обновлён!');
+    }
+}
+
+// Загрузка аватара
+document.getElementById('save-profile-btn').addEventListener('click', () => {
+    const file = document.getElementById('avatar-upload').files[0];
+    if (file) {
+        const avatarRef = storageRef(storage, 'avatars/' + auth.currentUser.uid);
+        uploadBytes(avatarRef, file).then(() => {
+            getDownloadURL(avatarRef).then((url) => {
+                userData.avatarUrl = url;
+                update(ref(db, 'users/' + auth.currentUser.uid), { avatarUrl: url });
+                document.getElementById('profile-avatar').src = url;
+                showToast('Аватар обновлён!');
+            });
+        });
+    }
+    saveProfile();
+});
+
 // Отображение уведомлений
 function showToast(message) {
     const toast = document.getElementById('toast');
@@ -151,8 +192,8 @@ function showToast(message) {
 function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
     document.getElementById(sectionId).style.display = 'block';
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.query selector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
+    document.query-selectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
 // Переключение тёмной темы
@@ -164,6 +205,7 @@ function toggleDarkMode() {
 // Инициализация частиц (летающие шарики)
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return; // Проверка на наличие canvas
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

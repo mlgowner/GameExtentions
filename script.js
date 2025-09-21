@@ -152,8 +152,7 @@ function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
     document.getElementById(sectionId).style.display = 'block';
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).dispatchEvent(new Event('click'));
-    document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
+    document.query selector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
 }
 
 // Переключение тёмной темы

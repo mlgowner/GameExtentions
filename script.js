@@ -1,23 +1,13 @@
-// Улучшение script.js:
-// - Добавил больше элементов в массивы allPlaces, allScripts, allAvatars (добавил по 2-3 новых).
-//   Почему: Чтобы сайт выглядел полнее и имел больше контента, как я предлагал — галерея с примерами расширений.
-// - Улучшил функцию renderPlaces: добавил отображение совместимости (например, "PC/Mobile").
-//   Почему: Добавляет полезную информацию, как системные требования, чтобы пользователи знали, подойдет ли мод.
-// - Добавил функцию для показа гайда по установке (showInstallationGuide), которая открывает модал с инструкциями.
-//   Почему: Реализует пошаговый гайд, как предлагалось, для удобства новичков.
-// - Добавил обработку отзывов: простая форма для отправки отзыва в Firebase.
-//   Почему: Добавляет раздел отзывов, как идея для сообщества, повышая вовлеченность.
-// - Оптимизировал код: объединил похожие функции download* в одну downloadItem(type, id).
-//   Почему: Уменьшает дублирование кода, улучшает поддерживаемость.
-// - Добавил проверку на мобильные устройства для предупреждений о совместимости.
-//   Почему: Улучшает мобильность, как предлагалось.
-// - Добавил мультиязычность: простой объект с переводами, но пока только русский (можно расширить).
-//   Почему: Чтобы сайт был полностью на русском, избегая смеси языков.
+// Улучшение script.js с исправлением переключения секций:
+// - Добавил функцию switchSection для переключения видимости секций.
+//   Почему: Это реализует навигацию по каталогам, как было в исходном дизайне.
+// - Исправил логику инициализации: теперь секции переключаются при клике на nav-btn.
+//   Почему: Это решает проблему с неработающими кнопками в шапке.
 
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { getDatabase, ref, set, onValue, update, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js'; // Добавлен push для отзывов
+import { getDatabase, ref, set, onValue, update, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js';
 
 // Firebase Config
@@ -191,19 +181,19 @@ document.getElementById('sign-out-btn').addEventListener('click', () => {
 
 // Новая функция: Показ гайда по установке в модале
 function showInstallationGuide() {
-    const modal = document.getElementById('installation-modal'); // Предполагаем, что добавлен в HTML
+    const modal = document.getElementById('installation-modal');
     if (modal) {
         modal.style.display = 'flex';
     }
 }
 
 // Закрытие модала гайда
-document.getElementById('close-installation-btn').addEventListener('click', () => { // Добавьте кнопку в HTML
+document.getElementById('close-installation-btn').addEventListener('click', () => {
     document.getElementById('installation-modal').style.display = 'none';
 });
 
 // Новая функция: Отправка отзыва
-document.getElementById('submit-review-btn').addEventListener('click', () => { // Предполагаем форму в HTML
+document.getElementById('submit-review-btn').addEventListener('click', () => {
     const reviewText = document.getElementById('review-text').value;
     if (auth.currentUser && reviewText) {
         const reviewsRef = ref(db, 'reviews');
@@ -220,7 +210,7 @@ document.getElementById('submit-review-btn').addEventListener('click', () => { /
     }
 });
 
-// Массивы с добавленным контентом
+// Массивы с контентом
 const allPlaces = [
     { id: 1, title: "Adopt Me", desc: "Усыновляй питомцев.", rating: "★★★★★", genre: "rpg", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
     { id: 2, title: "Brookhaven RP", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", compatibility: "PC/Mobile" },
@@ -228,7 +218,6 @@ const allPlaces = [
     { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", compatibility: "PC/Mobile" },
     { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors", compatibility: "PC" },
     { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.jpg", link: "https://www.roblox.com/games/286090429/Arsenal", compatibility: "PC/Mobile" },
-    // Новые элементы
     { id: 7, title: "Tower of Hell", desc: "Обби с башней.", rating: "★★★★", genre: "obby", img: "./images/tower-of-hell.jpg", link: "https://www.roblox.com/games/1962086868/Tower-of-Hell", compatibility: "PC/Mobile" },
     { id: 8, title: "MeepCity", desc: "Социальная ролевая игра.", rating: "★★★☆", genre: "rpg", img: "./images/meepcity.jpg", link: "https://www.roblox.com/games/370731277/MeepCity", compatibility: "PC/Mobile" },
     { id: 9, title: "Phantom Forces", desc: "Тактический шутер.", rating: "★★★★★", genre: "adventure", img: "./images/phantom-forces.jpg", link: "https://www.roblox.com/games/292439477/Phantom-Forces", compatibility: "PC" }
@@ -239,7 +228,6 @@ const allScripts = [
     { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.jpg", compatibility: "PC" },
     { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.jpg", compatibility: "PC/Mobile" },
     { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.jpg", compatibility: "PC" },
-    // Новые элементы
     { id: 5, title: "Infinite Jump Script", desc: "Бесконечные прыжки.", img: "./images/infinite-jump.jpg", compatibility: "PC/Mobile" },
     { id: 6, title: "God Mode Hack", desc: "Неуязвимость в играх.", img: "./images/god-mode.jpg", compatibility: "PC" }
 ];
@@ -249,7 +237,6 @@ const allAvatars = [
     { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.jpg", compatibility: "All" },
     { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.jpg", compatibility: "All" },
     { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.jpg", compatibility: "All" },
-    // Новые элементы
     { id: 5, title: "Warrior Avatar", desc: "Воинственный стиль.", img: "./images/warrior-avatar.jpg", compatibility: "All" },
     { id: 6, title: "Mystic Avatar", desc: "Мистический дизайн.", img: "./images/mystic-avatar.jpg", compatibility: "All" }
 ];
@@ -257,6 +244,23 @@ const allAvatars = [
 const placesPerPage = 4;
 let currentPage = 1;
 const currentFilter = { search: '', genre: '' };
+
+// Функция переключения секций
+function switchSection(section) {
+    const sections = ['home', 'places', 'scripts', 'avatars', 'account'];
+    sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) {
+            el.style.display = s === section ? 'block' : 'none';
+        }
+    });
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.section === section);
+    });
+    if (section === 'places') renderPlaces();
+    if (section === 'scripts') renderScripts();
+    if (section === 'avatars') renderAvatars();
+}
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
@@ -275,7 +279,7 @@ function renderPlaces() {
             <h4>${place.title}</h4>
             <p>${place.desc}</p>
             <p>${place.rating}</p>
-            <p>Совместимость: ${place.compatibility}</p> <!-- Добавлено отображение совместимости -->
+            <p>Совместимость: ${place.compatibility}</p>
             <button class="cta-btn download-btn" data-id="${place.id}" data-type="place">Скачать</button>
         `;
         grid.appendChild(card);
@@ -293,7 +297,7 @@ function renderScripts() {
             <img src="${script.img}" alt="${script.title}" onerror="this.src='https://via.placeholder.com/420';">
             <h4>${script.title}</h4>
             <p>${script.desc}</p>
-            <p>Совместимость: ${script.compatibility}</p> <!-- Добавлено -->
+            <p>Совместимость: ${script.compatibility}</p>
             <button class="cta-btn download-btn" data-id="${script.id}" data-type="script">Скачать</button>
         `;
         grid.appendChild(card);
@@ -310,7 +314,7 @@ function renderAvatars() {
             <img src="${avatar.img}" alt="${avatar.title}" onerror="this.src='https://via.placeholder.com/420';">
             <h4>${avatar.title}</h4>
             <p>${avatar.desc}</p>
-            <p>Совместимость: ${avatar.compatibility}</p> <!-- Добавлено -->
+            <p>Совместимость: ${avatar.compatibility}</p>
             <button class="cta-btn download-btn" data-id="${avatar.id}" data-type="avatar">Скачать</button>
         `;
         grid.appendChild(card);
@@ -349,14 +353,12 @@ function filterPlaces() {
     renderPlaces();
 }
 
-// Объединенная функция скачивания
 function downloadItem(type, id) {
     if (auth.currentUser) {
-        userData[type + 's']++; // places -> places, scripts -> scripts, etc.
+        userData[type + 's']++;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
         showToast('Скачивание начато!');
-        // Проверка на мобильное устройство
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             showToast('Предупреждение: Некоторые моды лучше работают на PC!');
         }
@@ -368,7 +370,7 @@ function downloadItem(type, id) {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-    switchSection('home');
+    switchSection('home'); // Установка начальной секции
     renderPlaces();
     renderScripts();
     renderAvatars();
@@ -400,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const type = e.target.dataset.type;
             downloadItem(type, id);
         }
-        if (e.target.classList.contains('installation-btn')) { // Добавьте кнопку в HTML
+        if (e.target.classList.contains('installation-btn')) {
             showInstallationGuide();
         }
     });

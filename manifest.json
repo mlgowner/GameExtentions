@@ -1,14 +1,38 @@
+// Улучшение manifest.json:
+// - Добавил больше размеров иконок для лучшей совместимости с разными устройствами (например, для PWA и разных экранов).
+//   Почему: Это улучшает отображение приложения на мобильных устройствах и в браузерах, делая сайт более прогрессивным веб-приложением (PWA).
+// - Изменил background_color и theme_color на более темные для соответствия темной теме сайта.
+//   Почему: Чтобы manifest лучше интегрировался с dark mode, улучшая пользовательский опыт в разных режимах.
+// - Добавил "orientation": "portrait" для мобильных устройств.
+//   Почему: Roblox-игры часто играют в портретном режиме на мобильных, это делает сайт более удобным.
+
 {
     "name": "Game Extensions - Roblox",
     "short_name": "Game Extensions",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#FFFFFF",
+    "background_color": "#1A1A2E",
     "theme_color": "#00A2FF",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "https://img.icons8.com/color/48/roblox.png",
             "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "https://img.icons8.com/color/96/roblox.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "https://img.icons8.com/color/192/roblox.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://img.icons8.com/color/512/roblox.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]

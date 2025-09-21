@@ -202,7 +202,7 @@ function initParticles() {
 // Обновление времени
 function updateProfileTime() {
     const now = new Date();
-    now.setHours(21, 20, 0, 0); // 09:20 PM CEST, 21 сентября 2025
+    now.setHours(21, 42, 0, 0); // 09:42 PM CEST, 21 сентября 2025
     const timeString = now.toLocaleString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long', year: 'numeric' }).replace('г.', ' ').replace(' в ', ', ');
     document.getElementById('current-time').textContent = timeString;
     document.getElementById('current-time-profile').textContent = timeString;
@@ -246,6 +246,8 @@ const allAvatars = [
     { id: 5, title: "Avatar 5", desc: "Новый аватар.", img: "./images/avatar-5.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" },
     { id: 6, title: "Avatar 6", desc: "Ещё один аватар.", img: "./images/avatar-6.jpg", link: "https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" }
 ];
+
+let currentFilter = { search: '', genre: '' };
 
 function renderPlaces() {
     const grid = document.getElementById('places-grid');
@@ -326,8 +328,28 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sign-up-btn').addEventListener('click', () => {
         document.getElementById('send-code-btn').click();
     });
-    document.getElementById('sign-in-btn').addEventListener('click', signIn);
-    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
+    document.getElementById('sign-in-btn').addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                showToast('Вход успешный!');
+                document.getElementById('auth-modal').style.display = 'none';
+            })
+            .catch((error) => {
+                document.getElementById('auth-message').textContent = error.message;
+            });
+    });
+    document.getElementById('sign-out-btn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            showToast('Вы вышли!');
+            document.getElementById('profile-content').style.display = 'none';
+            document.getElementById('auth-form').style.display = 'block';
+            document.getElementById('auth-modal').style.display = 'flex';
+        }).catch((error) => {
+            console.error('Ошибка выхода:', error);
+        });
+    });
 
     document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
 

@@ -15,7 +15,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     transition: all 0.3s ease;
-    overflow-y: auto; /* Убрал лишний скролл */
 }
 
 body.dark-mode {
@@ -41,11 +40,21 @@ body::before {
     100% { background-position: 100px 100px; }
 }
 
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
 header {
     background: linear-gradient(135deg, #E6F0FA, #D0E4F7);
     padding: 1rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
     position: sticky;
@@ -255,6 +264,15 @@ body.dark-mode .stat {
     margin-bottom: 0.5rem;
 }
 
+.section {
+    display: none;
+    width: 100%;
+}
+
+.section.active {
+    display: block;
+}
+
 .places-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -272,7 +290,7 @@ body.dark-mode .stat {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     width: 300px;
-    height: 450px; /* Фиксированный размер */
+    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -284,7 +302,7 @@ body.dark-mode .place-card {
 
 .place-card img {
     width: 100%;
-    height: 300px; /* Фиксированная высота фото */
+    height: 300px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -307,7 +325,7 @@ body.dark-mode .place-card {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     width: 300px;
-    height: 450px; /* Фиксированный размер */
+    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -319,7 +337,7 @@ body.dark-mode .script-card {
 
 .script-card img {
     width: 100%;
-    height: 300px; /* Фиксированная высота фото */
+    height: 300px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -342,7 +360,7 @@ body.dark-mode .script-card {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     width: 300px;
-    height: 450px; /* Фиксированный размер */
+    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -354,7 +372,7 @@ body.dark-mode .avatar-card {
 
 .avatar-card img {
     width: 100%;
-    height: 300px; /* Фиксированная высота фото */
+    height: 300px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -473,7 +491,7 @@ body.dark-mode .profile-card {
     object-fit: cover;
     border: 3px solid #00A2FF;
     transition: transform 0.3s ease;
-    cursor: pointer; /* Делаем кликабельной */
+    cursor: pointer;
 }
 
 .avatar:hover {

@@ -329,15 +329,17 @@ function downloadItem(type, id) {
         showToast('Войдите для скачивания!');
     }
 }
-
-// Динамическое время с текущей датой (22 сентября 2025)
+// Динамическое время с текущей датой
 function updateProfileTime() {
-    const now = new Date(2025, 8, 22); // Месяц 8 = сентябрь (0-based)
-    const timeString = now.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' }) + ' CEST, ' + now.toLocaleDateString('ru-RU');
+    const now = new Date(); // Берет текущее время системы
+    const timeString = now.toLocaleTimeString('ru-RU', { 
+        timeZone: 'Europe/Paris', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    }) + ' CEST, ' + now.toLocaleDateString('ru-RU');
     document.getElementById('current-time').textContent = `Текущее время: ${timeString}`;
     document.getElementById('profile-time').textContent = timeString;
 }
-
 // Обновление прогресса
 function updateUserProgress() {
     const progress = (userData.places / 9) * 100;

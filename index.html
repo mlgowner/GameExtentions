@@ -1,4 +1,215 @@
-<html lang="ru"><head><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==">
+<html lang="ru">
+	<head><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==">
+	<title>TLauncher — Скачать лаунчер Майнкрафт</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+
+	<link rel="shortcut icon" href="https://tlauncher.ru/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196">
+	<link rel="icon" type="image/png" href="/favicon-120x120.png" sizes="120x120">
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#40b5e9">
+	<meta name="apple-mobile-web-app-title" content="TLauncher">
+	<meta name="application-name" content="TLauncher">
+	<meta name="msapplication-TileColor" content="#40b5e9">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="referrer" content="origin-when-cross-origin">
+
+	<meta name="keywords" content="tlauncher, тлаунчер, лаунчер, майнкрафт, minecraft, скачать, бесплатно">
+	<meta name="description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
+			<link rel="canonical" href="https://tlauncher.ru/">
+	
+	<link rel="alternate" href="https://tlauncher.ua/ru/" hreflang="ru-ua">
+<link rel="alternate" href="https://tlauncher.org/en/" hreflang="en">
+<link rel="alternate" href="https://tlauncher.ua/" hreflang="uk-ua">
+
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="TLauncher">
+	<meta property="og:title" content="TLauncher — Скачать лаунчер Майнкрафт">
+	<meta property="og:description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
+	<meta property="og:url" content="https://tlauncher.ru/">
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:image" content="https://tlauncher.org/fav-icon-512.png">
+	<meta property="og:image:width" content="512">
+	<meta property="og:image:height" content="512">
+
+	<meta property="fb:page_id" content="507146873226705">
+	<link rel="yandex-tableau-widget" href="https://tlauncher.ru/yamanifest.json">
+
+			<script type="text/javascript" async="" charset="utf-8" src="https://www.gstatic.com/recaptcha/releases/44LqIOwVrGhp2lJ3fODa493O/recaptcha__ru.js" crossorigin="anonymous" integrity="sha384-ePTrsqtnkDEzgct7DxnkdSzE2qYqZM4C35LkEma2z/PJ8QZlzOJ9m3ockQkFz3ZL"></script><script async="" src="https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js"></script><script src="/assets/node_modules/jquery/dist/jquery.min.js?v=3.x"></script>
+<script src="/assets/node_modules/knockout/build/output/knockout-latest.js?v=3.x"></script>
+	<script src="/assets/node_modules/vue/dist/vue.global.prod.js?v=3.x"></script>
+
+<script>
+	"use strict";
+
+	const lang = 'ru';
+
+
+	const tlVM = {
+		lang: 'ru',
+		mainLang: 'ru',
+		authInfo: {},
+		user: {},
+		data: {},
+		acc: {},
+		dataObjectLoaded: ko.observable(),
+		viewSpinner: ko.observable(false),
+		popupDialog: {
+			title: ko.observable(),
+			body: ko.observable(''),
+			footer: ko.observable(),
+		},
+		loadFromDatObject: dataObject => {
+			if (dataObject && dataObject.tlVM) {
+				['data', 'acc', 'authInfo', 'user'].forEach(loadKey => {
+					if (dataObject.tlVM.hasOwnProperty(loadKey)) {
+						Object.keys(dataObject.tlVM[loadKey]).forEach(k => {
+							tlVM[loadKey][k] = dataObject.tlVM[loadKey][k];
+						});
+					}
+				});
+
+				afterLoadDataObjectHandler();
+				tlVM.dataObjectLoaded(true);
+			}
+		},
+	}
+
+	function afterLoadDataObjectHandler() {
+		//delete tlVM.dataObjectLoaded;
+
+				['data', 'authInfo', 'user'].forEach(i => {
+			function getSimpleValue(v) {
+				if (typeof v === 'string' && v.length > 0 && v.match(/\D+/g) === null) {
+					return parseInt(v);
+				}
+				return v;
+			}
+
+			Object.keys(tlVM[i]).forEach(dk => {
+				switch (true) {
+					case Array.isArray(tlVM[i][dk]):
+						tlVM[i][dk] = ko.observableArray(tlVM[i][dk]);
+						break;
+					case tlVM[i][dk] instanceof Object:
+						Object.keys(tlVM[i][dk]).forEach(ok => {
+							if (Array.isArray(tlVM[i][dk][ok])) {
+								tlVM[i][dk][ok] = ko.observableArray(tlVM[i][dk][ok]);
+							} else {
+								tlVM[i][dk][ok] = ko.observable(getSimpleValue(tlVM[i][dk][ok]));
+							}
+						});
+						break;
+					default:
+						tlVM[i][dk] = ko.observable(getSimpleValue(tlVM[i][dk]));
+				}
+			})
+		});
+
+		tlVM.user.isForever = ko.pureComputed(() => {
+			const currentTS = new Date();
+			return parseInt(tlVM.user.group()) === 2 && tlVM.user.goldtime() > Math.floor(currentTS.setDate(currentTS.getDate() + 500) / 1000);
+		});
+
+			}
+
+	jQuery.ajax({
+		async: false,
+		url: "/ajax/getdataobject/",
+		data: {
+			'lang': 'ru',
+			'x_csrf_token': '0622a339880f8600d47a8ddce1debe3fc1175856996701',
+			'userId': '' || -1,
+		},
+		method: "POST",
+		success: function (responseData) {
+						if (responseData.status === 'ok') {
+				tlVM.loadFromDatObject(responseData);
+			}
+		}
+	});
+</script>
+						<link rel="stylesheet" type="text/css" href="/assets/css/index.css?v=3.2.9">
+	<link rel="stylesheet" type="text/css" href="/assets/css/dpopup.css?v=3.2.9">
+	<style>
+        .body_index main {
+            padding: 0;
+        }
+		html[lang="uk"] .main-7 h2 {
+			font-size: 21px;
+		}
+        html[lang="uk"] a[href="#dPopup"] {
+			font-size: 14px;
+		}
+	</style>
+				<link rel="stylesheet" type="text/css" href="/assets/node_modules/bootstrap/dist/css/bootstrap.min.css?v=3.x">
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/premium.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/registration.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/popup.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/osselector.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/adavptive.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/ya_style.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/int_adapt.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/extra.css?v=3.2.9">
+<style>
+    body.body_premim main {
+        padding: 0;
+    }
+
+    body.news.mobile aside {
+        display: none;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    footer .b-footer-line-2 .copyright {
+        position: inherit;
+        float: left;
+    }
+
+    .b-button_modal {
+        height: auto;
+    }
+
+    @media only screen and (max-width: 769px) {
+        .mobile .b--language-switch {
+            vertical-align: top;
+        }
+    }
+
+    @media only screen and (max-width: 801px) {
+        .body_index header, .body_index header.h--en {
+            background: url(/assets/images/index_header_bg_2.jpg) no-repeat 15% 0;
+        }
+    }
+</style>
+		
+
+		
+								<script src="/assets/node_modules/moment/moment.js?v=2.x"></script>
+<script>
+	$(() => {
+		if (window.orientation !== undefined) {
+			document.body.classList.add("mobile");
+		}
+	});
+</script>
+								
+	</head>
 	<title>TLauncher — Скачать лаунчер Майнкрафт</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">

@@ -1,6 +1,6 @@
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { getDatabase, ref, set, onValue, update, push } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js';
 
@@ -27,36 +27,16 @@ const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { s
 
 let confirmationResult;
 
-// Показ модала только при первом заходе
-let isFirstLoad = true;
+// Проверка состояния авторизации
 onAuthStateChanged(auth, user => {
     const authModal = document.getElementById('auth-modal');
     const authForm = document.getElementById('auth-form');
-    const profileContent = document.getElementById('profile-content');
     if (user) {
         authModal.style.display = 'none';
         authForm.style.display = 'none';
-        profileContent.style.display = 'block';
-        const userRef = ref(db, 'users/' + user.uid);
-        onValue(userRef, (snapshot) => {
-            userData = snapshot.val() || userData;
-            document.getElementById('profile-name').textContent = userData.name;
-            document.getElementById('profile-bio').textContent = userData.bio;
-            document.getElementById('new-name').value = userData.name;
-            document.getElementById('new-bio').value = userData.bio;
-            document.getElementById('profile-avatar').src = userData.avatarUrl;
-            updateUserProgress();
-            if (!user.emailVerified && user.email) {
-                document.getElementById('auth-message').textContent = 'Email не подтверждён. Проверьте почту.';
-            } else {
-                document.getElementById('auth-message').textContent = '';
-            }
-        });
-    } else if (isFirstLoad) {
+    } else {
         authModal.style.display = 'flex';
         authForm.style.display = 'block';
-        profileContent.style.display = 'none';
-        isFirstLoad = false;
     }
 });
 
@@ -69,8 +49,7 @@ document.getElementById('auth-method').addEventListener('change', (e) => {
     document.getElementById('verification-code').style.display = 'none';
     document.getElementById('verify-code-btn').style.display = 'none';
     document.getElementById('send-code-btn').style.display = 'block';
-    document.getElementById('sign-up-btn').style.display = 'none';
-    document.getElementById('sign-in-btn').style.display = 'none';
+    document.getElementById('sign-in-btn').style.display = 'block';
 });
 
 // Отправка кода
@@ -84,57 +63,47 @@ document.getElementById('send-code-btn').addEventListener('click', () => {
                 showToast('Код отправлен на телефон');
                 document.getElementById('verification-code').style.display = 'block';
                 document.getElementById('verify-code-btn').style.display = 'block';
+                document.getElementById('send-code-btn').style.display = 'none';
+                document.getElementById('sign-in-btn').style.display = 'none';
             })
             .catch((error) => {
                 document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
             });
     } else if (method === 'email') {
-        document.getElementById('auth-message').textContent = 'Функция отправки кода по email отключена (EmailJS удалён).';
+        document.getElementById('auth-message').textContent = 'Вход по email использует только пароль.';
     }
 });
 
 // Подтверждение кода
 document.getElementById('verify-code-btn').addEventListener('click', () => {
-    const method = document.getElementById('auth-method').value;
     const code = document.getElementById('verification-code').value;
-    if (method === 'phone') {
-        confirmationResult.confirm(code)
-            .then((result) => {
-                const user = result.user;
-                set(ref(db, 'users/' + user.uid), userData);
-                showToast('Регистрация успешна!');
-                document.getElementById('auth-modal').style.display = 'none';
-            })
-            .catch((error) => {
-                document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
-            });
-    } else if (method === 'email') {
-        document.getElementById('auth-message').textContent = 'Регистрация по email отключена (EmailJS удалён).';
-    }
+    confirmationResult.confirm(code)
+        .then((result) => {
+            const user = result.user;
+            set(ref(db, 'users/' + user.uid), userData);
+            showToast('Вход выполнен!');
+            document.getElementById('auth-modal').style.display = 'none';
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
+        });
 });
 
 // Вход
 document.getElementById('sign-in-btn').addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            showToast('Вход успешный!');
-            document.getElementById('auth-modal').style.display = 'none';
-        })
-        .catch((error) => {
-            document.getElementById('auth-message').textContent = error.message;
-        });
-});
-
-// Выход
-document.getElementById('sign-out-btn').addEventListener('click', () => {
-    signOut(auth).then(() => {
-        showToast('Вы вышли!');
-        location.reload();
-    }).catch((error) => {
-        console.error('Ошибка выхода:', error);
-    });
+    const method = document.getElementById('auth-method').value;
+    if (method === 'email') {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                showToast('Вход выполнен!');
+                document.getElementById('auth-modal').style.display = 'none';
+            })
+            .catch((error) => {
+                document.getElementById('auth-message').textContent = error.message;
+            });
+    }
 });
 
 // Показ гайда по установке
@@ -165,7 +134,7 @@ document.getElementById('submit-review-btn').addEventListener('click', () => {
     }
 });
 
-// Массивы данных (полные)
+// Массивы данных
 const allPlaces = [
     { id: 1, title: "Adopt Me!", desc: "Усынови питомцев.", rating: "★★★★★", genre: "rpg", img: "/GameExtentions/images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
     { id: 2, title: "Brookhaven", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "/GameExtentions/images/brookhaven.jpg", link: "https://www.roblox.com/games/6238705697/Brookhaven", compatibility: "PC/Mobile" },
@@ -202,7 +171,7 @@ const currentFilter = { search: '', genre: '' };
 
 // Функция переключения секций
 function switchSection(section) {
-    const sections = ['home', 'places', 'scripts', 'avatars', 'account', 'recommendations', 'chatbot'];
+    const sections = ['home', 'places', 'scripts', 'avatars'];
     sections.forEach(s => {
         document.getElementById(s).style.display = s === section ? 'block' : 'none';
     });
@@ -212,8 +181,6 @@ function switchSection(section) {
     if (section === 'places') renderItems('places', allPlaces, 'places-grid', 'pagination-places');
     if (section === 'scripts') renderItems('scripts', allScripts, 'scripts-grid', 'pagination-scripts');
     if (section === 'avatars') renderItems('avatars', allAvatars, 'avatars-grid', 'pagination-avatars');
-    if (section === 'recommendations') loadRecommendations();
-    if (section === 'chatbot') setupChatbot();
 }
 
 // Унифицированная функция рендера
@@ -278,14 +245,13 @@ function filterItems() {
     currentFilter.genre = document.getElementById('genre-filter').value;
     currentPage.places = 1;
     renderItems('places', allPlaces, 'places-grid', 'pagination-places');
-    // Можно расширить для других, если добавить фильтры
 }
 
 function downloadItem(type, id) {
     if (auth.currentUser) {
         userData[type] = (userData[type] || 0) + 1;
         userData.downloads++;
-        set(ref(db, 'users/' + auth.currentUser.uid), userData);
+        update(ref(db, 'users/' + auth.currentUser.uid), userData);
         showToast('Скачивание начато!');
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             showToast('Предупреждение: Некоторые моды лучше работают на PC!');
@@ -293,23 +259,16 @@ function downloadItem(type, id) {
         window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
     } else {
         showToast('Войдите для скачивания!');
+        document.getElementById('auth-modal').style.display = 'flex';
     }
-}
-
-// Обновление прогресса
-function updateUserProgress() {
-    const progress = (userData.places / 9) * 100;
-    document.querySelector('.progress-fill').style.width = `${progress}%`;
-    document.querySelector('.progress-bar span').textContent = `Прогресс: ${Math.round(progress)}%`;
-    document.getElementById('downloads-stat').textContent = userData.downloads;
-    document.getElementById('places-user-stat').textContent = `${userData.places}/9`;
-    document.getElementById('scripts-user-stat').textContent = userData.scripts;
 }
 
 // Темный режим
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+    document.querySelector('.dark-toggle img').src = isDark ? 'https://img.icons8.com/ios/24/moon-symbol.png' : 'https://img.icons8.com/ios/24/sun.png';
 }
 
 // Тост
@@ -320,26 +279,7 @@ function showToast(message) {
     setTimeout(() => { toast.style.display = 'none'; }, 3000);
 }
 
-// Сохранение профиля
-function saveProfile() {
-    if (auth.currentUser) {
-        userData.name = document.getElementById('new-name').value;
-        userData.bio = document.getElementById('new-bio').value;
-        update(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Профиль сохранен!');
-    }
-}
-
-// Повторная отправка верификации
-function resendVerification() {
-    if (auth.currentUser && !auth.currentUser.emailVerified) {
-        sendEmailVerification(auth.currentUser).then(() => {
-            showToast('Код отправлен повторно!');
-        });
-    }
-}
-
-// Частицы (простая реализация на canvas)
+// Частицы
 function initParticles() {
     const canvas = document.createElement('canvas');
     canvas.style.position = 'fixed';
@@ -382,7 +322,10 @@ function initParticles() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.dark-toggle img').src = 'https://img.icons8.com/ios/24/moon-symbol.png';
+    }
     switchSection('home');
     initParticles();
 
@@ -391,11 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
-
-    document.getElementById('sign-up-btn').addEventListener('click', () => {
-        document.getElementById('auth-method').dispatchEvent(new Event('change'));
-        document.getElementById('send-code-btn').click();
-    });
 
     document.querySelector('.filter-btn').addEventListener('click', filterItems);
 
@@ -410,7 +348,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Debounce для поиска
     document.getElementById('search-places').addEventListener('input', debounce(filterItems, 300));
 });
 
@@ -420,34 +357,4 @@ function debounce(func, delay) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func(...args), delay);
     };
-}
-
-// Новые инновации: Рекомендации популярных игр Roblox
-function loadRecommendations() {
-    const grid = document.getElementById('recommendations-grid');
-    grid.innerHTML = '';
-    const recommendations = [
-        { title: "Recommended Place 1", desc: "Popular Roblox game.", img: "https://thumbnails.roblox.com/v1/games/icons?universeIds=1&returnPolicy=PlaceHolder&size=150x150&format=Png", compatibility: "All" },
-        { title: "Recommended Place 2", desc: "Another popular game.", img: "https://thumbnails.roblox.com/v1/games/icons?universeIds=2&returnPolicy=PlaceHolder&size=150x150&format=Png", compatibility: "All" }
-    ];
-    recommendations.forEach(rec => {
-        const card = document.createElement('div');
-        card.className = 'place-card';
-        card.innerHTML = `
-            <img src="${rec.img}" alt="${rec.title}">
-            <h4>${rec.title}</h4>
-            <p>${rec.desc}</p>
-            <p>Совместимость: ${rec.compatibility}</p>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-// Новые инновации: Чат-бот для вопросов по Roblox
-function setupChatbot() {
-    document.getElementById('chatbot-submit').addEventListener('click', () => {
-        const input = document.getElementById('chatbot-input').value;
-        const response = document.getElementById('chatbot-response');
-        response.innerHTML = `<p>Ваш вопрос: ${input}</p><p>Ответ: Это пример ответа на вопрос по Roblox. Для реального чата используйте API.</p>`;
-    });
 }

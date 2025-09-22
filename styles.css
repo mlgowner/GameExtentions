@@ -1,3 +1,14 @@
+:root {
+    --bg-light: linear-gradient(135deg, #F0F8FF, #E6F0FA);
+    --bg-dark: linear-gradient(135deg, #1A1A2E, #16213E);
+    --text-light: #333;
+    --text-dark: #E0E0E0;
+    --accent: #00A2FF;
+    --accent-dark: #007ACC;
+    --shadow-light: rgba(0, 162, 255, 0.1);
+    --shadow-dark: rgba(0, 162, 255, 0.3);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +17,8 @@
 
 body {
     font-family: 'Comfortaa', sans-serif;
-    background: linear-gradient(135deg, #F0F8FF, #E6F0FA);
-    color: #333;
+    background: var(--bg-light);
+    color: var(--text-light);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
@@ -18,8 +29,8 @@ body {
 }
 
 body.dark-mode {
-    background: linear-gradient(135deg, #1A1A2E, #16213E);
-    color: #E0E0E0;
+    background: var(--bg-dark);
+    color: var(--text-dark);
 }
 
 body::before {
@@ -50,13 +61,13 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 2px 10px var(--shadow-light);
     transition: all 0.3s ease;
 }
 
 body.dark-mode header {
     background: linear-gradient(135deg, #16213E, #0F141F);
-    box-shadow: 0 2px 10px rgba(0, 162, 255, 0.3);
+    box-shadow: 0 2px 10px var(--shadow-dark);
 }
 
 .logo {
@@ -67,7 +78,7 @@ body.dark-mode header {
 
 .logo img {
     width: 50px;
-    filter: drop-shadow(0 0 5px #00A2FF);
+    filter: drop-shadow(0 0 5px var(--accent));
     transition: transform 0.3s ease;
 }
 
@@ -77,7 +88,7 @@ body.dark-mode header {
 
 .logo h1 {
     font-size: 1.5rem;
-    color: #00A2FF;
+    color: var(--accent);
     text-shadow: 0 2px 5px rgba(0, 162, 255, 0.3);
 }
 
@@ -90,7 +101,7 @@ nav {
 }
 
 .nav-btn {
-    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     border: none;
     color: #FFF;
     padding: 0.5rem 1rem;
@@ -98,25 +109,25 @@ nav {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 700;
-    box-shadow: 0 2px 5px rgba(0, 162, 255, 0.2);
+    box-shadow: 0 2px 5px var(--shadow-light);
     min-width: 100px;
     text-align: center;
 }
 
 .nav-btn:hover, .nav-btn.active {
-    background: linear-gradient(135deg, #007ACC, #005F99);
+    background: linear-gradient(135deg, var(--accent-dark), #005F99);
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 162, 255, 0.4);
 }
 
 .dark-toggle {
-    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     border: none;
     padding: 0.5rem;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 162, 255, 0.2);
+    box-shadow: 0 2px 5px var(--shadow-light);
 }
 
 .dark-toggle:hover {
@@ -150,7 +161,7 @@ nav {
     padding: 3rem;
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 10px 30px var(--shadow-light);
     width: 100%;
     max-width: 800px;
     animation: fadeIn 1s ease;
@@ -164,7 +175,7 @@ body.dark-mode .hero {
 
 .hero-content h2 {
     font-size: 2.5rem;
-    color: #00A2FF;
+    color: var(--accent);
     margin-bottom: 1rem;
     text-shadow: 0 2px 5px rgba(0, 162, 255, 0.3);
 }
@@ -176,7 +187,7 @@ body.dark-mode .hero {
 }
 
 .cta-btn {
-    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     border: none;
     color: #FFF;
     padding: 0.75rem 1.5rem;
@@ -226,7 +237,7 @@ body.dark-mode .main-panel {
     padding: 1rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
+    box-shadow: 0 3px 10px var(--shadow-light);
     transition: all 0.3s ease;
     min-width: 150px;
     max-width: 200px;
@@ -250,7 +261,7 @@ body.dark-mode .stat {
 }
 
 .faq-item h4 {
-    color: #00A2FF;
+    color: var(--accent);
     margin-bottom: 0.5rem;
 }
 
@@ -284,11 +295,11 @@ body.dark-mode .place-card {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
-    transition: transform 0.3s ease; /* Добавлен hover-эффект для изображений */
+    transition: transform 0.3s ease;
 }
 
 .place-card:hover img {
-    transform: scale(1.05); /* Улучшение: Добавлен scale при hover для динамики */
+    transform: scale(1.05);
 }
 
 .script-card, .avatar-card {
@@ -312,7 +323,7 @@ body.dark-mode .script-card, body.dark-mode .avatar-card {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1rem;
-    transition: transform 0.3s ease; /* Добавлен hover-эффект */
+    transition: transform 0.3s ease;
 }
 
 .script-card:hover img, .avatar-card:hover img {
@@ -326,7 +337,7 @@ body.dark-mode .script-card, body.dark-mode .avatar-card {
     max-width: 600px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 5px 15px var(--shadow-light);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -364,7 +375,7 @@ body.dark-mode .progress-bar {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00A2FF, #007ACC);
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
     transition: width 0.5s ease;
     border-radius: 10px;
 }
@@ -375,18 +386,18 @@ body.dark-mode .progress-bar {
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.9rem;
-    color: #333;
+    color: var(--text-light);
 }
 
 body.dark-mode .progress-bar span {
-    color: #E0E0E0;
+    color: var(--text-dark);
 }
 
 .profile-card {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 10px 30px var(--shadow-light);
     text-align: center;
     width: 100%;
     max-width: 500px;
@@ -410,7 +421,7 @@ body.dark-mode .profile-card {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #00A2FF;
+    border: 3px solid var(--accent);
     transition: transform 0.3s ease;
 }
 
@@ -420,7 +431,7 @@ body.dark-mode .profile-card {
 
 .profile-info h3 {
     font-size: 1.5rem;
-    color: #00A2FF;
+    color: var(--accent);
 }
 
 .profile-info p {
@@ -429,7 +440,7 @@ body.dark-mode .profile-card {
 }
 
 body.dark-mode .profile-info h3, body.dark-mode .profile-info p {
-    color: #E0E0E0;
+    color: var(--text-dark);
 }
 
 .profile-stats {
@@ -444,7 +455,7 @@ body.dark-mode .profile-info h3, body.dark-mode .profile-info p {
     padding: 0.75rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 3px 10px rgba(0, 162, 255, 0.05);
+    box-shadow: 0 3px 10px var(--shadow-light);
     min-width: 120px;
 }
 
@@ -462,16 +473,16 @@ body.dark-mode .stat-card {
 .edit-profile input, .edit-profile textarea {
     padding: 0.5rem;
     border-radius: 10px;
-    border: 1px solid #007ACC;
+    border: 1px solid var(--accent-dark);
     background: #F9FBFF;
-    color: #333;
+    color: var(--text-light);
     transition: all 0.3s ease;
 }
 
 body.dark-mode .edit-profile input, body.dark-mode .edit-profile textarea {
     background: #2C3E50;
-    color: #E0E0E0;
-    border: 1px solid #007ACC;
+    color: var(--text-dark);
+    border: 1px solid var(--accent-dark);
 }
 
 .pagination {
@@ -482,7 +493,7 @@ body.dark-mode .edit-profile input, body.dark-mode .edit-profile textarea {
 }
 
 .pagination button {
-    background: linear-gradient(135deg, #00A2FF, #007ACC);
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     border: none;
     color: #FFF;
     padding: 0.25rem 0.75rem;
@@ -492,7 +503,7 @@ body.dark-mode .edit-profile input, body.dark-mode .edit-profile textarea {
 }
 
 .pagination button:hover, .pagination button.active {
-    background: linear-gradient(135deg, #007ACC, #005F99);
+    background: linear-gradient(135deg, var(--accent-dark), #005F99);
     transform: scale(1.1);
 }
 
@@ -507,21 +518,21 @@ body.dark-mode .edit-profile input, body.dark-mode .edit-profile textarea {
 .filter-bar input, .filter-bar select {
     padding: 0.5rem 1rem;
     border-radius: 20px;
-    border: 1px solid #007ACC;
+    border: 1px solid var(--accent-dark);
     background: #F9FBFF;
-    color: #333;
+    color: var(--text-light);
     transition: all 0.3s ease;
 }
 
 body.dark-mode .filter-bar input, body.dark-mode .filter-bar select {
     background: #2C3E50;
-    color: #E0E0E0;
-    border: 1px solid #007ACC;
+    color: var(--text-dark);
+    border: 1px solid var(--accent-dark);
 }
 
 .filter-bar input:focus, .filter-bar select:focus {
     outline: none;
-    box-shadow: 0 0 5px #00A2FF;
+    box-shadow: 0 0 5px var(--accent);
 }
 
 .modal {
@@ -541,7 +552,7 @@ body.dark-mode .filter-bar input, body.dark-mode .filter-bar select {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 162, 255, 0.1);
+    box-shadow: 0 10px 30px var(--shadow-light);
     text-align: center;
     animation: fadeIn 0.3s ease;
     max-width: 400px;
@@ -562,7 +573,7 @@ body.dark-mode .modal-content {
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
-    background: #00A2FF;
+    background: var(--accent);
     color: #FFF;
     padding: 1rem 2rem;
     border-radius: 20px;
@@ -582,7 +593,7 @@ footer {
 
 body.dark-mode footer {
     background: linear-gradient(135deg, #16213E, #0F141F);
-    color: #E0E0E0;
+    color: var(--text-dark);
 }
 
 @keyframes fadeIn {
@@ -595,7 +606,6 @@ body.dark-mode footer {
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Новый раздел: Стили для гайда по установке */
 .installation-guide {
     background: linear-gradient(135deg, #F9FBFF, #E6F0FA);
     border-radius: 15px;
@@ -620,7 +630,24 @@ body.dark-mode .installation-guide {
     margin-bottom: 1rem;
 }
 
-/* Media Queries для responsive дизайна */
+details.faq-item {
+    margin: 1rem 0;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+details.faq-item summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+details.faq-item[open] {
+    box-shadow: 0 2px 10px var(--shadow-light);
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem 0.5rem;

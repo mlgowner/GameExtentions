@@ -11,12 +11,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://tlauncher.ru/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://tlauncher.ru/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://tlauncher.ru/favicon-16x16.png">
-    <link rel="manifest" href="https://tlauncher.ru/site.webmanifest">
-    <link rel="mask-icon" href="https://tlauncher.ru/safari-pinned-tab.svg" color="#40b5e9">
-    <meta name="apple-mobile-web-app-title" content="TLauncher">
-    <meta name="application-name" content="TLauncher">
-    <meta name="msapplication-TileColor" content="#40b5e9">
-    <meta name="theme-color" content="#ffffff">
 
     <!-- Meta Tags -->
     <meta name="keywords" content="tlauncher, тлаунчер, лаунчер, майнкрафт, minecraft, скачать, бесплатно">
@@ -37,21 +31,24 @@
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
 
-    <!-- Inline CSS (Enhanced to match screenshot: blue header #00a8e8, white sections, specific layouts) -->
+    <!-- Inline CSS (Refined to match TLauncher design from screenshot) -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: #f8f9fa;
+        }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f5f6f5;
             color: #333;
             line-height: 1.6;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
         .clearfix::after {
             content: "";
@@ -66,7 +63,10 @@
         }
         .b-header-line-1 {
             padding: 10px 0;
-            background: rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.05);
         }
         .b-site-info {
             font-size: 14px;
@@ -84,7 +84,7 @@
             align-items: center;
         }
         .b-menu__item {
-            margin-right: 20px;
+            margin-left: 20px;
         }
         .b-menu__item a {
             color: #fff;
@@ -97,17 +97,30 @@
             color: #e6f3ff;
         }
         .premium {
-            color: #ffd700 !important;
+            color: #ffd700;
             font-weight: bold;
         }
         .servers {
-            background: rgba(255,215,0,0.2);
+            background: rgba(255, 215, 0, 0.2);
             padding: 5px 10px;
             border-radius: 15px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0;
+        }
+        .b-header-line-2 {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .logo {
             display: inline-block;
             margin-right: 20px;
+            position: relative;
         }
         .logo img {
             height: 40px;
@@ -119,18 +132,49 @@
         .logo:hover img:last-child {
             opacity: 1;
         }
+        .b--language-switch {
+            position: relative;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .b--language-switch__menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            color: #333;
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .b--language-switch:hover .b--language-switch__menu {
+            display: block;
+        }
+        .b--language-switch__menu a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 5px;
+        }
+        .b-header-line-3 {
+            padding: 40px 0;
+            text-align: left;
+        }
         .b-header-info h1 {
             font-size: 48px;
             font-weight: 300;
-            margin: 20px 0 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin: 0 0 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         .b-header-info p {
             font-size: 18px;
             margin: 0 0 20px;
             opacity: 0.9;
         }
-        .b-button {
+        .header-button .b-button {
             background: #28a745;
             color: #fff;
             padding: 15px 30px;
@@ -139,10 +183,10 @@
             font-size: 18px;
             font-weight: 500;
             display: inline-block;
-            transition: background 0.3s;
-            box-shadow: 0 4px 8px rgba(40,167,69,0.3);
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
         }
-        .b-button:hover {
+        .header-button .b-button:hover {
             background: #218838;
             transform: translateY(-2px);
         }
@@ -155,9 +199,9 @@
         main section {
             padding: 60px 0;
             background: #fff;
-            margin: 0;
+            border-bottom: 1px solid #eee;
         }
-        main section:nth-child(odd) {
+        main section:nth-child(even) {
             background: #f8f9fa;
         }
         .main-1 img, .main-3 img, .main-5 img, .main-7 img {
@@ -165,33 +209,30 @@
             max-width: 350px;
             margin: 0 40px 20px 0;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         .main-2 img, .main-4 img, .main-6 img {
             float: right;
             max-width: 350px;
             margin: 0 0 20px 40px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .content {
-            margin-top: 20px;
-        }
-        main h2 {
+        section h2 {
             font-size: 28px;
             font-weight: 500;
             color: #00a8e8;
             margin-bottom: 15px;
         }
-        main p {
+        section p {
             font-size: 16px;
             max-width: 700px;
         }
-        main a {
+        section a {
             color: #00a8e8;
             text-decoration: none;
         }
-        main a:hover {
+        section a:hover {
             text-decoration: underline;
         }
         footer {
@@ -222,7 +263,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
         }
         .modal.show {
             display: block;
@@ -232,7 +273,7 @@
             margin: 100px auto;
             background: #fff;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         .close {
             position: absolute;
@@ -244,9 +285,9 @@
             color: #999;
         }
         .nav-tabs {
+            display: flex;
             list-style: none;
             padding: 0;
-            display: flex;
             border-bottom: 2px solid #dee2e6;
             margin-bottom: 0;
         }
@@ -293,9 +334,6 @@
         .btn-for-two-block {
             flex: 1;
         }
-        .recommend {
-            position: relative;
-        }
         .recommend::after {
             content: attr(data-content);
             position: absolute;
@@ -310,33 +348,12 @@
         }
         @media (max-width: 768px) {
             .b-header-info h1 { font-size: 32px; }
-            main img { float: none !important; max-width: 100%; margin: 0 0 20px 0 !important; }
+            .main-1 img, .main-2 img, .main-3 img, .main-4 img, .main-5 img, .main-6 img, .main-7 img {
+                float: none;
+                max-width: 100%;
+                margin: 0 0 20px 0;
+            }
             .btn-block { flex-direction: column; }
-        }
-        .b--language-switch {
-            position: relative;
-            color: #fff;
-            cursor: pointer;
-        }
-        .b--language-switch ul {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #fff;
-            list-style: none;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .b--language-switch:hover ul {
-            display: block;
-        }
-        .b--language-switch a {
-            color: #333;
-            text-decoration: none;
-            display: block;
-            padding: 5px;
         }
     </style>
 
@@ -352,20 +369,13 @@
                 <div class="pull-left">
                     <div class="b-site-info">Последние версии:<br>
                         <div class="linkoff">
-                            <a href="https://tlauncher.ru/ru/download_1/minecraft-1218_27962.html" title="Скачать Майнкрафт 1.21.8">Minecraft <strong>1.21.8</strong></a> и
-                            <a href="https://tlauncher.ru/ru/download-pe_35/minecraft-bedrock-edition-1-21_24575.html" title="Скачать Майнкрафт: Bedrock 1.21">Minecraft Bedrock <strong>1.21</strong></a>
+                            <a href="https://tlauncher.ru/download_1/minecraft-1218_27962.html" title="Скачать Майнкрафт 1.21.8">Minecraft <strong>1.21.8</strong></a> и
+                            <a href="https://tlauncher.ru/download-pe_35/minecraft-bedrock-edition-1-21_24575.html" title="Скачать Майнкрафт: Bedrock 1.21">Minecraft Bedrock <strong>1.21</strong></a>
                         </div>
                     </div>
                 </div>
                 <div class="pull-right">
-                    <ul class="b-menu b-menu_header-social">
-                        <li class="b-menu__item"><a rel="nofollow" class="b-link b-link_header-social b-link_header-social-vk" href="https://vk.com/tlauncher" title="TLauncher в VK" target="_blank" style="display: block; width: 30px; height: 30px; background: url('https://tlauncher.ru/assets/images/vk-icon.png') no-repeat; background-size: contain;"></a></li>
-                    </ul>
                     <nav role="navigation" class="clearfix">
-                        <input type="checkbox" id="nav_trigger" class="nav_trigger" style="display: none;">
-                        <label for="nav_trigger" style="display: none;">
-                            <span></span><span></span><span></span>
-                        </label>
                         <ul class="b-menu b-menu_main">
                             <li class="b-menu__item main-home-link"><a rel="nofollow" class="b-link b-link_main-menu" href="https://tlauncher.ru/" title="Главная страница"><span>🏠</span></a></li>
                             <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/news/" title="Последние публикации"><span>Последние публикации</span></a></li>
@@ -383,7 +393,7 @@
                     </nav>
                 </div>
             </div>
-            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 0;">
+            <hr>
             <div class="b-header-line-2 clearfix">
                 <div class="pull-left">
                     <a href="https://tlauncher.ru/" title="Лаунчер для Minecraft - TLauncher" class="logo logo-1">
@@ -398,8 +408,8 @@
                 <div class="pull-right">
                     <nav class="b-user-link">
                         <ul class="b-menu">
-                            <li class="b-menu__item b-menu__item_tools_menu"><a class="b-link b-link_tools_menu b-link_registration" rel="nofollow" href="https://tlauncher.ru/reg/" title="Регистрация"><span>Регистрация</span></a></li>
-                            <li class="b-menu__item b-menu__item_tools_menu"><a class="b-link b-link_tools_menu b-link_auth" href="#login" data-toggle="modal" title="Авторизация"><span>Авторизация</span></a></li>
+                            <li class="b-menu__item"><a class="b-link b-link_tools_menu b-link_registration" href="https://tlauncher.ru/reg/" title="Регистрация"><span>Регистрация</span></a></li>
+                            <li class="b-menu__item"><a class="b-link b-link_tools_menu b-link_auth" href="#login" data-toggle="modal" title="Авторизация"><span>Авторизация</span></a></li>
                         </ul>
                     </nav>
                     <div class="b--language-switch ru" data-main="ru">
@@ -431,7 +441,7 @@
             <div class="container">
                 <img src="https://tlauncher.ru/assets/images/front_page/settings_versions_2_0_v1.png" alt="Все официальные версии Майнкрафт">
                 <h2>Все официальные версии: от Alpha до Snapshots</h2>
-                <p>Лаунчер укомплектован всеми доступными версиями игры от разработчиков, в любой момент вы сможете установить одну из них, даже самую новую версию <a href="https://tlauncher.ru/ru/download_1/minecraft-1-21_22337.html" title="Minecraft 1.21">Minecraft 1.21</a>. В них не производилось никаких изменений, все файлы скачиваются с серверов разработчиков, а это значит, что вы получаете идеально чистый Майнкрафт.</p>
+                <p>Лаунчер укомплектован всеми доступными версиями игры от разработчиков, в любой момент вы сможете установить одну из них, даже самую новую версию <a href="https://tlauncher.ru/download_1/minecraft-1-21_22337.html" title="Minecraft 1.21">Minecraft 1.21</a>. В них не производилось никаких изменений, все файлы скачиваются с серверов разработчиков, а это значит, что вы получаете идеально чистый Майнкрафт.</p>
             </div>
         </section>
         <section class="main-2 clearfix">
@@ -527,561 +537,15 @@
                         <div class="contentWrapper">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#windows" aria-controls="windows" role="tab" data-toggle="tab">Windows</a></li>
-                                <li role="presentation" class=""><a href="#macos" aria-controls="macos" role="tab" data-toggle="tab">MacOS</a></li>
-                                <li role="presentation" class=""><a href="#linux" aria-controls="linux" role="tab" data-toggle="tab">Linux</a></li>
+                                <li role="presentation"><a href="#macos" aria-controls="macos" role="tab" data-toggle="tab">MacOS</a></li>
+                                <li role="presentation"><a href="#linux" aria-controls="linux" role="tab" data-toggle="tab">Linux</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="windows">
                                     <div>
-                                        <button class="btn btn-wide btn-green btn-download recommend" data-content="Рекомендуем!">
+                                        <button class="btn btn-wide btn-green btn-download recommend" data-content="Рекомендуем!" onclick="window.location.href='https://tlauncher.ru/installer'">
                                             <span class="title">TLauncher для <span>Windows</span></span>
                                             <span class="file">TLauncher-Installer-2.9319.exe</span>
-                                            <i class="icon" style="background: url('data:image/svg+xml;base64,...') no-repeat; display: inline-block; width: 20px; height: 20px;"></i>
-                                        </button>
-                                        <button class="btn btn-wide btn-gray btn-text-left btn-all-version"><span>Показать все версии</span></button>
-                                        <div class="btn-block">
-                                            <button class="btn btn-for-two-block btn-text-center btn-gray"><span class="capitalize">бета</span></button>
-                                            <button class="btn btn-for-two-block btn-text-center btn-gray"> Не работает? </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Similar for macOS and Linux -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Simple Modal Toggle Script -->
-    <script>
-        $(document).ready(function() {
-            $('[data-toggle="modal"]').click(function(e) {
-                e.preventDefault();
-                var target = $(this).attr('href');
-                $(target).addClass('show').css('display', 'block');
-            });
-            $('.close, .modal').click(function(e) {
-                if (e.target === this) {
-                    $('.modal').removeClass('show').css('display', 'none');
-                }
-            });
-            // Language switch
-            $('.b--language-switch').hover(function() {
-                $(this).find('ul').toggle();
-            });
-            // Logo hover
-            $('.logo').hover(function() {
-                $(this).find('img').toggle();
-            });
-        });
-    </script>
-</body>
-</html>
-``````html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TLauncher — Скачать лаунчер Майнкрафт</title>
-
-    <!-- Favicon and Icons -->
-    <link rel="shortcut icon" href="https://tlauncher.ru/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://tlauncher.ru/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://tlauncher.ru/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://tlauncher.ru/favicon-16x16.png">
-    <link rel="manifest" href="https://tlauncher.ru/site.webmanifest">
-    <link rel="mask-icon" href="https://tlauncher.ru/safari-pinned-tab.svg" color="#40b5e9">
-    <meta name="apple-mobile-web-app-title" content="TLauncher">
-    <meta name="application-name" content="TLauncher">
-    <meta name="msapplication-TileColor" content="#40b5e9">
-    <meta name="theme-color" content="#ffffff">
-
-    <!-- Meta Tags -->
-    <meta name="keywords" content="tlauncher, тлаунчер, лаунчер, майнкрафт, minecraft, скачать, бесплатно">
-    <meta name="description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
-    <link rel="canonical" href="https://tlauncher.ru/">
-    <link rel="alternate" href="https://tlauncher.ua/ru/" hreflang="ru-ua">
-    <link rel="alternate" href="https://tlauncher.org/en/" hreflang="en">
-    <link rel="alternate" href="https://tlauncher.ua/" hreflang="uk-ua">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="TLauncher">
-    <meta property="og:title" content="TLauncher — Скачать лаунчер Майнкрафт">
-    <meta property="og:description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
-    <meta property="og:url" content="https://tlauncher.ru/">
-    <meta property="og:locale" content="ru_RU">
-    <meta property="og:image" content="https://tlauncher.org/fav-icon-512.png">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
-
-    <!-- Inline CSS (Enhanced to match screenshot: blue header, white text, section layouts, etc.) -->
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #fff;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        header.h--ru {
-            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
-            color: #fff;
-            padding: 0;
-        }
-        .b-header-line-1 {
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .b-site-info {
-            font-size: 14px;
-        }
-        .linkoff a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .b-menu_main {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-        }
-        .b-menu_main li {
-            margin-left: 20px;
-        }
-        .b-menu_main a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .b-menu_main a:hover {
-            text-decoration: underline;
-        }
-        .premium {
-            color: #ffd700 !important;
-            font-weight: bold;
-        }
-        hr {
-            border: none;
-            height: 1px;
-            background: rgba(255,255,255,0.2);
-            margin: 0;
-        }
-        .b-header-line-2 {
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        .logo img {
-            height: 40px;
-            vertical-align: middle;
-        }
-        .b--language-switch {
-            position: relative;
-            color: #fff;
-            cursor: pointer;
-        }
-        .b--language-switch__menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #fff;
-            color: #333;
-            list-style: none;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-        .b-header-line-3 {
-            padding: 40px 0;
-            text-align: left;
-        }
-        .b-header-info h1 {
-            font-size: 48px;
-            margin: 0 0 10px;
-            font-weight: bold;
-        }
-        .b-header-info p {
-            font-size: 18px;
-            margin: 0;
-        }
-        .header-button {
-            margin-top: 20px;
-        }
-        .b-button {
-            background: #40b5e9;
-            color: #fff;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
-            display: inline-block;
-            transition: background 0.3s;
-        }
-        .b-button:hover {
-            background: #3399cc;
-        }
-        main {
-            background: #f8f9fa;
-        }
-        .main-1, .main-2, .main-3, .main-4, .main-5, .main-6, .main-7 {
-            padding: 60px 0;
-        }
-        .clearfix::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        .main-1 img, .main-3 img, .main-5 img, .main-7 img {
-            float: left;
-            margin-right: 40px;
-            width: 300px;
-            height: auto;
-        }
-        .main-2 img, .main-4 img, .main-6 img {
-            float: right;
-            margin-left: 40px;
-            width: 300px;
-            height: auto;
-        }
-        .content {
-            overflow: hidden;
-        }
-        section h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        section p {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        footer {
-            background: #333;
-            color: #ccc;
-            padding: 40px 0 20px;
-        }
-        .b-footer-line-1 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        footer img {
-            height: 40px;
-        }
-        .b-footer-line-2 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .copyright p {
-            margin: 0;
-            font-size: 14px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        .modal.show {
-            display: block;
-        }
-        .modal-dialog {
-            position: relative;
-            margin: 50px auto;
-            width: 500px;
-            background: #fff;
-            border-radius: 10px;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 30px;
-            cursor: pointer;
-            color: #999;
-        }
-        .nav-tabs {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .nav-tabs li a {
-            padding: 15px 20px;
-            text-decoration: none;
-            color: #333;
-            border: 1px solid #ddd;
-            border-bottom: none;
-        }
-        .nav-tabs li.active a {
-            background: #fff;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-        .btn {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn-green {
-            background: #28a745;
-            color: #fff;
-        }
-        .btn-gray {
-            background: #6c757d;
-            color: #fff;
-        }
-        .btn-wide {
-            width: 100%;
-        }
-        @media (max-width: 768px) {
-            .main-1 img, .main-2 img, .main-3 img, .main-4 img, .main-5 img, .main-6 img, .main-7 img {
-                float: none;
-                margin: 0 auto 20px;
-                display: block;
-                width: 100%;
-                max-width: 300px;
-            }
-            .b-header-info h1 {
-                font-size: 32px;
-            }
-            .b-menu_main {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
-
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
-<body class="body_index">
-    <header class="h--ru">
-        <div class="container">
-            <div class="b-header-line-1 clearfix">
-                <div class="pull-left">
-                    <div class="b-site-info">Последние версии:<br>
-                        <div class="linkoff">
-                            <a href="https://tlauncher.ru/ru/download_1/minecraft-1218_27962.html" title="Скачать Майнкрафт 1.21.8">Minecraft <strong>1.21.8</strong></a> и
-                            <a href="https://tlauncher.ru/ru/download-pe_35/minecraft-bedrock-edition-1-21_24575.html" title="Скачать Майнкрафт: Bedrock 1.21">Minecraft Bedrock <strong>1.21</strong></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pull-right">
-                    <nav role="navigation" class="clearfix">
-                        <ul class="b-menu b-menu_main">
-                            <li class="b-menu__item main-home-link"><a rel="nofollow" class="b-link b-link_main-menu" href="https://tlauncher.ru/" title="Главная страница"><span></span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/news/" title="Последние публикации"><span>Последние публикации</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/download_1/" title="Скачать Майнкрафт"><span>Скачать Майнкрафт</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/mods_2/" title="Моды"><span>Моды</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/premium.html" title="Premium"><span class="premium">Premium</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/help.html" title="Помощь"><span>Помощь</span></a></li>
-                            <li class="b-menu__item divider"></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/catalog/skins/" title="Скачать Скин"><span>Скачать Скин</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/catalog/hd/" title="Скачать HD Скин"><span>HD Скины</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/catalog/cloak/" title="Скачать Плащ"><span>Плащи</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/catalog/skins/nickname/" title="Скины по никам"><span>Скины по никам</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/news_26/servera-minecraft-tlauncher_4526.html" title="Сервера Майнкрафт"><span class="servers">Сервера Майнкрафт</span></a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <hr>
-            <div class="b-header-line-2 clearfix">
-                <div class="pull-left">
-                    <a href="https://tlauncher.ru/" title="Лаунчер для Minecraft - TLauncher" class="logo logo-1">
-                        <img src="https://tlauncher.ru/assets/images/logo-01.png" alt="Лаунчер для Minecraft - TLauncher">
-                        <img src="https://tlauncher.ru/assets/images/logo-01-hover.png" alt="Лаунчер для Minecraft - TLauncher" style="display:none;">
-                    </a>
-                    <a href="https://tlauncher.ru/pe.html" title="TLauncher PE для Майнкрафт Pocket Edition" class="logo logo-2">
-                        <img src="https://tlauncher.ru/assets/images/logo-02-02.png" alt="TLauncher PE для Майнкрафт Pocket Edition">
-                        <img src="https://tlauncher.ru/assets/images/logo-02-02-hover.png" alt="TLauncher PE для Майнкрафт Pocket Edition" style="display:none;">
-                    </a>
-                </div>
-                <div class="pull-right">
-                    <nav class="b-user-link">
-                        <ul class="b-menu">
-                            <li class="b-menu__item b-menu__item_tools_menu"><a class="b-link b-link_tools_menu b-link_registration" rel="nofollow" href="https://tlauncher.ru/reg/" title="Регистрация"><span>Регистрация</span></a></li>
-                            <li class="b-menu__item b-menu__item_tools_menu"><a class="b-link b-link_tools_menu b-link_auth" href="#login" data-toggle="modal" title="Авторизация" style=""><span>Авторизация</span></a></li>
-                        </ul>
-                    </nav>
-                    <div class="b--language-switch ru" data-main="ru">
-                        <span class="caret">Русский</span>
-                        <ul class="b--language-switch__menu">
-                            <li><a class="ru" href="https://tlauncher.ru/" data-country="ru"><span>Русский</span><span class="caret"></span></a></li>
-                            <li><a class="en" href="https://tlauncher.org/en/" data-country=""><span>English</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="b-header-line-3 clearfix">
-                <div class="pull-left">
-                    <div class="b-header-info">
-                        <h1>TLauncher – Лучший лаунчер Майнкрафт</h1>
-                        <br>Сегодня не так много хороших лаунчеров для игры Minecraft, но они всё-таки есть, и один из них TLauncher.
-                    </div>
-                    <div class="header-button">
-                        <a href="#dPopup" data-toggle="modal" class="b-button">Скачать TLauncher</a>
-                        <span class="available-os">Доступно на:</span>
-                    </div>
-                </div>
-                <div class="pull-right"></div>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <section class="main-1 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/settings_versions_2_0_v1.png" alt="Все официальные версии Майнкрафт">
-                <h2>Все официальные версии: от Alpha до Snapshots</h2>
-                <p>Лаунчер укомплектован всеми доступными версиями игры от разработчиков, в любой момент вы сможете установить одну из них, даже самую новую версию <a href="https://tlauncher.ru/ru/download_1/minecraft-1-21_22337.html" title="Minecraft 1.21">Minecraft 1.21</a>. В них не производилось никаких изменений, все файлы скачиваются с серверов разработчиков, а это значит, что вы получаете идеально чистый Майнкрафт.</p>
-            </div>
-        </section>
-
-        <section class="main-2 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/forge-optifine.png" alt="Установи Forge, Fabric, OptiFine в один клик">
-                <div class="content">
-                    <h2>Установи Forge, Fabric, OptiFine в один клик</h2>
-                    <p>Благодаря TLauncher, у вас появляется возможность установить модифицированную версию игры: Forge/Fabric - необходимы для работы с модами, Optifine - для оптимизации игры и повышения FPS. Всё это можно установить отдельно, но придётся где-то искать нужные файлы и настраивать вручную, лаунчер же всё сделает за вас, вам нужно выбрать только необходимую версию. Представьте сколько времени вы сэкономите, а ведь достаточно <strong>скачать TLauncher</strong></p>
-                </div>
-            </div>
-        </section>
-
-        <section class="main-3 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/skins.png" alt="Система скинов TLauncher">
-                <h2>Своя система скинов</h2>
-                <p>У нас на сайте, вы сможете установить свой собственный скин, который увидят все наши пользователи, а можем вас уверить, большинство использует именно наш лаунчер. Система скинов ничем не уступает официальной, даже имеет несколько преимуществ: установка плаща и HD скинов. Из-за этих преимуществ, скины TLauncher считаются наилучшими, к тому же их установка проста и бесплатна!</p>
-            </div>
-        </section>
-
-        <section class="main-4 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/license_account_2_0_v1.png" alt="Авторизация лицензионных аккаунтов TLauncher">
-                <div class="content">
-                    <h2>Вход с лицензионного аккаунта</h2>
-                    <p>Не переставайте играть через свой лицензионный аккаунт, используйте все его преимущества: Лицензионные сервера, система скинов, ваш ник и все лучшие стороны TLauncher, достаточно авторизоваться под своей почтой и паролем. Запросы конечно же посылаются прямиком на сервера разработчиков в зашифрованном виде, никто никогда не получит доступ к вашему аккаунту - только максимальная безопасность!</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="main-5 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/modpack-ru.jpg" alt="Мод-паки с TLauncher">
-                <h2>Лаунчер с модами</h2>
-                <p>Создавайте свои сборки с модами буквально в один клик, с нашей новой системой мод-паков! Огромный каталог модов, карт, ресурс-паков с полным описанием и скриншотами уже ожидает вас. Система помогает избегать различных ошибок, так как проверяет на совместимость каждый установленный вами мод. Присутствует система бэкапа и ручной установки. Плюс всё абсолютно бесплатно, без каких-либо ограничений с нашей стороны. Порадуйте себя и не забудьте порекомендовать друзьям наш <a href="https://tlauncher.ru/news_26/modpack-system_5100.html" title="лаунчер с модами" target="_blank">лаунчер с модами</a>!</p>
-            </div>
-        </section>
-
-        <section class="main-6 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/support.png" alt="Поддержка TLauncher">
-                <div class="content">
-                    <h2>Надёжность и поддержка</h2>
-                    <p>Мы постоянно улучшаем свой продукт, поэтому ошибок, мешающих вашему пребыванию в Minecraft, в принципе не может быть - они все исправлены! Конечно же благодаря нашим игрокам, которые связываются с нами через сайт или непосредственно лаунчер и сообщают о всех своих проблемах. Мы помогаем всем, поэтому не бойтесь нам писать! Конечно же, не забывайте обновлять наш лаунчер до последней актуальной версии, на данный момент это - <strong>TLauncher 2.9319</strong>. Старая популярная - TLauncher 2.9.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="main-7 clearfix">
-            <div class="container">
-                <img src="https://tlauncher.ru/assets/images/front_page/best.png" alt="Лучший лаунчер">
-                <h2>Конкурентоспособность</h2>
-                <p>Явно, Вы видели не один лаунчер по игре, но точно находили в них множество недостатков и недоработок, поэтому Вы здесь, чтобы получить максимальные эмоции от Майнкрафт, из-за огромного количества контента и функций предоставляемых нами. Мы на шаг впереди многих и так будет всегда, ведь разработка TLauncher продолжается!</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container clearfix">
-            <div class="b-footer-line-1 clearfix">
-                <div class="pull-left">
-                    <img src="https://tlauncher.ru/assets/images/logo.png" alt="Лаунчер для Minecraft - TLauncher">
-                </div>
-                <div class="pull-right" id="main_footer_menu">
-                    <nav role="navigation" class="clearfix">
-                        <ul class="b-menu b-menu_main">
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/how-to-promote-minecraft-server.html" title="Как раскрутить сервер Майнкрафт?"><span>Как раскрутить сервер Майнкрафт?</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/ads-tlauncher.html" title="Размещение рекламы сервера в TLauncher"><span>Размещение рекламы сервера в TLauncher</span></a></li>
-                            <li class="b-menu__item"><a class="b-link b-link_main-menu" href="https://tlauncher.ru/reviews-ad-tlauncher.html" title="Отзывы"><span>Отзывы</span></a></li>
-                            <li class="b-menu__item"><a rel="nofollow" class="b-link b-link_main-menu" href="https://tlauncher.ru/contacts.html" title="Контакты"><span>Контакты</span></a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <hr style="border-color: #555;">
-            <div class="b-footer-line-2 padding-top-20">
-                <div class="copyright">
-                    <p>© 2013 - 2025 «TLauncher» от TLauncher Inc. ПО содержит рекламу.</p>
-                    <p class="footerAddress">Suite 1, Second Floor, Sound &amp; Vision House, Francis Rachel Str., Victoria, Mahe, Seychelles</p>
-                </div>
-                <div class="pull-right">
-                    <ul class="b-menu b-menu_main">
-                        <li class="b-menu__item"><a rel="nofollow" class="b-link b-link_main-menu" href="https://tlauncher.ru/terms.html" title="Оферта"><span>Оферта</span></a></li>
-                        <li class="b-menu__item"><a rel="nofollow" class="b-link b-link_main-menu" href="https://discord.gg/TLauncher" title="Discord" target="_blank"><span>Наш Discord</span></a></li>
-                        <li class="b-menu__item"><a rel="nofollow" class="b-link b-link_main-menu" href="https://tlauncher.ru/privacy-policy.html" title="Политика конфиденциальности"><span>Политика конфиденциальности</span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Download Modal -->
-    <div id="dPopup" class="modal fade" tabindex="-1" role="dialog" data-v-app="">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    <div class="body-content">
-                        <div class="contentWrapper">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#windows" aria-controls="windows" role="tab" data-toggle="tab">Windows</a></li>
-                                <li role="presentation" class=""><a href="#macos" aria-controls="macos" role="tab" data-toggle="tab">MacOS</a></li>
-                                <li role="presentation" class=""><a href="#linux" aria-controls="linux" role="tab" data-toggle="tab">Linux</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="windows">
-                                    <div>
-                                        <button class="btn btn-wide btn-green btn-download recommend" onclick="window.location.href='https://tlauncher.ru/installer'">
-                                            <span class="title">TLauncher для <span>Windows</span></span>
-                                            <span class="file">TLauncher-Installer-1.8.9.exe</span>
                                             <i class="icon"></i>
                                         </button>
                                         <button class="btn btn-wide btn-gray btn-text-left btn-all-version">Показать все версии</button>
@@ -1091,7 +555,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Add similar for MacOS and Linux -->
+                                <div role="tabpanel" class="tab-pane" id="macos">
+                                    <div>
+                                        <button class="btn btn-wide btn-green btn-download recommend" data-content="Рекомендуем!" onclick="window.location.href='https://tlauncher.ru/jar'">
+                                            <span class="title">TLauncher для <span>MacOS</span></span>
+                                            <span class="file">TLauncher.v16.zip</span>
+                                            <i class="icon"></i>
+                                        </button>
+                                        <button class="btn btn-wide btn-gray btn-text-left btn-all-version">Показать все версии</button>
+                                        <div class="btn-block">
+                                            <button class="btn btn-for-two-block btn-text-center btn-gray">бета</button>
+                                            <button class="btn btn-for-two-block btn-text-center btn-gray">Не работает?</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="linux">
+                                    <div>
+                                        <button class="btn btn-wide btn-green btn-download recommend" data-content="Рекомендуем!" onclick="window.location.href='https://tlauncher.ru/installer-linux'">
+                                            <span class="title">TLauncher для <span>Linux</span></span>
+                                            <span class="file">tlauncher-linux-installer.deb</span>
+                                            <i class="icon"></i>
+                                        </button>
+                                        <button class="btn btn-wide btn-gray btn-text-left btn-all-version">Показать все версии</button>
+                                        <div class="btn-block">
+                                            <button class="btn btn-for-two-block btn-text-center btn-gray">бета</button>
+                                            <button class="btn btn-for-two-block btn-text-center btn-gray">Не работает?</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1101,19 +592,31 @@
     </div>
 
     <script>
-        // Simple modal toggle
-        $('#dPopup [data-toggle="modal"]').on('click', function() {
-            $('#dPopup').addClass('show').css('display', 'block');
-        });
-        $('.close, .modal').on('click', function() {
-            $('#dPopup').removeClass('show').css('display', 'none');
-        });
-
-        // Language switch hover
-        $('.b--language-switch').hover(function() {
-            $(this).find('.b--language-switch__menu').show();
-        }, function() {
-            $(this).find('.b--language-switch__menu').hide();
+        $(document).ready(function() {
+            $('[data-toggle="modal"]').click(function(e) {
+                e.preventDefault();
+                var target = $(this).attr('href');
+                $(target).addClass('show').css('display', 'block');
+            });
+            $('.close, .modal').click(function(e) {
+                if (e.target === this || $(e.target).hasClass('close')) {
+                    $('.modal').removeClass('show').css('display', 'none');
+                }
+            });
+            $('.nav-tabs a').click(function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+                $('.nav-tabs li').removeClass('active');
+                $(this).parent().addClass('active');
+                $('.tab-pane').removeClass('active');
+                $($(this).attr('href')).addClass('active');
+            });
+            $('.b--language-switch').hover(function() {
+                $(this).find('.b--language-switch__menu').toggle();
+            });
+            $('.logo').hover(function() {
+                $(this).find('img').toggle();
+            });
         });
     </script>
 </body>

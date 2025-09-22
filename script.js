@@ -26,10 +26,6 @@ let userData = { name: 'RobloxPlayer', bio: 'Любитель модов и пл
 const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
 
 let confirmationResult;
-let otpCode; // Для email OTP
-
-// EmailJS init (примерные значения; замените на свои реальные из EmailJS)
-emailjs.init("example_user_id_from_emailjs"); // Замените на ваш реальный userID
 
 // Показ модала только при первом заходе
 let isFirstLoad = true;
@@ -93,20 +89,7 @@ document.getElementById('send-code-btn').addEventListener('click', () => {
                 document.getElementById('auth-message').textContent = 'Ошибка: ' + error.message;
             });
     } else if (method === 'email') {
-        const email = document.getElementById('email').value;
-        otpCode = Math.floor(100000 + Math.random() * 900000).toString(); // Генерация OTP
-        const tempRef = ref(db, 'temp_otp/' + btoa(email));
-        set(tempRef, { otp: otpCode, timestamp: Date.now() });
-        emailjs.send("example_service_id", "example_template_id", { // Замените на реальные
-            to_email: email,
-            otp_code: otpCode
-        }).then(() => {
-            showToast('Код отправлен на email');
-            document.getElementById('verification-code').style.display = 'block';
-            document.getElementById('verify-code-btn').style.display = 'block';
-        }).catch((error) => {
-            document.getElementById('auth-message').textContent = 'Ошибка отправки: ' + error.message;
-        });
+        document.getElementById('auth-message').textContent = 'Функция отправки кода по email отключена (EmailJS удалён).';
     }
 });
 
@@ -126,27 +109,26 @@ document.getElementById('verify-code-btn').addEventListener('click', () => {
                 document.getElementById('auth-message').textContent = 'Неверный код: ' + error.message;
             });
     } else if (method === 'email') {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const tempRef = ref(db, 'temp_otp/' + btoa(email));
-        onValue(tempRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.otp === code) {
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        set(ref(db, 'users/' + user.uid), userData);
-                        showToast('Регистрация успешна!');
-                        document.getElementById('auth-modal').style.display = 'none';
-                    })
-                    .catch((error) => {
-                        document.getElementById('auth-message').textContent = error.message;
-                    });
-            } else {
-                document.getElementById('auth-message').textContent = 'Неверный код';
-            }
-        });
+        document.getElementById('auth-message').textContent = 'Регистрация по email отключена (EmailJS удалён).';
     }
+});
+
+// Регистрация
+document.getElementById('sign-up-btn').addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            set(ref(db, 'users/' + user.uid), userData);
+            sendEmailVerification(user).then(() => {
+                showToast('Регистрация успешна! Проверьте email для верификации.');
+            });
+            document.getElementById('auth-modal').style.display = 'none';
+        })
+        .catch((error) => {
+            document.getElementById('auth-message').textContent = error.message;
+        });
 });
 
 // Вход
@@ -167,16 +149,14 @@ document.getElementById('sign-in-btn').addEventListener('click', () => {
 document.getElementById('sign-out-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
         showToast('Вы вышли!');
-        location.reload(); // Перезагрузка для сброса состояния
+        location.reload();
     }).catch((error) => {
         console.error('Ошибка выхода:', error);
     });
 });
 
 // Показ гайда по установке
-function showInstallationGuide() {
-    document.getElementById('installation-modal').style.display = 'flex';
-}
+document.querySelector('.installation-btn').addEventListener('click', showInstallationGuide);
 
 // Закрытие модала гайда
 document.getElementById('close-installation-btn').addEventListener('click', () => {
@@ -201,270 +181,160 @@ document.getElementById('submit-review-btn').addEventListener('click', () => {
     }
 });
 
-// Массивы данных (полные)
+// Массивы данных
 const allPlaces = [
-    { id: 1, title: "Adopt Me!", desc: "Усынови питомцев.", rating: "★★★★★", genre: "rpg", img: "./images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
-    { id: 2, title: "Brookhaven", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "./images/brookhaven.jpg", link: "https://www.roblox.com/games/6238705697/Brookhaven", compatibility: "PC/Mobile" },
-    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "./images/jailbreak.jpg", link: "https://www.roblox.com/games/606849621/Jailbreak", compatibility: "PC" },
-    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "./images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", compatibility: "PC/Mobile" },
-    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "./images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors", compatibility: "PC" },
-    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "./images/arsenal.jpg", link: "https://www.roblox.com/games/286090429/Arsenal", compatibility: "PC/Mobile" },
-    { id: 7, title: "Tower of Hell", desc: "Обби с башней.", rating: "★★★★", genre: "obby", img: "./images/tower-of-hell.jpg", link: "https://www.roblox.com/games/1962086868/Tower-of-Hell", compatibility: "PC/Mobile" },
-    { id: 8, title: "MeepCity", desc: "Социальная ролевая игра.", rating: "★★★☆", genre: "rpg", img: "./images/meepcity.jpg", link: "https://www.roblox.com/games/370731277/MeepCity", compatibility: "PC/Mobile" },
-    { id: 9, title: "Phantom Forces", desc: "Тактический шутер.", rating: "★★★★★", genre: "adventure", img: "./images/phantom-forces.jpg", link: "https://www.roblox.com/games/292439477/Phantom-Forces", compatibility: "PC" }
+    { id: 1, title: "Adopt Me!", desc: "Усынови питомцев.", rating: "★★★★★", genre: "rpg", img: "/GameExtentions/images/adopt-me.jpg", link: "https://www.roblox.com/games/920587237/Adopt-Me", compatibility: "PC/Mobile" },
+    { id: 2, title: "Brookhaven", desc: "Ролевая игра в городе.", rating: "★★★★☆", genre: "rpg", img: "/GameExtentions/images/brookhaven.jpg", link: "https://www.roblox.com/games/6238705697/Brookhaven", compatibility: "PC/Mobile" },
+    { id: 3, title: "Jailbreak", desc: "Побег из тюрьмы.", rating: "★★★★★", genre: "adventure", img: "/GameExtentions/images/jailbreak.jpg", link: "https://www.roblox.com/games/606849621/Jailbreak", compatibility: "PC" },
+    { id: 4, title: "Blox Fruits", desc: "Пиратские приключения.", rating: "★★★★★", genre: "rpg", img: "/GameExtentions/images/blox-fruits.jpg", link: "https://www.roblox.com/games/2753915549/Blox-Fruits", compatibility: "PC/Mobile" },
+    { id: 5, title: "Doors", desc: "Хоррор с дверями.", rating: "★★★★☆", genre: "adventure", img: "/GameExtentions/images/doors.jpg", link: "https://www.roblox.com/games/6516141723/Doors", compatibility: "PC" },
+    { id: 6, title: "Arsenal", desc: "Шутер с оружием.", rating: "★★★★★", genre: "obby", img: "/GameExtentions/images/arsenal.jpg", link: "https://www.roblox.com/games/286090429/Arsenal", compatibility: "PC/Mobile" },
+    { id: 7, title: "Tower of Hell", desc: "Обби с башней.", rating: "★★★★", genre: "obby", img: "/GameExtentions/images/tower-of-hell.jpg", link: "https://www.roblox.com/games/1962086868/Tower-of-Hell", compatibility: "PC/Mobile" },
+    { id: 8, title: "MeepCity", desc: "Социальная ролевая игра.", rating: "★★★☆", genre: "rpg", img: "/GameExtentions/images/meepcity.jpg", link: "https://www.roblox.com/games/370731277/MeepCity", compatibility: "PC/Mobile" },
+    { id: 9, title: "Phantom Forces", desc: "Тактический шутер.", rating: "★★★★★", genre: "adventure", img: "/GameExtentions/images/phantom-forces.jpg", link: "https://www.roblox.com/games/292439477/Phantom-Forces", compatibility: "PC" }
 ];
 
 const allScripts = [
-    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "./images/auto-farm.jpg", compatibility: "PC" },
-    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "./images/jailbreak-exploit.jpg", compatibility: "PC" },
-    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "./images/blox-fruits-esp.jpg", compatibility: "PC/Mobile" },
-    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "./images/doors-speed.jpg", compatibility: "PC" },
-    { id: 5, title: "Infinite Jump Script", desc: "Бесконечные прыжки.", img: "./images/infinite-jump.jpg", compatibility: "PC/Mobile" },
-    { id: 6, title: "God Mode Hack", desc: "Неуязвимость в играх.", img: "./images/god-mode.jpg", compatibility: "PC" }
+    { id: 1, title: "Auto Farm Script", desc: "Автоматизация для плейсов.", img: "/GameExtentions/images/auto-farm.jpg", compatibility: "PC" },
+    { id: 2, title: "Jailbreak Exploit", desc: "Скрипт для Jailbreak.", img: "/GameExtentions/images/jailbreak-exploit.jpg", compatibility: "PC" },
+    { id: 3, title: "Blox Fruits ESP", desc: "Видеть врагов и предметы.", img: "/GameExtentions/images/blox-fruits-esp.jpg", compatibility: "PC/Mobile" },
+    { id: 4, title: "Doors Speed Hack", desc: "Увеличение скорости в Doors.", img: "/GameExtentions/images/doors-speed.jpg", compatibility: "PC" },
+    { id: 5, title: "Infinite Jump Script", desc: "Бесконечные прыжки.", img: "/GameExtentions/images/infinite-jump.jpg", compatibility: "PC/Mobile" },
+    { id: 6, title: "God Mode Hack", desc: "Неуязвимость в играх.", img: "/GameExtentions/images/god-mode.jpg", compatibility: "PC" },
+    { id: 7, title: "Arsenal Aimbot", desc: "Автоматическая наводка.", img: "/GameExtentions/images/arsenal-aimbot.jpg", compatibility: "PC" },
+    { id: 8, title: "Tower of Hell Fly", desc: "Полет для обби.", img: "/GameExtentions/images/tower-fly.jpg", compatibility: "PC" }
 ];
 
 const allAvatars = [
-    { id: 1, title: "Cool Roblox Avatar", desc: "Скачай и используй в игре.", img: "./images/cool-avatar.jpg", compatibility: "All" },
-    { id: 2, title: "Epic Avatar", desc: "Уникальный стиль.", img: "./images/epic-avatar.jpg", compatibility: "All" },
-    { id: 3, title: "Neon Avatar", desc: "Светящийся дизайн.", img: "./images/neon-avatar.jpg", compatibility: "All" },
-    { id: 4, title: "Futuristic Avatar", desc: "Футуристический вид.", img: "./images/futuristic-avatar.jpg", compatibility: "All" },
-    { id: 5, title: "Warrior Avatar", desc: "Воинственный стиль.", img: "./images/warrior-avatar.jpg", compatibility: "All" },
-    { id: 6, title: "Mystic Avatar", desc: "Мистический дизайн.", img: "./images/mystic-avatar.jpg", compatibility: "All" }
+    { id: 1, title: "Cyber Ninja", desc: "Кибер-ниндзя стиль.", img: "/GameExtentions/images/cyber-ninja.jpg", compatibility: "PC/Mobile" },
+    { id: 2, title: "Space Explorer", desc: "Космический исследователь.", img: "/GameExtentions/images/space-explorer.jpg", compatibility: "PC/Mobile" },
+    { id: 3, title: "Dark Knight", desc: "Темный рыцарь.", img: "/GameExtentions/images/dark-knight.jpg", compatibility: "PC/Mobile" },
+    { id: 4, title: "Anime Hero", desc: "Герой в стиле аниме.", img: "/GameExtentions/images/anime-hero.jpg", compatibility: "PC/Mobile" },
+    { id: 5, title: "Steampunk Pilot", desc: "Стимпанк пилот.", img: "/GameExtentions/images/steampunk-pilot.jpg", compatibility: "PC/Mobile" }
 ];
 
-const itemsPerPage = 4;
-let currentPage = { places: 1, scripts: 1, avatars: 1 };
-const currentFilter = { search: '', genre: '' };
-
-// Функция переключения секций
-function switchSection(section) {
-    const sections = ['home', 'places', 'scripts', 'avatars', 'account'];
-    sections.forEach(s => {
-        document.getElementById(s).style.display = s === section ? 'block' : 'none';
-    });
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.section === section);
-    });
-    if (section === 'places') renderItems('places', allPlaces, 'places-grid', 'pagination-places');
-    if (section === 'scripts') renderItems('scripts', allScripts, 'scripts-grid', 'pagination-scripts');
-    if (section === 'avatars') renderItems('avatars', allAvatars, 'avatars-grid', 'pagination-avatars');
-}
-
-// Унифицированная функция рендера
-function renderItems(type, items, gridId, pagId) {
-    const grid = document.getElementById(gridId);
-    grid.innerHTML = '';
-    const filtered = items.filter(item => 
-        (currentFilter.genre === '' || item.genre === currentFilter.genre) &&
-        item.title.toLowerCase().includes(currentFilter.search.toLowerCase())
-    );
-    const start = (currentPage[type] - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    filtered.slice(start, end).forEach(item => {
+// Функции для отображения контента
+function renderItems(items, containerId, itemsPerPage = 6) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach(item => {
         const card = document.createElement('div');
-        card.className = `${type.slice(0, -1)}-card`; // place-card, script-card, avatar-card
+        card.className = containerId.includes('places') ? 'place-card' : (containerId.includes('scripts') ? 'script-card' : 'avatar-card');
         card.innerHTML = `
-            <img src="${item.img}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/420';">
+            <img src="${item.img}" alt="${item.title}">
             <h4>${item.title}</h4>
             <p>${item.desc}</p>
-            ${item.rating ? `<p>${item.rating}</p>` : ''}
+            ${item.rating ? `<p>Рейтинг: ${item.rating}</p>` : ''}
+            ${item.genre ? `<p>Жанр: ${item.genre}</p>` : ''}
             <p>Совместимость: ${item.compatibility}</p>
-            <button class="cta-btn download-btn" data-id="${item.id}" data-type="${type.slice(0, -1)}">Скачать</button>
+            ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="cta-btn">Перейти</a>` : ''}
         `;
-        grid.appendChild(card);
+        container.appendChild(card);
     });
-    updatePagination(type, filtered.length, pagId);
+    setupPagination(items, containerId, itemsPerPage);
 }
 
-function updatePagination(type, total, pagId) {
-    const pag = document.getElementById(pagId);
-    pag.innerHTML = '';
-    const pages = Math.ceil(total / itemsPerPage);
-    if (currentPage[type] > 1) {
-        const prev = document.createElement('button');
-        prev.textContent = '←';
-        prev.addEventListener('click', () => { currentPage[type]--; renderItems(type, getItems(type), gridId, pagId); });
-        pag.appendChild(prev);
+function setupPagination(items, containerId, itemsPerPage) {
+    const pagination = document.getElementById(`pagination-${containerId.split('-')[0]}`);
+    pagination.innerHTML = '';
+    const pageCount = Math.ceil(items.length / itemsPerPage);
+    for (let i = 1; i <= pageCount; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.addEventListener('click', () => paginate(items, containerId, itemsPerPage, i));
+        pagination.appendChild(button);
     }
-    for (let i = 1; i <= pages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = i;
-        btn.classList.toggle('active', currentPage[type] === i);
-        btn.addEventListener('click', () => { currentPage[type] = i; renderItems(type, getItems(type), gridId, pagId); });
-        pag.appendChild(btn);
-    }
-    if (currentPage[type] < pages) {
-        const next = document.createElement('button');
-        next.textContent = '→';
-        next.addEventListener('click', () => { currentPage[type]++; renderItems(type, getItems(type), gridId, pagId); });
-        pag.appendChild(next);
-    }
+    paginate(items, containerId, itemsPerPage, 1);
 }
 
-function getItems(type) {
-    if (type === 'places') return allPlaces;
-    if (type === 'scripts') return allScripts;
-    if (type === 'avatars') return allAvatars;
+function paginate(items, containerId, itemsPerPage, page) {
+    const container = document.getElementById(containerId);
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const paginatedItems = items.slice(start, end);
+    renderItems(paginatedItems, containerId, itemsPerPage);
+    document.querySelectorAll(`#pagination-${containerId.split('-')[0]} button`).forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`#pagination-${containerId.split('-')[0]} button:nth-child(${page})`).classList.add('active');
 }
 
-function filterItems() {
-    currentFilter.search = document.getElementById('search-places').value;
-    currentFilter.genre = document.getElementById('genre-filter').value;
-    currentPage.places = 1;
-    renderItems('places', allPlaces, 'places-grid', 'pagination-places');
-    // Расширьте для скриптов/аватаров, если добавите фильтры
-}
+// Фильтрация плейсов
+document.querySelector('.filter-btn').addEventListener('click', () => {
+    const search = document.getElementById('search-places').value.toLowerCase();
+    const genre = document.getElementById('genre-filter').value;
+    const filteredPlaces = allPlaces.filter(place => 
+        place.title.toLowerCase().includes(search) && 
+        (genre === '' || place.genre === genre)
+    );
+    renderItems(filteredPlaces, 'places-grid', 6);
+});
 
-function downloadItem(type, id) {
-    if (auth.currentUser) {
-        userData[type + 's'] = (userData[type + 's'] || 0) + 1;
-        userData.downloads++;
-        set(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Скачивание начато!');
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            showToast('Предупреждение: Некоторые моды лучше работают на PC!');
+// Навигация
+document.querySelectorAll('.nav-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelectorAll('section').forEach(section => section.style.display = 'none');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        const sectionId = button.getAttribute('data-section');
+        document.getElementById(sectionId).style.display = 'block';
+        button.classList.add('active');
+        if (sectionId === 'places') {
+            renderItems(allPlaces, 'places-grid', 6);
+        } else if (sectionId === 'scripts') {
+            renderItems(allScripts, 'scripts-grid', 6);
+        } else if (sectionId === 'avatars') {
+            renderItems(allAvatars, 'avatars-grid', 6);
         }
-        window.open('https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file', '_blank');
-    } else {
-        showToast('Войдите для скачивания!');
+    });
+});
+
+// Темный режим
+document.querySelector('.dark-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+});
+
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+}
+
+// Сохранение профиля
+document.getElementById('save-profile-btn').addEventListener('click', () => {
+    if (auth.currentUser) {
+        const newName = document.getElementById('new-name').value;
+        const newBio = document.getElementById('new-bio').value;
+        const userRef = ref(db, 'users/' + auth.currentUser.uid);
+        update(userRef, { name: newName, bio: newBio }).then(() => {
+            showToast('Профиль обновлён!');
+            userData.name = newName;
+            userData.bio = newBio;
+            document.getElementById('profile-name').textContent = newName;
+            document.getElementById('profile-bio').textContent = newBio;
+        });
     }
-}
-// Динамическое время с текущей датой
-function updateProfileTime() {
-    const now = new Date(); // Берет текущее время системы
-    const timeString = now.toLocaleTimeString('ru-RU', { 
-        timeZone: 'Europe/Paris', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-    }) + ' CEST, ' + now.toLocaleDateString('ru-RU');
-    document.getElementById('current-time').textContent = `Текущее время: ${timeString}`;
-    document.getElementById('profile-time').textContent = timeString;
-}
+});
+
 // Обновление прогресса
 function updateUserProgress() {
-    const progress = (userData.places / 9) * 100;
+    const total = 9; // Максимум плейсов для примера
+    const progress = (userData.places / total) * 100;
     document.querySelector('.progress-fill').style.width = `${progress}%`;
     document.querySelector('.progress-bar span').textContent = `Прогресс: ${Math.round(progress)}%`;
     document.getElementById('downloads-stat').textContent = userData.downloads;
-    document.getElementById('places-user-stat').textContent = `${userData.places}/9`;
+    document.getElementById('places-user-stat').textContent = `${userData.places}/${total}`;
     document.getElementById('scripts-user-stat').textContent = userData.scripts;
-    // Аватары и т.д., если добавите
 }
 
-// Темный режим
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-}
-
-// Тост
+// Уведомления
 function showToast(message) {
     const toast = document.getElementById('toast');
     toast.textContent = message;
     toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
 }
 
-// Сохранение профиля
-function saveProfile() {
-    if (auth.currentUser) {
-        userData.name = document.getElementById('new-name').value;
-        userData.bio = document.getElementById('new-bio').value;
-        update(ref(db, 'users/' + auth.currentUser.uid), userData);
-        showToast('Профиль сохранен!');
-    }
-}
-
-// Повторная отправка верификации
-function resendVerification() {
-    if (auth.currentUser && !auth.currentUser.emailVerified) {
-        sendEmailVerification(auth.currentUser).then(() => {
-            showToast('Код отправлен повторно!');
-        });
-    }
-}
-
-// Частицы (простая реализация на canvas)
-function initParticles() {
-    const canvas = document.createElement('canvas');
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.zIndex = '-1';
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-    const particles = [];
-    for (let i = 0; i < 100; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 2 + 1,
-            vx: Math.random() * 2 - 1,
-            vy: Math.random() * 2 - 1
-        });
-    }
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(0, 162, 255, 0.5)';
-        particles.forEach(p => {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fill();
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx = -p.vx;
-            if (p.y < 0 || p.y > canvas.height) p.vy = -p.vy;
-        });
-        requestAnimationFrame(draw);
-    }
-    draw();
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-}
-
+// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-    switchSection('home');
-    updateProfileTime();
-    setInterval(updateProfileTime, 60000);
-    initParticles();
-
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchSection(btn.dataset.section));
-    });
-
-    document.querySelector('.dark-toggle').addEventListener('click', toggleDarkMode);
-
-    document.getElementById('sign-up-btn').addEventListener('click', () => {
-        document.getElementById('auth-method').dispatchEvent(new Event('change'));
-        document.getElementById('send-code-btn').click();
-    });
-
-    document.querySelector('.filter-btn').addEventListener('click', filterItems);
-
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('download-btn')) {
-            const id = parseInt(e.target.dataset.id);
-            const type = e.target.dataset.type;
-            downloadItem(type, id);
-        }
-        if (e.target.classList.contains('installation-btn')) {
-            showInstallationGuide();
-        }
-    });
-
-    // Debounce для поиска
-    document.getElementById('search-places').addEventListener('input', debounce(filterItems, 300));
+    document.querySelector('[data-section="home"]').style.display = 'block';
+    document.querySelector('[data-section="home"]').classList.add('active');
 });
-
-function debounce(func, delay) {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), delay);
-    };
-}

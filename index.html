@@ -22,18 +22,15 @@
             <button class="nav-btn" data-section="places" aria-label="Плейсы">Плейсы</button>
             <button class="nav-btn" data-section="scripts" aria-label="Скрипты">Скрипты</button>
             <button class="nav-btn" data-section="avatars" aria-label="Аватары">Аватары</button>
-            <button class="nav-btn" data-section="account" aria-label="Аккаунт">Аккаунт</button>
-            <button class="nav-btn" data-section="recommendations" aria-label="Рекомендации">Рекомендации</button>
-            <button class="nav-btn" data-section="chatbot" aria-label="Чат-бот">Чат-бот</button>
         </nav>
         <button class="dark-toggle" aria-label="Переключить темный режим">
             <img src="https://img.icons8.com/ios/24/sun.png" alt="Иконка солнца">
         </button>
     </header>
 
-    <div id="auth-modal" class="modal">
+    <div id="auth-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <h3>Регистрация / Вход</h3>
+            <h3>Вход</h3>
             <form id="auth-form">
                 <select id="auth-method" aria-label="Метод аутентификации">
                     <option value="email">Email</option>
@@ -42,10 +39,9 @@
                 <input type="email" id="email" placeholder="Email" aria-label="Email">
                 <input type="tel" id="phone" placeholder="Телефон (+7...)" aria-label="Телефон">
                 <input type="password" id="password" placeholder="Пароль" aria-label="Пароль">
-                <input type="text" id="verification-code" placeholder="Код подтверждения" aria-label="Код подтверждения">
-                <button type="button" id="send-code-btn" class="cta-btn">Отправить код</button>
-                <button type="button" id="verify-code-btn" class="cta-btn">Подтвердить</button>
-                <button type="button" id="sign-up-btn" class="cta-btn">Регистрация</button>
+                <input type="text" id="verification-code" placeholder="Код подтверждения" aria-label="Код подтверждения" style="display: none;">
+                <button type="button" id="send-code-btn" class="cta-btn" style="display: none;">Отправить код</button>
+                <button type="button" id="verify-code-btn" class="cta-btn" style="display: none;">Подтвердить</button>
                 <button type="button" id="sign-in-btn" class="cta-btn">Вход</button>
             </form>
             <p id="auth-message"></p>
@@ -133,43 +129,6 @@
         <section id="avatars" style="display: none;">
             <div id="avatars-grid" class="places-grid"></div>
             <div id="pagination-avatars" class="pagination"></div>
-        </section>
-
-        <section id="account" class="profile-card" style="display: none;">
-            <div id="profile-content">
-                <div class="profile-header">
-                    <img id="profile-avatar" class="avatar" src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Аватар пользователя">
-                    <div class="profile-info">
-                        <h3 id="profile-name">RobloxPlayer</h3>
-                        <p id="profile-bio">Любитель модов и плейсов!</p>
-                    </div>
-                </div>
-                <div class="profile-stats">
-                    <div class="stat-card"><h4>Скачиваний</h4><p id="downloads-stat">0</p></div>
-                    <div class="stat-card"><h4>Плейсов</h4><p id="places-user-stat">0/9</p></div>
-                    <div class="stat-card"><h4>Скриптов</h4><p id="scripts-user-stat">0</p></div>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div><span>Прогресс: 0%</span></div>
-                <form class="edit-profile">
-                    <input type="text" id="new-name" placeholder="Новое имя" aria-label="Новое имя">
-                    <textarea id="new-bio" placeholder="Новая био" aria-label="Новая био"></textarea>
-                    <button type="button" id="save-profile-btn" class="cta-btn">Сохранить</button>
-                    <button type="button" id="resend-verification-btn" class="cta-btn">Повторно отправить код</button>
-                    <button type="button" id="sign-out-btn" class="cta-btn">Выйти</button>
-                </form>
-            </div>
-        </section>
-
-        <section id="recommendations" style="display: none;">
-            <h3>Рекомендации для Roblox</h3>
-            <div id="recommendations-grid" class="places-grid"></div>
-        </section>
-
-        <section id="chatbot" style="display: none;">
-            <h3>Roblox Чат-бот</h3>
-            <textarea id="chatbot-input" placeholder="Задайте вопрос по Roblox..." aria-label="Ввод вопроса"></textarea>
-            <button id="chatbot-submit" class="cta-btn">Отправить</button>
-            <div id="chatbot-response"></div>
         </section>
     </div>
 

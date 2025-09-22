@@ -1,1 +1,3 @@
-
+User-agent: *
+Allow: /
+Sitemap: https://mlgowner.github.io/GameExtentions/sitemap.xml

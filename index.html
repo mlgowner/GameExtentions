@@ -1,130 +1,1325 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Расширения для Roblox: моды, скрипты, аватары и плейсы. Скачивайте бесплатно и улучшайте игровой опыт.">
-    <meta name="keywords" content="Roblox моды, скрипты Roblox, аватары Roblox, плейсы Roblox, Game Extensions">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; connect-src 'self' https://firebase.googleapis.com https://api.roblox.com; img-src 'self' data: https://www.roblox.com https://tr.rbxcdn.com https://img.icons8.com https://thumbnails.roblox.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
-    <title>Game Extensions for Roblox</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="https://img.icons8.com/color/48/roblox.png" alt="Логотип Roblox">
-            <h1>Game Extensions</h1>
-        </div>
-        <nav>
-            <button class="nav-btn" data-section="home" aria-label="Главная">Главная</button>
-            <button class="nav-btn" data-section="places" aria-label="Плейсы">Плейсы</button>
-            <button class="nav-btn" data-section="scripts" aria-label="Скрипты">Скрипты</button>
-            <button class="nav-btn" data-section="avatars" aria-label="Аватары">Аватары</button>
-        </nav>
-        <button class="dark-toggle" aria-label="Переключить темный режим">
-            <img src="https://img.icons8.com/ios/24/sun.png" alt="Иконка солнца">
-        </button>
-    </header>
+<html lang="ru"><head><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==">
+	<title>TLauncher — Скачать лаунчер Майнкрафт</title>
 
-    <div id="auth-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h3>Вход</h3>
-            <form id="auth-form">
-                <select id="auth-method" aria-label="Метод аутентификации">
-                    <option value="email">Email</option>
-                    <option value="phone">Телефон</option>
-                </select>
-                <input type="email" id="email" placeholder="Email" aria-label="Email">
-                <input type="tel" id="phone" placeholder="Телефон (+7...)" aria-label="Телефон">
-                <input type="password" id="password" placeholder="Пароль" aria-label="Пароль">
-                <input type="text" id="verification-code" placeholder="Код подтверждения" aria-label="Код подтверждения" style="display: none;">
-                <button type="button" id="send-code-btn" class="cta-btn" style="display: none;">Отправить код</button>
-                <button type="button" id="verify-code-btn" class="cta-btn" style="display: none;">Подтвердить</button>
-                <button type="button" id="sign-in-btn" class="cta-btn">Вход</button>
-            </form>
-            <p id="auth-message"></p>
-            <div id="recaptcha-container"></div>
-        </div>
-    </div>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
 
-    <div id="installation-modal" class="modal">
-        <div class="modal-content installation-guide">
-            <h3>Гайд по установке</h3>
-            <ol>
-                <li>Скачайте файл с сайта (Game Extensions.zip).</li>
-                <li>Распакуйте архив в удобную папку.</li>
-                <li>Откройте Roblox и используйте executor (например, Synapse X для скриптов).</li>
-                <li>Вставьте скрипт или примените аватар в игре.</li>
-                <li>Для мобильных: Установите через эмулятор, если требуется PC.</li>
-            </ol>
-            <p>Системные требования: Windows 10+, Android 8+, минимум 4GB RAM.</p>
-            <button id="close-installation-btn" class="cta-btn">Закрыть</button>
-        </div>
-    </div>
+	<link rel="shortcut icon" href="https://tlauncher.ru/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196">
+	<link rel="icon" type="image/png" href="/favicon-120x120.png" sizes="120x120">
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#40b5e9">
+	<meta name="apple-mobile-web-app-title" content="TLauncher">
+	<meta name="application-name" content="TLauncher">
+	<meta name="msapplication-TileColor" content="#40b5e9">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="referrer" content="origin-when-cross-origin">
 
-    <div class="container">
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <h2>Game Extensions for Roblox</h2>
-                <p>Расширь свой Roblox опыт с лучшими скриптами, аватарами и плейсами!</p>
-                <a href="https://www.mediafire.com/file/u8iubmwld78op99/Game_Extensions.zip/file" class="cta-btn" target="_blank" rel="noopener noreferrer" aria-label="Скачать ZIP">Скачать Game Extensions.zip</a>
-            </div>
-        </section>
+	<meta name="keywords" content="tlauncher, тлаунчер, лаунчер, майнкрафт, minecraft, скачать, бесплатно">
+	<meta name="description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
+			<link rel="canonical" href="https://tlauncher.ru/">
+	
+	<link rel="alternate" href="https://tlauncher.ua/ru/" hreflang="ru-ua">
+<link rel="alternate" href="https://tlauncher.org/en/" hreflang="en">
+<link rel="alternate" href="https://tlauncher.ua/" hreflang="uk-ua">
 
-        <section id="main-panel" class="main-panel">
-            <h3>Добро пожаловать в Game Extensions!</h3>
-            <div class="stats-grid">
-                <div class="stat"><h4>Плейсов</h4><p id="places-stat">200+</p></div>
-                <div class="stat"><h4>Скриптов</h4><p id="scripts-stat">100+</p></div>
-                <div class="stat"><h4>Аватаров</h4><p id="avatars-stat">300+</p></div>
-            </div>
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="TLauncher">
+	<meta property="og:title" content="TLauncher — Скачать лаунчер Майнкрафт">
+	<meta property="og:description" content="Если вы хотите найти лучший лаунчер Майнкрафт, то рекомендуем скачать TLauncher, который самый лучший среди конкурентов!">
+	<meta property="og:url" content="https://tlauncher.ru/">
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:image" content="https://tlauncher.org/fav-icon-512.png">
+	<meta property="og:image:width" content="512">
+	<meta property="og:image:height" content="512">
 
-            <div class="faq-panel">
-                <h3>FAQ</h3>
-                <details class="faq-item"><summary>Что такое Game Extensions?</summary><p>Это платформа для скачивания модов, скриптов и аватаров для Roblox, чтобы улучшить игровой опыт.</p></details>
-                <details class="faq-item"><summary>Безопасны ли моды?</summary><p>Все файлы сканируются на вирусы. Используйте только проверенные источники и антивирус.</p></details>
-                <details class="faq-item"><summary>Как установить скрипт?</summary><p>Скачайте файл, откройте Roblox, вставьте скрипт в executor (например, Synapse X) и запустите.</p></details>
-                <details class="faq-item"><summary>Поддерживаете ли вы мобильные устройства?</summary><p>Да, многие моды работают на мобильных, но для скриптов нужен PC-эмулятор.</p></details>
-                <details class="faq-item"><summary>Как связаться с поддержкой?</summary><p>Напишите на форуме или email: support@gameextensions.ru.</p></details>
-                <details class="faq-item"><summary>Какие системные требования?</summary><p>Windows 10+, Android 8+, минимум 4GB RAM для плавной работы.</p></details>
-                <details class="faq-item"><summary>Можно ли вернуть мод?</summary><p>Все скачивания бесплатны, но если проблема — напишите в поддержку.</p></details>
-            </div>
-        </section>
+	<meta property="fb:page_id" content="507146873226705">
+	<link rel="yandex-tableau-widget" href="https://tlauncher.ru/yamanifest.json">
 
-        <section id="places" style="display: none;">
-            <div class="filter-bar">
-                <input type="text" id="search-places" placeholder="Поиск..." aria-label="Поиск плейсов">
-                <select id="genre-filter" aria-label="Фильтр по жанру">
-                    <option value="">Все жанры</option>
-                    <option value="adventure">Приключения</option>
-                    <option value="rpg">RPG</option>
-                    <option value="obby">Obby</option>
-                </select>
-                <button class="filter-btn cta-btn" aria-label="Фильтр">Фильтр</button>
-            </div>
-            <div id="places-grid" class="places-grid"></div>
-            <div id="pagination-places" class="pagination"></div>
-        </section>
+			<script type="text/javascript" async="" charset="utf-8" src="https://www.gstatic.com/recaptcha/releases/44LqIOwVrGhp2lJ3fODa493O/recaptcha__ru.js" crossorigin="anonymous" integrity="sha384-ePTrsqtnkDEzgct7DxnkdSzE2qYqZM4C35LkEma2z/PJ8QZlzOJ9m3ockQkFz3ZL"></script><script async="" src="https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js"></script><script src="/assets/node_modules/jquery/dist/jquery.min.js?v=3.x"></script>
+<script src="/assets/node_modules/knockout/build/output/knockout-latest.js?v=3.x"></script>
+	<script src="/assets/node_modules/vue/dist/vue.global.prod.js?v=3.x"></script>
 
-        <section id="scripts" style="display: none;">
-            <div id="scripts-grid" class="places-grid"></div>
-            <div id="pagination-scripts" class="pagination"></div>
-        </section>
+<script>
+	"use strict";
 
-        <section id="avatars" style="display: none;">
-            <div id="avatars-grid" class="places-grid"></div>
-            <div id="pagination-avatars" class="pagination"></div>
-        </section>
-    </div>
+	const lang = 'ru';
 
-    <div id="toast" class="toast"></div>
 
-    <footer>
-        ©2025 Roblox Corporation. Roblox, the Roblox logo and Powering Imagination are among our registered and unregistered trademarks in the U.S. and other countries.
-    </footer>
+	const tlVM = {
+		lang: 'ru',
+		mainLang: 'ru',
+		authInfo: {},
+		user: {},
+		data: {},
+		acc: {},
+		dataObjectLoaded: ko.observable(),
+		viewSpinner: ko.observable(false),
+		popupDialog: {
+			title: ko.observable(),
+			body: ko.observable(''),
+			footer: ko.observable(),
+		},
+		loadFromDatObject: dataObject => {
+			if (dataObject && dataObject.tlVM) {
+				['data', 'acc', 'authInfo', 'user'].forEach(loadKey => {
+					if (dataObject.tlVM.hasOwnProperty(loadKey)) {
+						Object.keys(dataObject.tlVM[loadKey]).forEach(k => {
+							tlVM[loadKey][k] = dataObject.tlVM[loadKey][k];
+						});
+					}
+				});
 
-    <script type="module" src="script.js"></script>
-</body>
-</html>
+				afterLoadDataObjectHandler();
+				tlVM.dataObjectLoaded(true);
+			}
+		},
+	}
+
+	function afterLoadDataObjectHandler() {
+		//delete tlVM.dataObjectLoaded;
+
+				['data', 'authInfo', 'user'].forEach(i => {
+			function getSimpleValue(v) {
+				if (typeof v === 'string' && v.length > 0 && v.match(/\D+/g) === null) {
+					return parseInt(v);
+				}
+				return v;
+			}
+
+			Object.keys(tlVM[i]).forEach(dk => {
+				switch (true) {
+					case Array.isArray(tlVM[i][dk]):
+						tlVM[i][dk] = ko.observableArray(tlVM[i][dk]);
+						break;
+					case tlVM[i][dk] instanceof Object:
+						Object.keys(tlVM[i][dk]).forEach(ok => {
+							if (Array.isArray(tlVM[i][dk][ok])) {
+								tlVM[i][dk][ok] = ko.observableArray(tlVM[i][dk][ok]);
+							} else {
+								tlVM[i][dk][ok] = ko.observable(getSimpleValue(tlVM[i][dk][ok]));
+							}
+						});
+						break;
+					default:
+						tlVM[i][dk] = ko.observable(getSimpleValue(tlVM[i][dk]));
+				}
+			})
+		});
+
+		tlVM.user.isForever = ko.pureComputed(() => {
+			const currentTS = new Date();
+			return parseInt(tlVM.user.group()) === 2 && tlVM.user.goldtime() > Math.floor(currentTS.setDate(currentTS.getDate() + 500) / 1000);
+		});
+
+			}
+
+	jQuery.ajax({
+		async: false,
+		url: "/ajax/getdataobject/",
+		data: {
+			'lang': 'ru',
+			'x_csrf_token': '0622a339880f8600d47a8ddce1debe3fc1175856996701',
+			'userId': '' || -1,
+		},
+		method: "POST",
+		success: function (responseData) {
+						if (responseData.status === 'ok') {
+				tlVM.loadFromDatObject(responseData);
+			}
+		}
+	});
+</script>
+						<link rel="stylesheet" type="text/css" href="/assets/css/index.css?v=3.2.9">
+	<link rel="stylesheet" type="text/css" href="/assets/css/dpopup.css?v=3.2.9">
+	<style>
+        .body_index main {
+            padding: 0;
+        }
+		html[lang="uk"] .main-7 h2 {
+			font-size: 21px;
+		}
+        html[lang="uk"] a[href="#dPopup"] {
+			font-size: 14px;
+		}
+	</style>
+				<link rel="stylesheet" type="text/css" href="/assets/node_modules/bootstrap/dist/css/bootstrap.min.css?v=3.x">
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/premium.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/registration.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/popup.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/osselector.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/adavptive.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/ya_style.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/int_adapt.css?v=3.2.9">
+<link rel="stylesheet" type="text/css" href="/assets/css/extra.css?v=3.2.9">
+<style>
+    body.body_premim main {
+        padding: 0;
+    }
+
+    body.news.mobile aside {
+        display: none;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    footer .b-footer-line-2 .copyright {
+        position: inherit;
+        float: left;
+    }
+
+    .b-button_modal {
+        height: auto;
+    }
+
+    @media only screen and (max-width: 769px) {
+        .mobile .b--language-switch {
+            vertical-align: top;
+        }
+    }
+
+    @media only screen and (max-width: 801px) {
+        .body_index header, .body_index header.h--en {
+            background: url(/assets/images/index_header_bg_2.jpg) no-repeat 15% 0;
+        }
+    }
+</style>
+		
+
+		
+								<script src="/assets/node_modules/moment/moment.js?v=2.x"></script>
+<script>
+	$(() => {
+		if (window.orientation !== undefined) {
+			document.body.classList.add("mobile");
+		}
+	});
+</script>
+								
+	</head>
+
+<body class="body_index">
+	<header class="h--ru">
+		<div class="container">
+			<div class="b-header-line-1 clearfix">
+	<div class="pull-left">
+				<div class="b-site-info">Последние версии:<br>
+			<div class="linkoff">
+				<a href="/ru/download_1/minecraft-1218_27962.html" title="Скачать Майнкрафт 1.21.8">
+					Minecraft <strong>1.21.8</strong></a> и
+				<a href="/ru/download-pe_35/minecraft-bedrock-edition-1-21_24575.html" title="Скачать Майнкрафт: Bedrock 1.21">
+					Minecraft Bedrock <strong>1.21</strong></a></div>
+		</div>
+	</div>
+
+	<div class="pull-right">
+		<nav role="navigation" class="clearfix">
+	<input type="checkbox" id="nav_trigger" class="nav_trigger">
+	<label for="nav_trigger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</label>
+	<ul class="b-menu b-menu_main">
+		<li class="b-menu__item main-home-link">
+			<a rel="nofollow" class="b-link b-link_main-menu" href="/" title="Главная страница">
+				<span class=""></span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/news/" title="Последние публикации">
+				<span>Последние публикации</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/download_1/" title="Скачать Майнкрафт">
+				<span>Скачать Майнкрафт</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/mods_2/" title="Моды">
+				<span>Моды</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/premium.html" title="Premium">
+				<span class="premium">Premium</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/help.html" title="Помощь">
+				<span>Помощь</span>
+			</a>
+		</li>
+
+		<li class="b-menu__item divider"></li>
+
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/catalog/skins/" title="Скачать Скин">
+				<span>Скачать Скин</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/catalog/hd/" title="Скачать HD Скин">
+				<span>HD Скины</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/catalog/cloak/" title="Скачать Плащ">
+				<span>Плащи</span>
+			</a>
+		</li>
+		<li class="b-menu__item">
+			<a class="b-link b-link_main-menu" href="/catalog/skins/nickname/" title="Скины по никам">
+				<span>Скины по никам</span>
+			</a>
+		</li>
+					<li class="b-menu__item"><a class="b-link b-link_main-menu" href="/news_26/servera-minecraft-tlauncher_4526.html" title="Сервера Майнкрафт">
+					<span class="servers">Сервера Майнкрафт</span>
+				</a>
+			</li>
+			</ul>
+</nav>
+
+					<ul class="b-menu b-menu_header-social">
+		<li class="b-menu__item b-menu__item_header-social">
+		<a rel="nofollow" class="b-link b-link_header-social b-link_header-social-vk" href="https://vk.com/tlauncher" title="TLauncher в VK" target="_blank"></a>
+	</li>
+	</ul>
+			</div>
+</div>
+			<hr>
+			<div class="b-header-line-2 clearfix">
+	<div class="pull-left">
+		<a href="/" title="Лаунчер для Minecraft - TLauncher" class="logo logo-1">
+	<img src="/assets/images/logo-01.png" alt="Лаунчер для Minecraft - TLauncher">
+	<img src="/assets/images/logo-01-hover.png" alt="Лаунчер для Minecraft - TLauncher">
+</a>
+<a href="/pe.html" title="TLauncher PE для Майнкрафт Pocket Edition" class="logo logo-2">
+	<img src="/assets/images/logo-02-02.png" alt="TLauncher PE для Майнкрафт Pocket Edition">
+	<img src="/assets/images/logo-02-02-hover.png" alt="TLauncher PE для Майнкрафт Pocket Edition">
+</a>	</div>
+	<div class="pull-right">
+		<nav class="b-user-link">
+			<ul class="b-menu">
+							<li class="b-menu__item b-menu__item_tools_menu">
+			<a class="b-link b-link_tools_menu b-link_registration" rel="nofollow" href="/reg/" title="Регистрация"><span>Регистрация</span></a>
+		</li>
+		<li class="b-menu__item b-menu__item_tools_menu">
+		<a class="b-link b-link_tools_menu b-link_auth" href="#login" data-toggle="modal" title="Авторизация" style=""><span>Авторизация</span></a>
+	</li>
+
+			</ul>
+		</nav>
+			<div class="b--language-switch ru" data-main="ru">
+		<span class="caret"></span>
+		<ul class="b--language-switch__menu">
+							<li>
+					<a class="ru" href="https://tlauncher.ru/" data-country="ru">
+						<span>Русский</span>
+													<span class="caret"></span>
+											</a>
+				</li>
+							<li>
+					<a class="en" href="https://tlauncher.org/en/" data-country="">
+						<span>English</span>
+											</a>
+				</li>
+					</ul>
+	</div>
+	<link rel="stylesheet" type="text/css" href="/assets/css/lang_menu.css?v=3.2.9">
+	</div>
+</div>
+
+			<div class="b-header-line-3 clearfix">
+				<div class="pull-left">
+					<div class="b-header-info">
+						<h1>TLauncher – Лучший лаунчер Майнкрафт</h1>
+						<br>Сегодня не так много хороших лаунчеров для игры Minecraft, но они всё-таки есть, и один из них TLauncher.
+					</div>
+					<div class="header-button">
+						<a href="#dPopup" data-toggle="modal" class="b-button">
+							Скачать TLauncher</a>
+						<span class="available-os">Доступно на:</span>
+					</div>
+				</div>
+				<div class="pull-right">
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="main-1 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/settings_versions_2_0_v1.png" alt="Все официальные версии Майнкрафт">
+				<h2>Все официальные версии: от Alpha до Snapshots</h2>
+								<p>Лаунчер укомплектован всеми доступными версиями игры от разработчиков, в любой момент вы сможете установить одну из них, даже самую новую версию <a href="/ru/download_1/minecraft-1-21_22337.html" title="Minecraft 1.21">Minecraft 1.21</a>. В них не производилось никаких изменений, все файлы скачиваются с серверов разработчиков, а это значит, что вы получаете идеально чистый Майнкрафт.</p>
+			</div>
+		</section>
+
+		<section class="main-2 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/forge-optifine.png" alt="Установи Forge, Fabric, OptiFine в один клик">
+				<div class="content">
+					<h2>Установи Forge, Fabric, OptiFine в один клик</h2>
+					<p>Благодаря TLauncher, у вас появляется возможность установить модифицированную версию игры: Forge/Fabric - необходимы для работы с модами, Optifine - для оптимизации игры и повышения FPS. Всё это можно установить отдельно, но придётся где-то искать нужные файлы и настраивать вручную, лаунчер же всё сделает за вас, вам нужно выбрать только необходимую версию. Представьте сколько времени вы сэкономите, а ведь достаточно <strong>скачать TLauncher</strong></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="main-3 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/skins.png" alt="Система скинов TLauncher">
+				<h2>Своя система скинов</h2>
+				<p>У нас на сайте, вы сможете установить свой собственный скин, который увидят все наши пользователи, а можем вас уверить, большинство использует именно наш лаунчер. Система скинов ничем не уступает официальной, даже имеет несколько преимуществ: установка плаща и HD скинов. Из-за этих преимуществ, скины TLauncher считаются наилучшими, к тому же их установка проста и бесплатна!</p>
+			</div>
+		</section>
+
+		<section class="main-4 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/license_account_2_0_v1.png" alt="Авторизация лицензионных аккаунтов TLauncher">
+				<div class="content">
+					<h2>Вход с лицензионного аккаунта</h2>
+					<p>Не переставайте играть через свой лицензионный аккаунт, используйте все его преимущества: Лицензионные сервера, система скинов, ваш ник и все лучшие стороны TLauncher, достаточно авторизоваться под своей почтой и паролем. Запросы конечно же посылаются прямиком на сервера разработчиков в зашифрованном виде, никто никогда не получит доступ к вашему аккаунту - только максимальная безопасность!</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="main-5 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/modpack-ru.jpg" alt="Мод-паки с TLauncher">
+				<h2>Лаунчер с модами</h2>
+				<p>Создавайте свои сборки с модами буквально в один клик, с нашей новой системой мод-паков! Огромный каталог модов, карт, ресурс-паков с полным описанием и скриншотами уже ожидает вас. Система помогает избегать различных ошибок, так как проверяет на совместимость каждый установленный вами мод. Присутствует система бэкапа и ручной установки. Плюс всё абсолютно бесплатно, без каких-либо ограничений с нашей стороны. Порадуйте себя и не забудьте порекомендовать друзьям наш <a href="/news_26/modpack-system_5100.html" title="лаунчер с модами" target="_blank">лаунчер с модами</a>!</p>
+			</div>
+		</section>
+
+		<section class="main-6 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/support.png" alt="Поддержка TLauncher">
+				<div class="content">
+					<h2>Надёжность и поддержка</h2>
+					<p>Мы постоянно улучшаем свой продукт, поэтому ошибок, мешающих вашему пребыванию в Minecraft, в принципе не может быть - они все исправлены! Конечно же благодаря нашим игрокам, которые связываются с нами через сайт или непосредственно лаунчер и сообщают о всех своих проблемах. Мы помогаем всем, поэтому не бойтесь нам писать! Конечно же, не забывайте обновлять наш лаунчер до последней актуальной версии, на данный момент это - <strong>TLauncher 2.9319</strong>. Старая популярная - TLauncher 2.9.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="main-7 clearfix">
+			<div class="container">
+				<img src="/assets/images/front_page/best.png" alt="Лучший лаунчер">
+				<h2>Конкурентоспособность</h2>
+				<p>Явно, Вы видели не один лаунчер по игре, но точно находили в них множество недостатков и недоработок, поэтому Вы здесь, чтобы получить максимальные эмоции от Майнкрафт, из-за огромного количества контента и функций предоставляемых нами. Мы на шаг впереди многих и так будет всегда, ведь разработка TLauncher продолжается!</p>
+			</div>
+		</section>
+	</main>
+
+		<footer>
+		<div class="container clearfix">
+			<div class="b-footer-line-1 clearfix">
+				<div class="pull-left">
+										<img src="/assets/images/logo.png" alt="Лаунчер для Minecraft - TLauncher">
+				</div>
+
+				<div class="pull-right" id="main_footer_menu">
+					<nav role="navigation" class="clearfix">
+	<ul class="b-menu b-menu_main">
+					<li class="b-menu__item">
+				<a class="b-link b-link_main-menu" href="/how-to-promote-minecraft-server.html" title="Как раскрутить сервер Майнкрафт?"><span>Как раскрутить сервер Майнкрафт?</span></a>
+			</li>
+			<li class="b-menu__item">
+				<a class="b-link b-link_main-menu" href="/ads-tlauncher.html" title="Размещение рекламы сервера в TLauncher"><span>Размещение рекламы сервера в TLauncher</span></a>
+			</li>
+			<li class="b-menu__item">
+				<a class="b-link b-link_main-menu" href="/reviews-ad-tlauncher.html" title="Отзывы"><span>Отзывы</span></a>
+			</li>
+				<li class="b-menu__item">
+			<a rel="nofollow" class="b-link b-link_main-menu" href="/contacts.html" title="Контакты"><span>Контакты</span></a>
+		</li>
+	</ul>
+</nav>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="container clearfix">
+			<div class="b-footer-line-2 padding-top-20">
+				<div class="copyright">
+					<p>
+						©&nbsp;2013&nbsp;-&nbsp;2025 «TLauncher» от TLauncher Inc. ПО содержит рекламу.
+					</p>
+					<p class="footerAddress">Suite 1, Second Floor, Sound &amp; Vision House, Francis Rachel Str., Victoria, Mahe, Seychelles</p>
+				</div>
+
+				<div class="pull-right">
+					<ul class="b-menu b-menu_main">
+						<li class="b-menu__item">
+							<a rel="nofollow" class="b-link b-link_main-menu" href="/terms.html" title="Оферта"><span>Оферта</span></a>
+						</li>
+						<li class="b-menu__item">
+							<a rel="nofollow" class="b-link b-link_main-menu" href="https://discord.gg/TLauncher" title="Discord" target="_blank"><span>Наш Discord</span></a>
+						</li>
+						<li class="b-menu__item">
+							<a rel="nofollow" class="b-link b-link_main-menu" href="/privacy-policy.html" title="Политика конфиденциальности"><span>Политика конфиденциальности</span></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+			</footer>
+
+		<div id="osselector" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" data-dismiss="modal">
+					<span>×</span>
+				</div>
+				<div class="modal-body">
+					<div class="h2">Выберите платформу:</div>
+					<ul class="os-menu">
+						<li><a rel="nofollow" href="/installer"></a></li>
+						<li><a rel="nofollow" href="/jar"></a></li>
+						<li><a rel="nofollow" href="/jar"></a></li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+									</div>
+			</div>
+		</div>
+	</div>
+		
+<div id="dPopup" class="modal fade" tabindex="-1" role="dialog" data-v-app=""><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-body"><!----><button type="button" class="close" data-dismiss="modal" aria-label="Close"></button><div class="body-content"><div class="contentWrapper"><ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#windows" aria-controls="windows" role="tab" data-toggle="tab">Windows</a></li><li role="presentation" class=""><a href="#macos" aria-controls="macos" role="tab" data-toggle="tab">MacOS</a></li><li role="presentation" class=""><a href="#linux" aria-controls="linux" role="tab" data-toggle="tab">Linux</a></li></ul><div class="tab-content"><div role="tabpanel" class="tab-pane active" id="windows"><div><button class="btn btn-wide btn-green btn-download recommend" data-content="Рекомендуем!"><span class="title">TLauncher<!----> для <span>Windows</span></span><span class="file">TLauncher-Installer-1.8.9.exe</span><i class="icon"></i></button><button class="btn btn-wide btn-gray btn-text-left btn-all-version"><span>Показать все версии</span></button><div class="btn-block"><button class="btn btn-for-two-block btn-text-center btn-gray"><span class="capitalize">бета</span></button><button class="btn btn-for-two-block btn-text-center btn-gray"> Не работает? </button></div></div></div></div></div><!----><!----><!----><!----></div></div></div></div></div>
+
+<script type="text/x-template" id="os-tab">
+	<div role="tabpanel" class="tab-pane active" :id="tab.id">
+		<div v-if="all">
+			<button class="btn btn-wide btn-blue btn-text-center btn-installer" @click.prevent="download(url)">
+				<span>Installer<sup v-if="beta"> бета</sup></span>
+				&nbsp
+				<span class="recommend btn-text-center">Рекомендуем</span>
+			</button>
+			<button class="btn btn-wide btn-gray btn-text-center btn-direct" @click.prevent="download(directUrl)">
+				Прямой<sup v-if="beta"> бета</sup> ${tab.id==='windows'?'EXE':'JAR'}
+			</button>
+			<div class="btn-block">
+				<button class="btn btn-for-two-block btn-text-center btn-gray" @click="all=false">
+					Вернуться
+				</button>
+				<button class="btn btn-for-two-block btn-text-center btn-gray" @click.prevent="view('notwork')">
+					Не работает?
+				</button>
+			</div>
+		</div>
+		<div v-else>
+			<button class="btn btn-wide btn-green btn-download recommend"
+					data-content="Рекомендуем!" @click.prevent="download(url)">
+			<span class="title">TLauncher<sup v-if="beta"> бета</sup> для <span
+						v-text="tab.title"></span></span>
+				<span class="file" v-text="fileName"></span>
+				<i class="icon"></i>
+			</button>
+			<button class="btn btn-wide btn-gray btn-text-left btn-all-version" @click="all=true">
+				<span>Показать все версии</span>
+			</button>
+			<div class="btn-block">
+				<button class="btn btn-for-two-block btn-text-center btn-gray" @click="beta=!beta">
+					<span class="capitalize" v-text="beta?'релиз':'бета'"></span>
+				</button>
+				<button class="btn btn-for-two-block btn-text-center btn-gray" @click.prevent="view('notwork')">
+					Не работает?
+				</button>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/x-template" id="buttons">
+	<div class="buttons">
+		<button class="btn btn-wide btn-gray btn-text-left btn-support" @click="support()">
+			Техподдержка
+			<i></i>
+		</button>
+		<button class="btn btn-wide btn-text-center btn-gray btn-return" @click="setView()">
+			Вернуться назад
+		</button>
+	</div>
+</script>
+
+<script>
+	"use strict";
+
+	const dPopupAcc = JSON.parse('{"os":{"windows":{"release":{"url":"\/installer","fileName":"TLauncher-Installer-1.8.9.exe"},"beta":{"url":"\/installer-beta","fileName":"TLauncher-Beta-Installer-1.7.8.exe"},"direct":{"url":"\/exe","fileName":"starter-core-1.25-v2.exe"},"directBeta":{"url":"\/exe-beta","fileName":"starter-core-1.25-beta-v2.exe"}},"macos":{"release":{"url":"\/jar","fileName":"TLauncher.v16.zip"},"beta":{"url":"\/jar-beta","fileName":"TLauncher.v16.beta.zip"},"direct":{"url":"\/jar-only","fileName":"starter-core-1.25-v2.jar"},"directBeta":{"url":"\/jar-beta-only","fileName":"starter-core-1.25-beta-v2.jar"}},"linux":{"release":{"url":"\/installer-linux","fileName":"tlauncher-linux-installer.deb"},"beta":{"url":"\/installer-linux-beta","fileName":"tlauncher-linux-installer-beta.deb"},"direct":{"url":"\/jar","fileName":"TLauncher.v16.zip"},"directBeta":{"url":"\/jar-beta","fileName":"TLauncher.v16.beta.zip"}}},"links":{"runner":{"url":"\/installer-runner","fileName":"TLauncher-Runner-0.1-Installer-0.3-noadmin.exe"},"help":"\/ru\/help.html","support":{"vk":"https:\/\/vk.me\/tlauncher","fb":"https:\/\/fb.com\/tlauncher"}}}' || '{}');
+
+	const dPopupData = {
+		view: 'tabs',
+		currentTab: 'windows',
+		header: '',
+		tabs: [
+			{
+				id: 'windows',
+				title: 'Windows',
+			},
+			{
+				id: 'macos',
+				title: 'MacOS',
+			},
+			{
+				id: 'linux',
+				title: 'Linux',
+			},
+		],
+	};
+
+	const vueApp = Vue.createApp({
+		delimiters: ['${', '}'],
+		components: {
+			'os-tab': {
+				delimiters: ['${', '}'],
+				props: ["tab", "view", "download"],
+				data() {
+					return {
+						beta: false,
+						all: false,
+					};
+				},
+				template: '#os-tab',
+				computed: {
+					fileName: function () {
+						let fileName = '';
+						const currentOS = this.tab.id;
+
+						if (dPopupAcc.os.hasOwnProperty(currentOS)) {
+							const type = this.beta ? 'beta' : 'release';
+							fileName = (dPopupAcc.os[currentOS][type] || {}).fileName;
+						}
+
+						return fileName ? fileName : '';
+					},
+					url: function () {
+						let url = '';
+						const currentOS = this.tab.id;
+
+						if (dPopupAcc.os.hasOwnProperty(currentOS)) {
+							const type = this.beta ? 'beta' : 'release';
+							url = (dPopupAcc.os[currentOS][type] || {}).url;
+						}
+
+						return url ? url : '';
+					},
+					directUrl: function () {
+						let url = '';
+						const currentOS = this.tab.id;
+
+						if (dPopupAcc.os.hasOwnProperty(currentOS)) {
+							const type = this.beta ? 'directBeta' : 'direct';
+							url = (dPopupAcc.os[currentOS][type] || {}).url;
+						}
+
+						return url ? url : '';
+					}
+				},
+				methods: {},
+			},
+			'buttons': {
+				delimiters: ['${', '}'],
+				props: ["support", "view", "back"],
+				template: '#buttons',
+				methods: {
+					setView() {
+						this.view(this.back);
+					}
+				}
+			},
+		},
+		data() {
+			return dPopupData;
+		},
+		computed: {},
+		watch: {
+			view: function (newViewPage) {
+				this.header = '';
+				switch (newViewPage.toLowerCase()) {
+					case 'tabs':
+						break;
+					case 'notwork':
+						this.header = 'Что у вас не работает?';
+						break;
+					case 'installer':
+						this.header = 'Установщик';
+						break;
+					case 'launcher':
+						this.header = 'Лаунчер';
+						break;
+					case 'game':
+						this.header = 'Игра';
+						break;
+				}
+			}
+		},
+		methods: {
+			init() {
+				this.header = '';
+				this.view = 'tabs';
+				switch ((tlVM.Utils.currentPlatform() || {}).os) {
+					case 'mac':
+						this.currentTab = 'macos';
+						break;
+					case 'linux':
+						this.currentTab = 'linux';
+						break;
+					case 'windows':
+					default:
+						this.currentTab = 'windows';
+						break;
+				}
+			},
+			setView(viewPage) {
+				this.view = viewPage;
+			},
+			isView(viewPage) {
+				return (this.view || '').toLowerCase() === viewPage.toLowerCase();
+			},
+			getCurrentTab() {
+				const currentOS = this.currentTab;
+				return this.tabs.find(t => t.id === currentOS);
+			},
+			getNameOS() {
+				const tab = this.getCurrentTab();
+				return tab ? tab.title : '';
+			},
+			support() {
+				let url = dPopupAcc.links.support.fb;
+				if (lang === 'ru') {
+					url = dPopupAcc.links.support.vk;
+				}
+				window.open(url, '_blank');
+			},
+			installerImage() {
+				return '/assets/images/dpopup/installer-ru.png';
+			},
+			download(url) {
+				if (url) {
+					window.location.href = url;
+				}
+			},
+			runnerUrl: function () {
+				let url = dPopupAcc.links.runner.url;
+
+				return url ? url : '';
+			},
+			helpUrl: function () {
+				let url = dPopupAcc.links.help;
+
+				return url ? url : '';
+			},
+		}
+	});
+	const vueVM = vueApp.mount('#dPopup');
+
+	$('#dPopup').on('shown.bs.modal', () => {
+		vueVM.init();
+	});
+</script>
+	
+		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadMainCaptchaCallback&amp;render=explicit" async="" defer=""></script>
+	<script src="https://hcaptcha.com/1/api.js?onload=onloadMainCaptchaCallback&amp;recaptchacompat=off&amp;render=explicit&amp;hl=ru" async="" defer=""></script>
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadMainCaptchaCallback&amp;render=explicit&amp;hl=ru" async="" defer=""></script>
+
+			<div id="popup3" class="popups">
+	<div>
+		<span class="button-close-pops"></span>
+		<div class="content3"></div>
+	</div>
+</div>
+<style>
+    .modal-dialog {
+        z-index: 100000;
+    }
+
+    .button-close-pops {
+        border-radius: 0;
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 25px;
+        height: 25px;
+        /*background-size: cover;*/
+        background: url("/assets/images/close-btn-25.png") no-repeat 0 0;
+        top: 57px;
+    }
+
+    .button-close-pop, .button-close-pops {
+        z-index: 99999;
+        /*border-radius: 15px;*/
+        box-shadow: none;
+        font-size: 2em;
+        /*padding: 0px 6px 2px;*/
+        position: absolute;
+        /**/
+        right: 0;
+        /*top: 50px;*/
+        /**/
+        /*background-color: #FFF;*/
+        /*border: 1px solid #000;*/
+        /**/
+        color: #000;
+        text-shadow: none;
+        cursor: pointer;
+        /**/
+    }
+
+    .popups {
+        background: rgba(0, 0, 0, 0.7) !important;
+        border-radius: 0 !important;
+    }
+
+    #popup3 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 19999;
+        border-radius: 20px;
+        box-shadow: 0px 0px 5px 5px #999;
+        color: #111;
+        display: none;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .30);
+    }
+
+    #popup3 > div {
+        margin: 0 auto;
+        width: 300px;;
+        height: 240px;
+        border: 0 solid #FFF;
+        max-width: 789px;
+        background-color: transparent;;
+        overflow: hidden;
+        position: relative;
+        padding: 70px 10px 10px 10px;
+    }
+
+    #popup3 .content3 {
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #000;
+        background-color: #FFF;
+        overflow: hidden;
+        text-align: center;
+        padding: 10px;
+    }
+
+    #popupDialog {
+        z-index: 900000;
+    }
+</style>
+
+<div id="popupDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmPopupDialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header bg-info" data-dismiss="modal">
+				<h5 class="modal-title" id="confirmPopupDialog" data-bind="html: tlVM.Utils.popupDialog.title">Подтверждение</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body" data-bind="html: tlVM.Utils.popupDialog.body"></div>
+			<div class="modal-footer">
+				<!-- ko if: tlVM.Utils.popupDialog.btn.confirm() -->
+				<button type="button" class="btn btn-primary" onclick="tlVM.Utils.popupDialog.confirm()" data-bind="html: tlVM.Utils.popupDialog.btn.confirm">Выйти</button>
+				<!-- /ko -->
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" data-bind="html: tlVM.Utils.popupDialog.btn.close">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<div id="login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" data-dismiss="modal"></div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="wrapper">
+								<span class="h3">Авторизация</span>
+																<form method="post">
+									<input type="hidden" name="x_csrf_token" data-csrf="eec95517d6257d0b2f83d2f56a4dcd7fc1175856996775" value="eec95517d6257d0b2f83d2f56a4dcd7fc1175856996775">
+									<input type="hidden" name="page_open" value="auth_modal">
+									<input class="input" type="text" name="_username" placeholder="Логин" required="" value="mlg"><br>
+									<input class="input" type="password" name="_password" placeholder="Пароль" value="" required=""><br>
+
+																													<div class="center offset-top-20 b-g-recaptcha" data-bind="css:{hidden: tlVM.viewSpinner}">
+											<div id="captcha-modal" class="g-recaptcha" data-sitekey=""></div>
+											<!-- ko ifnot: tlVM.viewSpinner -->
+											<div class="selectNextCaptcha">
+												<span data-bind="click: ()=&gt;callNexCaptcha(true, true)">
+													Выбрать другую CAPTCHA
+												</span>
+											</div>
+											<!-- /ko -->
+										</div>
+									
+									<div class="footer-line">
+										<input type="submit" value="Войти" class="b-button b-button_modal">
+										<a rel="nofollow" class="pull-right" href="/reg/" title="Регистрация">
+											<span>Регистрация</span>
+										</a>
+										<a rel="nofollow" href="/lost/" title="Восстановление пароля"><span>Забыли пароль?</span></a>
+									</div>
+									<input id="auth_captcha_current" type="hidden" name="current_captcha" data-bind="value: tlVM.captcha.current" value="turnstile">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+	</div>
+		<script>
+		"use strict";
+
+		$(() => {
+			$(document).on('shown.bs.modal', '#login', function (e) {
+				$(this).addClass('show');
+				setTimeout(() => tlVM.captcha.fn.renderCaptcha(tlVM.captcha.current(), tlVM.captcha.divId + '-modal'), 10);
+			}).on('hide.bs.modal', '#login', function (e) {
+				$(this).removeClass('show');
+				tlVM.captcha.fn.renderCaptcha(tlVM.captcha.current(), tlVM.captcha.divId);
+			});
+		});
+	</script>
+	<style>
+        #login .input[name="_password"] {
+            margin-bottom: 20px;
+        }
+	</style>
+		
+	<script type="text/javascript">
+	tlVM.captcha = {
+		systems: JSON.parse('{"turnstile":{"disabled":false,"forOS":["default"],"render":{"explicit":true,"addHashSymbol":true,"options":{"theme":"light","language":"ru"}},"key":"0x4AAAAAAApvOosR2lBQBeAW","script":"https:\/\/challenges.cloudflare.com\/turnstile\/v0\/api.js?onload=onloadMainCaptchaCallback&render=explicit","jsObject":"turnstile"},"hcaptcha":{"disabled":false,"forOS":["default","oldWindows"],"render":{"explicit":true,"addHashSymbol":false,"options":{"theme":"light","language":"ru"}},"key":"aa37d243-018d-4d7b-94ec-4c28bc8bb098","script":"https:\/\/hcaptcha.com\/1\/api.js?onload=onloadMainCaptchaCallback&recaptchacompat=off&render=explicit&hl=ru","jsObject":"hcaptcha"},"recaptcha":{"disabled":false,"forOS":["default","oldWindows"],"render":{"explicit":true,"addHashSymbol":false,"options":{"theme":"light","language":"ru"}},"key":"6LfVF3gqAAAAAEo-CyjQvDSuk3bT8k9wsepiVdHK","script":"https:\/\/www.google.com\/recaptcha\/api.js?onload=onloadMainCaptchaCallback&render=explicit&hl=ru","jsObject":"grecaptcha"}}' || '[]'),
+				divId: 'captcha' || 'captcha',
+		main: 'turnstile',
+		current: ko.observable(),
+		fn: {
+			notCaptchaLoadedMessage: (captchaDivId = null, remove = false) => {
+				const noCaptchaId = 'notCaptcha';
+				const divNoCaptcha = $(`#${noCaptchaId}`);
+				if (divNoCaptcha.length) {
+					divNoCaptcha.remove();
+				}
+				if (!remove) {
+					const msg = 'Проблема с загрузкой капчи. Попробуйте перезагрузить страницу или попробовать другой браузер.' || 'Captcha load error!';
+					if (!tlVM.captcha.current()) {
+						captchaDivId = captchaDivId ? captchaDivId : tlVM.captcha.divId;
+						$(`<div id="${noCaptchaId}" class="alert alert-warning">${msg}</div>`).insertAfter($('#' + captchaDivId));
+					}
+				}
+			},
+			setCurrent: captcha => {
+				let captchaName = '';
+				const index = parseInt(captcha);
+				if (isNaN(index)) {
+					captchaName = captcha;
+				} else {
+					const systems = Object.keys(tlVM.captcha.systems) || [];
+					captchaName = systems.length > index ? systems[index] : '';
+				}
+				if (captchaName) {
+					if (window.hasOwnProperty(tlVM.captcha.systems[captchaName].jsObject)) {
+						tlVM.captcha.current(captchaName);
+					}
+				}
+			},
+			getNextCaptcha: (allowMain = false, retMainIfEmpty = false) => {
+				let captchaName;
+				let systems = Object.keys(tlVM.captcha.systems) || [];
+				if (!allowMain) {
+					systems = systems.filter(sName => sName !== tlVM.captcha.main);
+				}
+				const current = tlVM.captcha.current() ? tlVM.captcha.current() : tlVM.captcha.main;
+				for (let i = 0; i < systems.length; i++) {
+					if (systems[i] === current) {
+						captchaName = systems[i + 1 >= systems.length ? 0 : i + 1];
+						break;
+					}
+				}
+				if (retMainIfEmpty && !captchaName) {
+					return tlVM.captcha.main;
+				}
+
+				return captchaName;
+			},
+			renderCaptcha: (captchaName, targetId = null, options = {}) => {
+								$('#' + (targetId ? targetId : tlVM.captcha.divId)).html('');
+				tlVM.captcha.fn.setCurrent(captchaName);
+				const system = tlVM.captcha.systems[captchaName];
+				if (system) {
+					try {
+						const captchaObject = window[system.jsObject];
+						if (typeof captchaObject === 'object' && captchaObject.hasOwnProperty('render')) {
+							const renderOptions = Object.assign({
+								'sitekey': system.key || ''
+							}, system.render.options || {}, options);
+							if (captchaObject.hasOwnProperty('remove')) {
+								try {
+									captchaObject.remove();
+								} catch (e) {
+								}
+							}
+							if (captchaObject.hasOwnProperty('reset')) {
+								try {
+									captchaObject.reset();
+								} catch (e) {
+								}
+							}
+							if (null === targetId) {
+								targetId = tlVM.captcha.divId;
+							}
+							if (document.getElementById(targetId)) {
+								targetId = (system.render.addHashSymbol ? '#' : '') + targetId;
+								captchaObject.render(targetId, renderOptions);
+								tlVM.captcha.fn.notCaptchaLoadedMessage(targetId, true);
+								return;
+							}
+						}
+					} catch (e) {
+											}
+				}
+				tlVM.captcha.fn.notCaptchaLoadedMessage(targetId);
+				tlVM.captcha.fn.setCurrent('');
+			},
+			resetCaptcha: (targetId = null, captchaName = null) => {
+				if (null === targetId) {
+					targetId = tlVM.captcha.divId;
+				}
+				tlVM.captcha.fn.notCaptchaLoadedMessage(targetId, true);
+				if (!captchaName) {
+					captchaName = tlVM.captcha.current();
+				}
+
+				if (tlVM.captcha.systems.hasOwnProperty(captchaName)) {
+					const captcha = tlVM.captcha.systems[captchaName];
+					if (typeof window[captcha.jsObject].reset === 'function') {
+						window[captcha.jsObject].reset();
+					}
+				}
+			},
+			isExplicit: captchaName => {
+				return !!((tlVM.captcha.systems[captchaName] || {}).render || {}).explicit;
+			}
+		}
+	};
+
+	const callNexCaptcha = function (allowMain = false, modal = false) {
+		tlVM.viewSpinner(true);
+		const id = 'captcha' + (modal ? '-modal' : '');
+		$('#' + id).html('');
+		tlVM.captcha.fn.renderCaptcha(tlVM.captcha.fn.getNextCaptcha(allowMain), id);
+		tlVM.viewSpinner(false);
+	};
+	let waitMainCaptchaLoad = setTimeout(callNexCaptcha, Math.max(3000, 10000));
+
+	// noinspection ES6ConvertVarToLetConst
+	var onloadMainCaptchaCallback = function () {
+		const captchaJsObjectName = tlVM.captcha.systems[tlVM.captcha.main].jsObject;
+		if (!window.hasOwnProperty(captchaJsObjectName) || !window[captchaJsObjectName].hasOwnProperty('render')) {
+			return;
+		}
+		if (waitMainCaptchaLoad) {
+			clearTimeout(waitMainCaptchaLoad);
+		}
+		if (!tlVM.captcha.current()) {
+			tlVM.captcha.fn.renderCaptcha(tlVM.captcha.main);
+			tlVM.viewSpinner(false);
+		}
+
+		if (!tlVM.captcha.current()) {
+			tlVM.viewSpinner(true);
+			waitMainCaptchaLoad = setTimeout(callNexCaptcha, Math.max(3000, 10000));
+		}
+	};
+
+
+	$(() => {
+				if (!tlVM.captcha.current() && document.getElementById(tlVM.captcha.divId)) {
+			tlVM.viewSpinner(true);
+		}
+	});
+</script><script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js?v=3.x"></script>
+<script src="/assets/node_modules/jquery-appear-original/index.js?v=0.x"></script>
+<script>
+	"use strict";
+
+	tlVM['Utils'] = {
+		currentPlatform: ()=>{
+			const ua = navigator.userAgent.toLowerCase().replace(/^mozilla\/\d\.\d\W/, '')
+
+			const mobiles = {
+				'iphone': /iphone/,
+				'ipad': /ipad|macintosh/,
+				'android': /android/
+			}
+
+			const desktops = {
+				'windows': /win/,
+				'mac': /macintosh/,
+				'linux': /linux/
+			}
+
+			const detectPlatform = () => {
+				// Determine the operating system
+				const mobileOS = Object.keys(mobiles).find(os => mobiles[os].test(ua) && navigator.maxTouchPoints >= 1)
+				const desktopOS = Object.keys(desktops).find(os => desktops[os].test(ua))
+				const os = mobileOS || desktopOS
+				// Extract browser information
+				const browserTest = ua.match(/(\w+)\/(\d+\.\d+(?:\.\d+)?(?:\.\d+)?)/g)
+				const browserOffset = browserTest && (browserTest.length > 2 && !(/^(ver|cri|gec)/.test(browserTest[1])) ? 1 : 0)
+				const browserResult = browserTest && browserTest[browserTest.length - 1 - (browserOffset || 0)].split('/')
+				const browser = browserResult && browserResult[0]
+				const version = browserResult && browserResult[1]
+				return { os, browser, version }
+			}
+
+			return detectPlatform();
+		},
+		numberFormat: function (value, decimals, decPoint, thousandsSep) {
+			decPoint = decPoint || '.';
+			decimals = (decimals !== undefined ? decimals : 2);
+			thousandsSep = thousandsSep || ' ';
+
+			if (typeof value === 'string') {
+				value = parseFloat(value);
+			}
+
+			let result = value.toLocaleString('en-US', {
+				maximumFractionDigits: decimals,
+				minimumFractionDigits: decimals
+			});
+
+			let pieces = result.split('.');
+			pieces[0] = pieces[0].split(',').join(thousandsSep);
+
+			return pieces.join(decPoint);
+		},
+		/**
+		 * Returns the Promise
+		 * @param {string | RequestInfo } url
+		 * @param {Object|FormData} fBody
+		 * @param {Object} fHeaders
+		 * @param {string} fMethod
+		 * @param {Object} fExtraInit
+		 * @returns {Promise}
+		 */
+		fetchAjax: (url, fBody = {}, fHeaders = {}, fMethod = 'POST', fExtraInit = {}) => {
+			const xCsrfTokenName = 'x_csrf_token';
+			const currentCaptcha = ko.unwrap(tlVM.captcha.current) ? ko.unwrap(tlVM.captcha.current) : '';
+			fHeaders = $.extend({
+				'Accept': 'application/json',
+				"Content-Type": fBody instanceof FormData ? "application/x-www-form-urlencoded" : "application/json",
+			}, fHeaders);
+
+			const init = $.extend({
+				method: fMethod,
+				credentials: "same-origin",//"include",
+				headers: fHeaders,
+			}, fExtraInit);
+			if (typeof fBody === "object") {
+				if (fBody instanceof FormData) {
+					if (!fBody.has(xCsrfTokenName)) {
+						fBody.append(xCsrfTokenName, 'eec95517d6257d0b2f83d2f56a4dcd7fc1175856996775');
+					}
+					fBody.append('current_captcha', currentCaptcha);
+				} else {
+					fBody = $.extend({
+						[xCsrfTokenName]: 'eec95517d6257d0b2f83d2f56a4dcd7fc1175856996775',
+						'current_captcha': currentCaptcha
+					}, fBody);
+				}
+			}
+			if (fMethod === 'GET') {
+				url += '?' + new URLSearchParams(fBody).toString();
+			} else {
+				if (fHeaders["Content-Type"] === "multipart/form-data") {
+					delete fHeaders["Content-Type"];
+				} else {
+					fBody = fHeaders["Content-Type"] === "application/json" ? JSON.stringify(fBody) : new URLSearchParams(fBody).toString();
+				}
+				init.body = fBody;
+			}
+
+			return fetch(url, init).then(response => {
+								if (response.status === 200) {
+					if (response.redirected) {
+						return response;
+						//window.location.assign(response.url);
+					}
+					const contentType = response.headers.get("content-type");
+					if (contentType && contentType.indexOf("application/json") !== -1) {
+						return response.json();
+					} else {
+						return response.text();
+					}
+				}
+
+				if ([301, 302, 303, 307, 308].includes(response.status)) {
+					return response;
+				}
+
+				throw new Error('Ошибка сервера! Перезагрузите страницу!');
+			});
+		},
+		fetchAjaxSimply: (url) => {
+															return tlVM.Utils.fetchAjax(url, {'x_csrf_token': '0622a339880f8600d47a8ddce1debe3fc1175856996701'}, {"Content-Type": "application/x-www-form-urlencoded"});
+		},
+		popupMessage: function (v) {
+			$('.popup3').center();
+			$('.content3').html(v);
+			$('#popup3').toggle();
+		},
+		arrayHelper: (obj, key, defaultValue = undefined) => {
+			let result = defaultValue;
+			if (typeof obj === 'object' && obj.hasOwnProperty(key)) {
+				result = obj[key];
+			}
+			return result;
+		},
+		popupDialog: {
+			confirmModal: [],
+			title: ko.observable(),
+			body: ko.observable(),
+			btn: {
+				confirm: ko.observable(),
+				close: ko.observable(),
+				confirmFn: null
+			},
+			init: () => {
+				tlVM.Utils.popupDialog.confirmModal = $('#popupDialog');
+				tlVM.Utils.popupDialog.reset();
+			},
+			reset: () => {
+				tlVM.Utils.popupDialog.title('Подтверждение');
+				tlVM.Utils.popupDialog.body('');
+				let btn = tlVM.Utils.popupDialog.btn;
+				btn.confirm('Выйти');
+				btn.close('Закрыть');
+				btn.confirmFn = null;
+			},
+			showDialog: (options = {}) => {
+				if (tlVM.Utils.popupDialog.confirmModal.length) {
+					Object.keys(options).forEach(k => {
+						if (k === 'btn') {
+							Object.keys(options.btn).forEach(bk => {
+								if (tlVM.Utils.popupDialog.btn.hasOwnProperty(bk)) {
+									if (bk !== 'confirmFn') {
+										tlVM.Utils.popupDialog.btn[bk](options.btn[bk]);
+									} else {
+										tlVM.Utils.popupDialog.btn[bk] = options.btn[bk];
+									}
+								}
+							});
+						} else if (tlVM.Utils.popupDialog.hasOwnProperty(k)) {
+							tlVM.Utils.popupDialog[k](options[k]);
+						}
+					});
+					tlVM.Utils.popupDialog.confirmModal.modal("show");
+				}
+			},
+			confirm: () => {
+				if (tlVM.Utils.popupDialog.confirmModal.length) {
+					tlVM.Utils.popupDialog.confirmModal.modal("hide");
+					if (typeof tlVM.Utils.popupDialog.btn.confirmFn === 'function') {
+						tlVM.Utils.popupDialog.btn.confirmFn();
+					}
+				}
+			}
+		},
+	}
+
+	if (!Date.now) {
+		Date.now = function () {
+			return new Date().getTime();
+		}
+	}
+	if (!String.format) {
+		String.format = function (format) {
+			const args = Array.prototype.slice.call(arguments, 1);
+			return format.replace(/{(\d+)}/g, function (match, number) {
+				return typeof args[number] != 'undefined' ? args[number] : match;
+			});
+		};
+	}
+
+	$(() => {
+		$.fn.center = function () {
+			this.css("position", "absolute");
+			this.css("top", (jQuery(window).height() - this.height()) / 2 + "px");
+			this.css("left", (jQuery(window).width() - this.width()) / 2 + "px");
+			return this;
+		}
+
+		jQuery('.button-close-pops, #popup3').on('click', function (e) {
+					jQuery('.content3').empty();
+					jQuery('.popups').hide();
+				}
+		);
+
+		if (typeof (popUpLogin) !== 'undefined' && popUpLogin) {
+			jQuery("#login").modal("show");
+		}
+
+		tlVM.Utils.popupDialog.init();
+	});
+</script>
+<script type="text/javascript"> (function (m, e, t, r, i, k, a) {
+		m[i] = m[i] || function () {
+			(m[i].a = m[i].a || []).push(arguments)
+		};
+		m[i].l = 1 * new Date();
+		k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+	})(window, document, "script", "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js", "ym");
+	ym(55141588, "init", {clickmap: true, trackLinks: true, accurateTrackBounce: true}); </script>
+<noscript>
+	<div><img src="https://mc.yandex.ru/watch/55141588" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+	<script>
+	"use strict"
+
+	const pagination = {
+		pageNow: 1,
+		numPages: 1,
+	};
+</script>
+	<script>
+	"use strict";
+		$(() => {
+		ko.bindingHandlers.NumChecked = {
+			update: function (element, valueAccesor) {
+				var func = valueAccesor();
+				if (typeof (func) == 'function' && func() == true) {
+					func(1);
+				} else if ((typeof (func) == 'function')) {
+					func(0);
+				}
+			}
+		};
+
+		ko.applyBindings(tlVM);
+	});
+</script>
+
+
+</body></html>
